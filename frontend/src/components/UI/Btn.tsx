@@ -1,20 +1,29 @@
 
 import classes from "../../accets/styles/components/UI/btn.module.scss";
+import classNames from 'classnames';
 
 
 const Btn = ({
     text,
     type,
     mainStyle,
-    btnStyle
+    btnStyle,
+    before,
+    after,
+    action
 }: any) => {
     return (
         <div className={classes.main} style={mainStyle}>
             <button 
-                className={classes.main__btn} 
+                className={classNames(classes.main__btn, classes.main__default)} 
                 type={type}
                 style={btnStyle}
-            >{text}</button>
+                onClick={action}
+            >
+                {before}
+                <span>{text}</span>
+                {after}
+            </button>
         </div>
     )
 }
