@@ -10,12 +10,13 @@ const Btn = ({
     btnStyle,
     before,
     after,
-    action
+    action,
+    btnCls
 }: any) => {
     return (
         <div className={classes.main} style={mainStyle}>
             <button 
-                className={classNames(classes.main__btn, classes.main__default)} 
+                className={classNames(classes.main__btn, classes[btnCls ?? "main__default"])} 
                 type={type}
                 style={btnStyle}
                 onClick={action}

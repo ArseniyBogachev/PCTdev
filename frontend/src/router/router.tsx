@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Account from "../pages/Account";
+import MenuBodyWrap from "../components/MenuBodyWrap";
 import Order from "../pages/menu/Order";
 import Product from "../pages/menu/Product";
 import User from "../pages/menu/User";
@@ -32,19 +33,19 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "/order",
-                        element: <Order/>
+                        element: <MenuBodyWrap body={<Order/>} title={"Список заказов"}/>
                     },
                     {
                         path: "/product",
-                        element: <Product/>
+                        element: <MenuBodyWrap body={<Product/>} title={"Список продуктов"}/>
                     },
                     {
                         path: "/user",
-                        element: <User/>
+                        element: <MenuBodyWrap body={<User/>} title={"Список пользователей"}/>
                     },
                     {
                         path: "/factory",
-                        element: <Factory/>
+                        element: <MenuBodyWrap body={<Factory/>} title={"Список фабрик"}/>
                     },
                 ]
             },

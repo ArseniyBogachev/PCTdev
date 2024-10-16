@@ -17,20 +17,24 @@
     border-right: 1px solid #ebebf5;
     &__header {
         width: 100%;
-        height: 13%;
+        height: 10%;
         display: flex;
         align-items: center;
         border-bottom: 1px solid #ebebf5;
-        padding-left: 32px;
-        img {
-            width: 127px;
-            height: auto;
+        padding: 5% 10%;
+        &__wrapper {
+            height: 100%;
+            width: 100%;
+            img {
+                height: 100%;
+                width: auto;
+            }
         }
     }
     &__menu {
         width: 100%;
-        height: 77%;
-        padding: 16px 32px;
+        height: 80%;
+        padding: 5% 10%;
         &__list {
             width: 100%;
             height: 100%;
@@ -62,15 +66,37 @@
         width: 100%;
         height: 10%;
         border-top: 1px solid #ebebf5;
-        &__icon {
-
-        }
-        &__info {
-            &__name {
-
+        display: flex;
+        align-items: center;
+        padding: 0 10%;
+        &__wrapper {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            height: 50%;
+            &__icon {
+                height: 100%;
+                img {
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
-            &__status {
-
+            &__info {
+                height: 100%;
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+                padding: 0 10px;
+                &__name {
+                    font-family: "Montserrat", sans-serif;
+                    color: #2D2A4B;
+                    font-size: 15px;
+                }
+                &__status {
+                    font-family: "Montserrat", sans-serif;
+                    color: #9D9BB4;
+                    font-size: 12px;
+                }
             }
         }
     }

@@ -2,8 +2,6 @@
     width: 100%;
     height: 100%;
     &__btn {
-        background-color: rgb(58, 105, 241);
-        color: white;
         border-radius: 10px;
         width: 100%;
         height: 100%;
@@ -11,9 +9,15 @@
         transition: 0.3s;
     }
     &__default {
+        background-color: rgb(58, 105, 241);
+        color: white;
         &:hover {
             transition: 0.3s;
             background-color: rgb(91, 128, 237);
         }
+    }
+    &__inactive {
+        background-color: #EDEDF5;
+        color: #9D9BB4;
     }
 }
