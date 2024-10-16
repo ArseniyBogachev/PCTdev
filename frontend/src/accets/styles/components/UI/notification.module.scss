@@ -1,0 +1,87 @@
+.main {
+    width: 440px;
+    height: 84px;
+    position: fixed;
+    top: -100%;
+    right: 20px;
+    border-radius: 16px;
+    box-shadow: 0 0 5px 1px rgb(240, 240, 240);
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    &__image {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        box-shadow: 0 0 5px 1px rgb(220, 220, 220);
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+    &__text {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        height: 100%;
+        margin-left: 10px;
+        &__main {
+            font-family: "Montserrat", sans-serif;
+            color: black;
+            font-size: 17px;
+        }
+        &__extra {
+            font-family: "Montserrat", sans-serif;
+            color: black;
+            font-size: 15px;
+        }
+    }
+    &__xmark {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #9D9BB4;
+        cursor: pointer;
+        &:hover {
+            color: rgb(230, 117, 117);
+        }
+    }
+}
+
+
+.bColorMainGreen {
+    background-color: #D4FFED;
+}
+
+.colorImageGreen {
+    border: 1px solid white;
+    background-color: #E5FFF5;
+}
+
+
+.lvl1cls {
+    animation: lvl1 0.8s ease-in-out forwards;
+}
+@keyframes lvl1 {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 30px;
+    }
+}

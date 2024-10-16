@@ -41,7 +41,7 @@ const Home = () => {
                                     after={<img src={rightArrow} style={{marginLeft: "10px"}}/>} 
                                     mainStyle={{height: '40%'}} 
                                     btnStyle={{borderRadius: '7px'}}
-                                    action={() => {}}
+                                    action={() => navigate('/register')}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__restore}>

@@ -37,4 +37,20 @@
             right: 10px;
         }
     }
+    &__error {
+        position: absolute;
+        left: 0;
+        top: calc(100% + 2px);
+        font-size: 10px;
+        color: rgb(253, 80, 80);
+        font-family: "Montserrat", sans-serif;
+    }
+}
+
+
+.error {
+    border: 1px solid rgb(253, 80, 80);
+    &:focus {
+        border: 1px solid rgb(253, 80, 80);
+    }
 }
