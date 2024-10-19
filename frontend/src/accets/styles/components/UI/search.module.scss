@@ -1,0 +1,11 @@
+.main {
+    position: relative;
+    &__icon {
+
+    }
+    &__enter {
+        position: absolute;
+        bottom: -100%;
+        left: 0;
+    }
+}

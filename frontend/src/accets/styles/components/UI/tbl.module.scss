@@ -1,0 +1,33 @@
+.main {
+    &__head {
+        border: none;
+        &__tr {
+            border: none;
+            &__th {
+                font-weight: normal;
+                border: none;
+                &:first-child {
+                    border-radius: 10px 0 0 10px;
+                }
+                &:last-child {
+                    border-radius: 0 10px 10px 0;
+                }
+            }
+        }
+    }
+    &__body {
+        &__tr {
+            &:first-child {
+                border-top: none;
+            }
+            &__td {
+                &:first-child {
+                    border-left: none;
+                }
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}

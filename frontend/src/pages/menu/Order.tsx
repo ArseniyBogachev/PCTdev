@@ -7,6 +7,11 @@ import trash from "../../accets/images/Trash.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import Tbl from "../../components/UI/Tbl";
+import Slct from "../../components/UI/Slct";
+import ChckBx from "../../components/UI/ChckBx";
+import Filter from "../../components/UI/Filter";
+import Search from "../../components/UI/Search";
 
 
 const Order = ({
@@ -34,7 +39,125 @@ const Order = ({
                         </div>
                     </div>
                     <div className={classes.content__body}>
-                        
+                        <Tbl 
+                            data={{
+                                head: [
+                                    {
+                                        list: [
+                                            <ChckBx state={true}/>, 
+                                            <Filter text={'ID'}/>,
+                                            'Заказчик', 
+                                            <Filter text={'Фабрика'}/>,
+                                            <Filter text={'Статус'}/>,
+                                            'Получ. заказа',
+                                            'Дата отгрузки',
+                                            'Получ. фабр.',
+                                            'XML',
+                                            'Продукция (шт.)',
+                                        ]
+                                    },
+                                ],
+                                body: [
+                                    {
+                                        list: [
+                                            '', 
+                                            <Search active={true}/>, 
+                                            <Slct 
+                                                data={[
+                                                    {
+                                                        id: 1,
+                                                        text: 'test one'
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        text: 'test two'
+                                                    },
+                                                    {
+                                                        id: 3,
+                                                        text: 'test three'
+                                                    }
+                                                ]}
+                                                currentItem={1}
+                                            />, 
+                                            <Slct 
+                                                data={[
+                                                    {
+                                                        id: 1,
+                                                        text: 'test one'
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        text: 'test two'
+                                                    },
+                                                    {
+                                                        id: 3,
+                                                        text: 'test three'
+                                                    }
+                                                ]}
+                                                currentItem={1}
+                                            />,
+                                            <Slct 
+                                                data={[
+                                                    {
+                                                        id: 1,
+                                                        text: 'test one'
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        text: 'test two'
+                                                    },
+                                                    {
+                                                        id: 3,
+                                                        text: 'test three'
+                                                    }
+                                                ]}
+                                                currentItem={1}
+                                            />,
+                                            '', '', '', '', '',
+                                        ]
+                                    },
+                                    {
+                                        list: [
+                                            <ChckBx state={false}/>, 
+                                            '123232', 
+                                            'TestTest123', 
+                                            'Фабрика "WER"',
+                                            <Slct 
+                                                data={[
+                                                    {
+                                                        id: 1,
+                                                        text: 'Принято фабрикой'
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        text: 'Добавлен заказчиком'
+                                                    },
+                                                    {
+                                                        id: 3,
+                                                        text: 'Принято в работу'
+                                                    },
+                                                    {
+                                                        id: 4,
+                                                        text: 'Заказ отгружен'
+                                                    }
+                                                ]}
+                                                currentItem={1}
+                                            />,
+                                            '20.09.2024 20:21',
+                                            '20.09.2024 20:21',
+                                            '20.09.2024 20:21',
+                                            'Скачать',
+                                            'UHW LED tag(1000)'
+                                        ]
+                                    }
+                                ]
+                            }}
+                            totalStyle={{
+                                striped: false,
+                                bordered: true,
+                            }}
+                            headStyle={{}}
+                        />
                     </div>
                 </div>
             </div>

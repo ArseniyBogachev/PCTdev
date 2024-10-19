@@ -1,7 +1,7 @@
 
 import classes from "../../accets/styles/pages/menu/product.module.scss";
-import classNames from 'classnames';
-
+import classNames from "classnames";
+import Button from "react-bootstrap/Button";
 
 const Product = ({
     
@@ -10,7 +10,7 @@ const Product = ({
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
-                    PRODUCT
+                    <Button variant="primary">Primary</Button>
                 </div>
             </div>
         </div>

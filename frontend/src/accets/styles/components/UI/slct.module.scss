@@ -1,0 +1,10 @@
+.main {
+    &__select {
+        &__opt {
+
+        }
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}

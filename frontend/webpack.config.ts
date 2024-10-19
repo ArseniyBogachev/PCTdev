@@ -6,13 +6,6 @@ import { Env } from './src/config/buildWP/typing/interfaces';
 import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 
-// type Mode = 'development' | 'production' | 'none'
-
-// interface EnvVariables {
-//     mode: Mode;
-//     port: number | undefined;
-// }
-
 export default (env: Env) => {
 
     const isDev: boolean = env.mode === 'development'

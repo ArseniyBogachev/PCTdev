@@ -1,0 +1,12 @@
+.main {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &__text {
+
+    }
+    &__icon {
+        margin-left: 5px;
+        font-size: 10px;
+    }
+}
