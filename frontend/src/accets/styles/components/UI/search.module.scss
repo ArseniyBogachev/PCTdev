@@ -1,11 +1,19 @@
 .main {
     position: relative;
-    &__icon {
-
+    &__btn {
+        &__icon {
+            font-size: 15px;
+            cursor: pointer;
+            &__active {
+                color: rgb(91, 128, 237);
+            }
+        }
     }
     &__enter {
+        height: 150%;
         position: absolute;
-        bottom: -100%;
-        left: 0;
+        top: -200%;
+        left: -50%;
+        width: 200%;
     }
 }

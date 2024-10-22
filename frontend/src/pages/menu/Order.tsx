@@ -12,6 +12,10 @@ import Slct from "../../components/UI/Slct";
 import ChckBx from "../../components/UI/ChckBx";
 import Filter from "../../components/UI/Filter";
 import Search from "../../components/UI/Search";
+import Download from "../../components/UI/Download";
+import EditDataInpt from "../../components/UI/EditDataInpt";
+import { useState } from "react";
+import { reconstructDateTime } from "../../services/hooks/other";
 
 
 const Order = ({
@@ -144,9 +148,13 @@ const Order = ({
                                                 currentItem={1}
                                             />,
                                             '20.09.2024 20:21',
+                                            <EditDataInpt 
+                                                type={'datetime-local'} 
+                                                text={'20.09.2024 20:21'}
+                                                value={reconstructDateTime('20.09.2024 20:21', '[. :]+', [2, '-', 1, '-', 0, 'T', 3, ':', 4])}
+                                            />,
                                             '20.09.2024 20:21',
-                                            '20.09.2024 20:21',
-                                            'Скачать',
+                                            <Download text={'Скачать'}/>,
                                             'UHW LED tag(1000)'
                                         ]
                                     }
