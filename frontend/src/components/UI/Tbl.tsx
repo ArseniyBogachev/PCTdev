@@ -5,7 +5,7 @@ import { Table } from "react-bootstrap";
 import { PropsTable } from "../../services/typing/interfaces/components/UI/tbl.interfaces";
 
 
-const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle}): any => {
+const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any => {
 
     const {bsPrefix,
         striped,
@@ -21,6 +21,10 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle}): any => {
         headBColor,
         headColor
     } = headStyle
+
+    const {
+        horizontallyAlign
+    } = bodyStyle
 
     return (
         <Table 
@@ -42,7 +46,7 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle}): any => {
                                 className={classes.main__head__tr__th} 
                                 style={{
                                     backgroundColor: headBColor ?? "#EFF5FF",
-                                    color: headColor ?? "#696784"
+                                    color: headColor ?? "#696784",
                                 }}
                             >{text}</th>
                         )}
@@ -53,7 +57,12 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle}): any => {
                 {data.body.map(item => 
                     <tr className={classes.main__body__tr} style={{backgroundColor: "red"}}>
                         {item.list.map((text: any) => 
-                            <td className={classes.main__body__tr__td}>{text}</td>
+                            <td 
+                                className={classes.main__body__tr__td}
+                                style={{
+                                    textAlign: horizontallyAlign,
+                                }}
+                            >{text}</td>
                         )}
                     </tr>
                 )}

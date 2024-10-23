@@ -8,6 +8,7 @@ const Btn = ({
     type,
     mainStyle,
     btnStyle,
+    textStyle,
     before,
     after,
     action,
@@ -22,7 +23,7 @@ const Btn = ({
                 onClick={action}
             >
                 {before}
-                <span>{text}</span>
+                <span style={textStyle}>{text}</span>
                 {after}
             </button>
         </div>

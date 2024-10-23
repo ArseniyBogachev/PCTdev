@@ -16,7 +16,7 @@ const Inpt = ({
 }: any) => {
     return (
         <div className={classes.main} style={mainStyle}>
-            {name ?? <label className={classes.main__name}>{name}</label>}
+            {name ? <span className={classes.main__name}>{name}</span> : <></>}
             <div className={classes.main__wrapper} style={wrapStyle}>
                 <input type={type} className={classNames(classes.main__wrapper__inpt, stateError ? classes.error : "")} style={inptStyle} value={value} size={1}/>
                 <div className={classes.main__wrapper__after}>{after}</div>

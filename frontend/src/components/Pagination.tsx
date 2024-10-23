@@ -5,21 +5,34 @@ import { PropsPagination } from "../services/typing/interfaces/components/pagina
 import Btn from "./UI/Btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { hide } from "@popperjs/core";
+import { range } from "../services/hooks/other";
 
 
-const Pagination:React.FC<PropsPagination> = ({count}) => {
+// btnStyle={{borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+
+const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
     return (
         <div className={classes.main}>
             <Btn 
                 before={<FontAwesomeIcon icon={faChevronLeft} style={{fontSize: '1.2vh'}}/>} 
-                mainStyle={{width: '3vh', height: '3vh', marginRight: '0.8vw'}} 
+                mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                 btnStyle={{borderRadius: '5px'}} 
                 btnCls={'main__gray'}
             />
+            {
+                range(1, count + 1).map(item =>
+                    <Btn
+                        text={item} 
+                        mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
+                        btnStyle={{borderRadius: '5px'}}
+                        btnCls={currentPage === item ? 'main__default' : 'main__gray'}
+                        textStyle={{fontSize: '1.5vh'}}
+                    />
+                )
+            }       
             <Btn 
                 after={<FontAwesomeIcon icon={faChevronRight} style={{fontSize: '1.2vh'}}/>} 
-                mainStyle={{width: '3vh', height: '3vh',}} 
+                mainStyle={{width: '4vh', height: '4vh',}} 
                 btnStyle={{borderRadius: '5px'}} 
                 btnCls={'main__gray'}
             />

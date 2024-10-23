@@ -7,6 +7,10 @@
         height: 100%;
         font-family: "Montserrat", sans-serif;
         transition: 0.3s;
+        font-size: 1.5vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     &__default {
         background-color: rgb(58, 105, 241);
@@ -19,12 +23,15 @@
     &__inactive {
         background-color: #EDEDF5;
         color: #9D9BB4;
-        cursor: default;
+        cursor: cell;
     }
     &__gray {
         background-color: rgba(0, 0, 0, 0);
         border: 1px solid #ebebf5;
         color: #2D2A4B;
         cursor: pointer;
+        &:hover {
+            background-color: rgb(245, 245, 245);
+        }
     }
 }

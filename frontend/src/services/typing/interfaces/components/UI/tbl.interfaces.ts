@@ -1,4 +1,7 @@
 
+import { textAlign } from "../../../typeVar/styles"
+
+
 type HeadTable = {
     list: any[]
 }
@@ -28,15 +31,18 @@ type HeadStyle = {
     headColor?: string
 }
 
+type BodyStyle = {
+    horizontallyAlign: textAlign
+}
+
 type PropsTable = {
     data: DataTable
     totalStyle: TotalStyle,
-    headStyle: HeadStyle
+    headStyle?: HeadStyle
+    bodyStyle?: BodyStyle
 }
 
 
 export {
-    DataTable,
     PropsTable,
-    TotalStyle
 }

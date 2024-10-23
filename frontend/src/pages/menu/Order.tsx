@@ -2,8 +2,6 @@
 import classes from "../../accets/styles/pages/menu/order.module.scss";
 import classNames from 'classnames';
 import Btn from "../../components/UI/Btn";
-import plus from "../../accets/images/Plus.png";
-import trash from "../../accets/images/Trash.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
@@ -16,6 +14,7 @@ import Download from "../../components/UI/Download";
 import EditDataInpt from "../../components/UI/EditDataInpt";
 import { reconstructDateTime } from "../../services/hooks/other";
 import Pagination from "../../components/Pagination";
+import { textAlign } from "../../services/typing/typeVar/styles";
 
 
 const Order = ({
@@ -165,6 +164,9 @@ const Order = ({
                                 bordered: true,
                             }}
                             headStyle={{}}
+                            bodyStyle={{
+                                horizontallyAlign: textAlign.Center
+                            }}
                         />
                     </div>
                     <div className={classes.content__footer}>
@@ -173,7 +175,7 @@ const Order = ({
                                 <span>Найдено заказов: 1</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={5}/>
+                                <Pagination count={5} currentPage={2}/>
                             </div>
                         </div>
                     </div>
