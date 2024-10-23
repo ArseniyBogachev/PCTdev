@@ -14,8 +14,8 @@ import Filter from "../../components/UI/Filter";
 import Search from "../../components/UI/Search";
 import Download from "../../components/UI/Download";
 import EditDataInpt from "../../components/UI/EditDataInpt";
-import { useState } from "react";
 import { reconstructDateTime } from "../../services/hooks/other";
+import Pagination from "../../components/Pagination";
 
 
 const Order = ({
@@ -166,6 +166,16 @@ const Order = ({
                             }}
                             headStyle={{}}
                         />
+                    </div>
+                    <div className={classes.content__footer}>
+                        <div className={classes.content__footer__wrapper}>
+                            <div className={classes.content__footer__wrapper__number}>
+                                <span>Найдено заказов: 1</span>
+                            </div>
+                            <div className={classes.content__footer__wrapper__pagination}>
+                                <Pagination count={5}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
