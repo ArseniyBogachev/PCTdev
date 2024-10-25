@@ -5,9 +5,10 @@ import classes from "../accets/styles/pages/register.module.scss";
 import logo from "../accets/images/nl1.png";
 import Inpt from "../components/UI/Inpt";
 import Btn from "../components/UI/Btn";
-import rightArrow from "../accets/images/Vector.png";
-import eye from "../accets/images/eye-off.png";
 import Notification from "../components/UI/Notification";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 
 const Login = () => {
@@ -38,52 +39,52 @@ const Login = () => {
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={"text"} 
-                                    inptStyle={{fontSize: "17px"}}
+                                    inptStyle={{fontSize: "17px", borderRadius: '7px'}}
                                     name={"Почта"}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={"text"} 
-                                    inptStyle={{fontSize: "17px"}}
+                                    inptStyle={{fontSize: "17px", borderRadius: '7px'}}
                                     name={"Телефон"}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={"text"} 
-                                    inptStyle={{fontSize: "17px"}}
+                                    inptStyle={{fontSize: "17px", borderRadius: '7px'}}
                                     name={"ФИО"}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={"text"} 
-                                    inptStyle={{fontSize: "17px"}}
+                                    inptStyle={{fontSize: "17px", borderRadius: '7px'}}
                                     name={"Наименование организации"}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={"text"} 
-                                    inptStyle={{fontSize: "17px"}}
+                                    inptStyle={{fontSize: "17px", borderRadius: '7px'}}
                                     name={"ИНН"}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={showPass ? "text" : "password"} 
-                                    inptStyle={{fontSize: "17px", fontFamily: showPass ? "Montserrat" : "Verdana", letterSpacing: showPass ? "0.05em" : "0.125em"}}
+                                    inptStyle={{fontSize: "17px", fontFamily: showPass ? "Montserrat" : "Verdana", letterSpacing: showPass ? "0.05em" : "0.125em", borderRadius: '7px'}}
                                     name={"Пароль"}
-                                    after={<img src={eye} alt="..." style={{width: "24px", height: "24px", cursor: "pointer"}} onClick={() => setShowPass(!showPass)}/>}
+                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
                                 <Inpt 
                                     type={showRePass ? "text" : "password"} 
-                                    inptStyle={{fontSize: "17px", fontFamily: showRePass ? "Montserrat" : "Verdana", letterSpacing: showRePass ? "0.05em" : "0.125em"}}
+                                    inptStyle={{fontSize: "17px", fontFamily: showRePass ? "Montserrat" : "Verdana", letterSpacing: showRePass ? "0.05em" : "0.125em", borderRadius: '7px'}}
                                     name={"Подтверждение пароля"}
-                                    after={<img src={eye} alt="..." style={{width: "24px", height: "24px", cursor: "pointer"}} onClick={() => setShowRePass(!showRePass)}/>}
+                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
                                 />
                             </div>
                         </div>
@@ -91,8 +92,8 @@ const Login = () => {
                             <Btn 
                                 type={"button"} 
                                 text={"Создать аккаунт"} 
-                                after={<img src={rightArrow} style={{marginLeft: "10px"}}/>}  
-                                btnStyle={{borderRadius: "7px", fontSize: "14px"}}
+                                after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>}  
+                                btnStyle={{borderRadius: "7px"}}
                                 action={() => navigate('/login')}
                             />
                         </div>

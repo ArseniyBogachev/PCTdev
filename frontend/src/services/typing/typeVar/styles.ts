@@ -9,6 +9,13 @@ enum textAlign {
     MatchParent = "match-parent"
 };
 
+enum sizeModal {
+    Small = "sm",
+    Large = "lg",
+    XLarge = "xl"
+}
+
 export {
-    textAlign
+    textAlign,
+    sizeModal
 }

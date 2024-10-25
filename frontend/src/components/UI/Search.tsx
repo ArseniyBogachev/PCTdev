@@ -8,7 +8,7 @@ import { PropsSearch } from "../../services/typing/interfaces/components/UI/sear
 import Inpt from "./Inpt";
 
 
-const Search:React.FC<PropsSearch> = ({active}) => {
+const Search:React.FC<PropsSearch> = () => {
 
     const [state, setState] = useState(false);
 

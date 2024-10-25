@@ -1,6 +1,6 @@
 
 type PropsSearch = {
-    active: boolean
+    
 }
 
 export {

@@ -1,11 +1,10 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "../accets/styles/pages/login.module.scss";
 import logo from "../accets/images/nl1.png";
 import Inpt from "../components/UI/Inpt";
 import Btn from "../components/UI/Btn";
-import rightArrow from "../accets/images/Vector.png";
-import eye from "../accets/images/eye-off.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
@@ -13,6 +12,7 @@ import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 const Login = () => {
 
+    const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
 
     return (
@@ -48,7 +48,7 @@ const Login = () => {
                                 text={"Вход"} 
                                 after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>} 
                                 btnStyle={{borderRadius: "7px"}}
-                                // action={() => navigate('/login')}
+                                action={() => navigate('/order')}
                             />
                         </div>
                     </div>

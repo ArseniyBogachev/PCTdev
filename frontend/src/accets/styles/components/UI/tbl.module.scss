@@ -6,6 +6,8 @@
             &__th {
                 font-weight: normal;
                 border: none;
+                font-size: 1.8vh;
+                font-family: "Montserrat", sans-serif;
                 &:first-child {
                     border-radius: 10px 0 0 10px;
                 }
@@ -22,6 +24,8 @@
             }
             &__td {
                 vertical-align: middle;
+                font-family: "Montserrat", sans-serif;
+                font-size: 1.8vh;
                 &:first-child {
                     border-left: none;
                 }

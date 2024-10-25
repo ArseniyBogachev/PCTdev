@@ -4,6 +4,8 @@ import Btn from "../components/UI/Btn";
 import logo from "../accets/images/nl1.png";
 import rightArrow from "../accets/images/Vector.png"
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 
 const Home = () => {
@@ -27,22 +29,27 @@ const Home = () => {
                                 <div className={classes.content__wrapper__body__label__text}>Система оформления заказов</div>
                             </div>
                             <div className={classes.content__wrapper__body__enter}>
-                                <Btn 
-                                    type={'button'} 
-                                    text={'Войти в аккаунт'} 
-                                    after={<img src={rightArrow} style={{marginLeft: "10px"}}/>} 
-                                    mainStyle={{height: '40%'}} 
-                                    btnStyle={{borderRadius: '7px'}}
-                                    action={() => navigate('/login')}
-                                />
-                                <Btn 
-                                    type={'button'} 
-                                    text={'Создать аккаунт'} 
-                                    after={<img src={rightArrow} style={{marginLeft: "10px"}}/>} 
-                                    mainStyle={{height: '40%'}} 
-                                    btnStyle={{borderRadius: '7px'}}
-                                    action={() => navigate('/register')}
-                                />
+                                <div className={classes.content__wrapper__body__enter__login}>
+                                    <Btn 
+                                        type={'button'} 
+                                        text={'Войти в аккаунт'} 
+                                        after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>}
+                                        // mainStyle={{height: '40%'}} 
+                                        btnStyle={{borderRadius: '7px'}}
+                                        action={() => navigate('/login')}
+                                    />
+                                </div>
+                                <div className={classes.content__wrapper__body__enter__register}>
+                                    <Btn 
+                                        type={'button'} 
+                                        text={'Создать аккаунт'} 
+                                        after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>}
+                                        // mainStyle={{height: '100%'}} 
+                                        btnStyle={{borderRadius: '7px'}}
+                                        action={() => navigate('/register')}
+                                    />
+                                </div>
+                                
                             </div>
                             <div className={classes.content__wrapper__body__restore}>
                                 <div className={classes.content__wrapper__body__restore__text}>Восстановить доступ</div>
