@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import classes from "../../accets/styles/pages/menu/order.module.scss";
 import classNames from 'classnames';
 import Tbl from "../../components/UI/Tbl";
@@ -10,19 +11,42 @@ import Download from "../../components/UI/Download";
 import EditDataInpt from "../../components/UI/EditDataInpt";
 import { reconstructDateTime } from "../../services/hooks/other";
 import Pagination from "../../components/Pagination";
-import { textAlign } from "../../services/typing/typeVar/styles";
-import HeaderBtn from "../../components/headerBtn";
+import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
+import HeaderBtn from "../../components/HeaderBtn";
+import Mdl from "../../components/UI/Mdl";
+import OrderMdl from "../../components/BodyMdl/OrderMdl";
 
 
-const Order = ({
-    
-}: any) => {
+const Order = () => {
+
+    const [show, setShow] = useState(false);
+
     return (
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
+                    <Mdl 
+                        show={show} 
+                        setShow={setShow}
+                        sizeModal={sizeModal.Small}
+                        title={'Добавить заказ'}
+                        Body={OrderMdl}
+                        btnLeft={{
+                            text: 'Отмена'
+                        }}
+                        btnRight={{
+                            text: 'Импортировать'
+                        }}
+                        bodyH='60vh'
+                    />
                     <div className={classes.content__header}>
-                        <HeaderBtn/>
+                        <HeaderBtn
+                            add={{
+                                valueAdd: '228',
+                                actionAdd: () => setShow(true)
+                            }}
+                            del={{}}
+                        />
                     </div>
                     <div className={classes.content__body}>
                         <Tbl 

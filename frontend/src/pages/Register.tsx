@@ -24,6 +24,7 @@ const Login = () => {
                 <div className={classes.content}>
                     <div className={classes.content__wrapper}>
                         <Notification 
+                            type={'fixed'}
                             mainText={"Новый пароль выслан на почту"} 
                             extraText={"На kakdela@gmail.com выслано письмо"} 
                             mainClr={"bColorMainGreen"}

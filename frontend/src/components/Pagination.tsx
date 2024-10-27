@@ -17,7 +17,7 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
                 before={<FontAwesomeIcon icon={faChevronLeft} style={{fontSize: '1.2vh'}}/>} 
                 mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                 btnStyle={{borderRadius: '5px'}} 
-                btnCls={'main__gray'}
+                btnCls={'gray'}
             />
             {
                 range(1, count + 1).map(item =>
@@ -25,7 +25,7 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
                         text={item} 
                         mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                         btnStyle={{borderRadius: '5px'}}
-                        btnCls={currentPage === item ? 'main__default' : 'main__gray'}
+                        btnCls={currentPage === item ? 'default' : 'gray'}
                         textStyle={{fontSize: '1.5vh'}}
                     />
                 )
@@ -34,7 +34,7 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
                 after={<FontAwesomeIcon icon={faChevronRight} style={{fontSize: '1.2vh'}}/>} 
                 mainStyle={{width: '4vh', height: '4vh',}} 
                 btnStyle={{borderRadius: '5px'}} 
-                btnCls={'main__gray'}
+                btnCls={'gray'}
             />
         </div>
     )

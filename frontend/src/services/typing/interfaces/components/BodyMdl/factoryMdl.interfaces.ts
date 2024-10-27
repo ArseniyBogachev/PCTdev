@@ -1,0 +1,8 @@
+
+type PropsFactoryMdl = {
+
+}
+
+export {
+    PropsFactoryMdl,
+}

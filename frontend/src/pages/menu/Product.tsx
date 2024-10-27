@@ -1,22 +1,37 @@
 
+import { useState } from "react";
 import classes from "../../accets/styles/pages/menu/product.module.scss";
 import classNames from "classnames";
 import Tbl from "../../components/UI/Tbl";
 import ChckBx from "../../components/UI/ChckBx";
 import Pagination from "../../components/Pagination";
-import { textAlign } from "../../services/typing/typeVar/styles";
-import HeaderBtn from "../../components/headerBtn";
+import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
+import HeaderBtn from "../../components/HeaderBtn";
+import Mdl from "../../components/UI/Mdl";
 
 
-const Product = ({
-    
-}: any) => {
+const Product = () => {
+
+    const [show, setShow] = useState(false);
+
     return (
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
+                    {/* <Mdl 
+                        show={show} 
+                        setShow={setShow} 
+                        sizeModal={sizeModal.Small}
+                        title={'Новый продукт'}
+                    /> */}
                     <div className={classes.content__header}>
-                        <HeaderBtn/>
+                        <HeaderBtn 
+                            add={{
+                                valueAdd: '228',
+                                actionAdd: () => setShow(true)
+                            }}
+                            del={{}}
+                        />
                     </div>
                     <div className={classes.content__body}>
                         <Tbl

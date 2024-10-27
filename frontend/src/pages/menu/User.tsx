@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import classes from "../../accets/styles/pages/menu/user.module.scss";
 import classNames from 'classnames';
 import Tbl from "../../components/UI/Tbl";
@@ -6,18 +7,28 @@ import Slct from "../../components/UI/Slct";
 import ChckBx from "../../components/UI/ChckBx";
 import Search from "../../components/UI/Search";
 import Pagination from "../../components/Pagination";
-import { textAlign } from "../../services/typing/typeVar/styles";
+import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import DropdownList from "../../components/UI/DropdownList";
-import HeaderBtn from "../../components/headerBtn";
+import HeaderBtn from "../../components/HeaderBtn";
+import Mdl from "../../components/UI/Mdl";
 
 
 const User = () => {
+
+    const [show, setShow] = useState(false);
+
     return (
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
+                    {/* <Mdl 
+                        show={show} 
+                        setShow={setShow} 
+                        sizeModal={sizeModal.Small}
+                        title={'Новый пользователь'}
+                    /> */}
                     <div className={classes.content__header}>
-                        <HeaderBtn/>
+                        <HeaderBtn add={{}} del={{}}/>
                     </div>
                     <div className={classes.content__body}>
                         <Tbl 

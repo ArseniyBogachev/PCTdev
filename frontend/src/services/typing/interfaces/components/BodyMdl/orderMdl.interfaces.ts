@@ -1,0 +1,8 @@
+
+type PropsOrderMdl = {
+
+}
+
+export {
+    PropsOrderMdl,
+}

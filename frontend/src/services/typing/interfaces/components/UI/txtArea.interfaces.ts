@@ -1,0 +1,8 @@
+
+type PropsTxtArea = {
+
+}
+
+export {
+    PropsTxtArea,
+}

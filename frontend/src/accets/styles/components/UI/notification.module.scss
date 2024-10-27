@@ -1,4 +1,4 @@
-.main {
+.main__fxd {
     width: 440px;
     height: 84px;
     position: fixed;
@@ -8,10 +8,16 @@
     box-shadow: 0 0 5px 1px rgb(240, 240, 240);
 }
 
+.main__blk {
+    width: 100%;
+    height: 100%;
+    border-radius: 1vh;
+}
+
 .wrapper {
     width: 100%;
     height: 100%;
-    padding: 16px;
+    padding: 0 1.3vh;
 }
 
 .content {
@@ -22,28 +28,28 @@
     width: 100%;
     height: 100%;
     &__image {
-        width: 48px;
-        height: 48px;
+        width: 5.6vh;
+        height: 5.6vh;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
         box-shadow: 0 0 5px 1px rgb(220, 220, 220);
         img {
-            width: 24px;
-            height: 24px;
+            width: 2.8vh;
+            height: 2.8vh;
         }
     }
     &__text {
         display: flex;
         justify-content: space-around;
         flex-direction: column;
-        height: 100%;
+        // height: 100%;
         margin-left: 10px;
         &__main {
             font-family: "Montserrat", sans-serif;
             color: black;
-            font-size: 17px;
+            font-size: 1.7vh;
         }
         &__extra {
             font-family: "Montserrat", sans-serif;

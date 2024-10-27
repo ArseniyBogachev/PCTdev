@@ -17,7 +17,7 @@ const Btn = ({
     return (
         <div className={classes.main} style={mainStyle}>
             <button 
-                className={classNames(classes.main__btn, classes[btnCls ?? "main__default"])} 
+                className={classNames(classes.main__btn, classes[`main__${btnCls ?? 'default'}`])} 
                 type={type}
                 style={btnStyle}
                 onClick={action}

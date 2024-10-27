@@ -10,10 +10,7 @@ import { PropsHeaderBtn } from "../services/typing/interfaces/components/headerB
 const HeaderBtn:React.FC<PropsHeaderBtn> = ({add, del}) => {
 
     const {valueAdd, actionAdd} = add
-    const {valueDel, actionDel} = del
-
-    console.log(valueAdd)
-    actionAdd()
+    // const {valueDel, actionDel} = del
 
     return (
         <div className={classes.main}>
@@ -29,8 +26,8 @@ const HeaderBtn:React.FC<PropsHeaderBtn> = ({add, del}) => {
                 mainStyle={{width: "auto", marginLeft: "10px"}} 
                 btnStyle={{padding: "0 20px"}} 
                 after={<FontAwesomeIcon icon={faTrashCan} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>}
-                btnCls={"main__inactive"}
-                action={actionDel}
+                btnCls={"inactive"}
+                // action={actionDel}
             />
         </div>
     )

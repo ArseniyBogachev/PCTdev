@@ -9,8 +9,9 @@ import Search from "../../components/UI/Search";
 import Pagination from "../../components/Pagination";
 import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import DropdownList from "../../components/UI/DropdownList";
-import HeaderBtn from "../../components/headerBtn";
+import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
+import FactodyMdl from "../../components/BodyMdl/FactoryMdl";
 
 
 const Factory = () => {
@@ -21,13 +22,27 @@ const Factory = () => {
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
-                    <Mdl show={show} setShow={setShow} sizeModal={sizeModal.Small}/>
+                    <Mdl 
+                        show={show} 
+                        setShow={setShow} 
+                        sizeModal={sizeModal.Small}
+                        title={'Добавить заказ'}
+                        Body={FactodyMdl}
+                        btnLeft={{
+                            text: 'Отмена'
+                        }}
+                        btnRight={{
+                            text: 'Применить'
+                        }}
+                        bodyH='70vh'
+                    />
                     <div className={classes.content__header}>
                         <HeaderBtn 
                             add={{
                                 valueAdd: '228',
                                 actionAdd: () => setShow(true)
                             }}
+                            del={{}}
                         />
                     </div>
                     <div className={classes.content__body}>
