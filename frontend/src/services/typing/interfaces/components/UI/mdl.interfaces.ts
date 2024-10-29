@@ -3,6 +3,7 @@ import { sizeModal } from "../../../typeVar/styles"
 
 type Button = {
     text: string
+    after?: any
 }
 
 type PropsMdl = {
@@ -14,6 +15,7 @@ type PropsMdl = {
     btnLeft: Button
     btnRight: Button
     bodyH: string
+    bodyW: string
 }
 
 export {

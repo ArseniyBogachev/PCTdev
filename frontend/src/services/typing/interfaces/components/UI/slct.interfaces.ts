@@ -8,6 +8,8 @@ type DataSelect = {
 type PropsSelect = {
     data: DataSelect[]
     currentItem: number
+    label?: string
+    mainStyle?: {}
 }
 
 

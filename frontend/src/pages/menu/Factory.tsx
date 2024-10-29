@@ -26,7 +26,7 @@ const Factory = () => {
                         show={show} 
                         setShow={setShow} 
                         sizeModal={sizeModal.Small}
-                        title={'Добавить заказ'}
+                        title={'Новая фабрика'}
                         Body={FactodyMdl}
                         btnLeft={{
                             text: 'Отмена'
@@ -35,14 +35,16 @@ const Factory = () => {
                             text: 'Применить'
                         }}
                         bodyH='70vh'
+                        bodyW='25vh'
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn 
                             add={{
                                 valueAdd: '228',
-                                actionAdd: () => setShow(true)
+                                actionAdd: () => setShow(true),
+                                text: 'Добавить фабрику'
                             }}
-                            del={{}}
+                            del={{text: 'Удалить'}}
                         />
                     </div>
                     <div className={classes.content__body}>

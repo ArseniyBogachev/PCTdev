@@ -9,13 +9,13 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Btn from "./Btn";
 
 
-const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft, btnRight, bodyH}) => {
+const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft, btnRight, bodyH, bodyW}) => {
     return (
         <Modal
-            size={sizeModal}
             show={show}
             onHide={() => setShow(false)}
             contentClassName={classes.main}
+            dialogClassName={classes[`dialog__${bodyW}`]}
             centered
         >
             <Modal.Header className={classes.main__header}>
@@ -37,12 +37,14 @@ const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft,
                         btnCls={'gray'}
                         mainStyle={{width: "auto", marginRight: '10px'}} 
                         btnStyle={{padding: "0 20px"}}
+                        after={btnLeft.after}
                     />
                     <Btn 
                         type={'button'} 
                         text={btnRight.text}
                         mainStyle={{width: "auto"}} 
                         btnStyle={{padding: "0 20px"}}
+                        after={btnRight.after}
                     />
                 </div>
             </Modal.Footer>

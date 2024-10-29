@@ -27,10 +27,11 @@ const Product = () => {
                     <div className={classes.content__header}>
                         <HeaderBtn 
                             add={{
-                                valueAdd: '228',
-                                actionAdd: () => setShow(true)
+                                text: 'Добавить продукт'
                             }}
-                            del={{}}
+                            del={{
+                                text: 'Удалить'
+                            }}
                         />
                     </div>
                     <div className={classes.content__body}>

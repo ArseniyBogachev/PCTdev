@@ -28,7 +28,14 @@ const User = () => {
                         title={'Новый пользователь'}
                     /> */}
                     <div className={classes.content__header}>
-                        <HeaderBtn add={{}} del={{}}/>
+                        <HeaderBtn 
+                            add={{
+                                text: 'Добавить пользователя'
+                            }} 
+                            del={{
+                                text: 'Удалить'
+                            }}
+                        />
                     </div>
                     <div className={classes.content__body}>
                         <Tbl 

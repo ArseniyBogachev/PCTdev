@@ -5,9 +5,10 @@ import { PropsSelect } from "../../services/typing/interfaces/components/UI/slct
 import Form from 'react-bootstrap/Form';
 
 
-const Slct:React.FC<PropsSelect> = ({data, currentItem}) => {
+const Slct:React.FC<PropsSelect> = ({data, currentItem, label, mainStyle}) => {
     return (
-        <div className={classes.main}>
+        <div className={classes.main} style={mainStyle}>
+            {label ? <label className={classes.main__label}>{label}</label> : <></>}
             <Form.Select aria-label="Default select example" className={classes.main__select}>
                 {
                     data.map(item => 

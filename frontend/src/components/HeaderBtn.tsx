@@ -9,13 +9,13 @@ import { PropsHeaderBtn } from "../services/typing/interfaces/components/headerB
 
 const HeaderBtn:React.FC<PropsHeaderBtn> = ({add, del}) => {
 
-    const {valueAdd, actionAdd} = add
+    const {valueAdd, actionAdd, text} = add
     // const {valueDel, actionDel} = del
 
     return (
         <div className={classes.main}>
             <Btn 
-                text={"Добавить заказ"} 
+                text={text} 
                 mainStyle={{width: "auto"}} 
                 btnStyle={{padding: "0 20px"}} 
                 after={<FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>}

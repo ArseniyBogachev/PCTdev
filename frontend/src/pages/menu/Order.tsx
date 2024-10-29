@@ -15,6 +15,8 @@ import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
 import OrderMdl from "../../components/BodyMdl/OrderMdl";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 
 const Order = () => {
@@ -28,24 +30,27 @@ const Order = () => {
                     <Mdl 
                         show={show} 
                         setShow={setShow}
-                        sizeModal={sizeModal.Small}
+                        sizeModal={sizeModal.Large}
                         title={'Добавить заказ'}
                         Body={OrderMdl}
                         btnLeft={{
                             text: 'Отмена'
                         }}
                         btnRight={{
-                            text: 'Импортировать'
+                            text: 'Импортировать',
+                            after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: '10px'}}></FontAwesomeIcon>
                         }}
-                        bodyH='60vh'
+                        bodyH='55vh'
+                        bodyW='24vh'
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn
                             add={{
                                 valueAdd: '228',
-                                actionAdd: () => setShow(true)
+                                actionAdd: () => setShow(true),
+                                text: 'Добавить заказ'
                             }}
-                            del={{}}
+                            del={{text: 'Удалить'}}
                         />
                     </div>
                     <div className={classes.content__body}>

@@ -7,7 +7,8 @@
         font-family: "Montserrat", sans-serif;
         position: absolute;
         left: 0;
-        top: -2.3vh;
+        top: 0;
+        transform: translate(0, -100%);
         color: #9D9BB4;
     }
     &__nameLeft {
@@ -40,6 +41,9 @@
             &:focus {
                 border: 1px solid #bdbcbc;
                 transition: 0.3s;
+            }
+            &::placeholder {
+                color: black;
             }
         }
         &__after {

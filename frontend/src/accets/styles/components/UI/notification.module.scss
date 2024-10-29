@@ -44,17 +44,16 @@
         display: flex;
         justify-content: space-around;
         flex-direction: column;
-        // height: 100%;
         margin-left: 10px;
         &__main {
             font-family: "Montserrat", sans-serif;
             color: black;
-            font-size: 1.7vh;
+            font-size: 0.75vw;
         }
         &__extra {
             font-family: "Montserrat", sans-serif;
             color: black;
-            font-size: 15px;
+            font-size: 0.65vw;
         }
     }
     &__xmark {
