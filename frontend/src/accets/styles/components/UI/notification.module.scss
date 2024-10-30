@@ -1,10 +1,10 @@
 .main__fxd {
-    width: 440px;
-    height: 84px;
-    position: fixed;
+    width: 100%;
+    height: 10vh;
+    position: absolute;
     top: -100%;
-    right: 20px;
-    border-radius: 16px;
+    right: 0;
+    border-radius: 1.5vh;
     box-shadow: 0 0 5px 1px rgb(240, 240, 240);
 }
 
@@ -17,7 +17,7 @@
 .wrapper {
     width: 100%;
     height: 100%;
-    padding: 0 1.3vh;
+    padding: 1.5vh;
 }
 
 .content {
@@ -69,24 +69,48 @@
 }
 
 
-.bColorMainGreen {
-    background-color: #D4FFED;
-}
+// .bColorMainGreen {
+//     background-color: #D4FFED;
+// }
 
-.colorImageGreen {
-    border: 1px solid white;
-    background-color: #E5FFF5;
-}
+// .colorImageGreen {
+//     border: 1px solid white;
+//     background-color: #E5FFF5;
+// }
 
 
-.lvl1cls {
+.lvl1anim {
     animation: lvl1 0.8s ease-in-out forwards;
 }
 @keyframes lvl1 {
     0% {
-        top: -100%;
+        top: -10vh;
     }
     100% {
         top: 30px;
+    }
+}
+
+.lvl2anim {
+    animation: lvl2 0.8s ease-in-out forwards;
+}
+@keyframes lvl2 {
+    0% {
+        top: 30px;
+    }
+    100% {
+        top: calc(10vh + 60px);
+    }
+}
+
+.lvl3anim {
+    animation: lvl3 0.8s ease-in-out forwards;
+}
+@keyframes lvl3 {
+    0% {
+        top: calc(10vh + 60px);
+    }
+    100% {
+        top: calc(20vh + 90px);
     }
 }

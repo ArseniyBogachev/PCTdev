@@ -25,13 +25,13 @@ const Notification = ({
             info: info
         },
         color: {
-            access: 'green',
+            access: '#D4FFED',
             info: '#FFFBE6'
         }
     }
 
     return (
-        <div className={type === 'fixed' ? classNames(classes.main__fxd, classes[mainClr], classes[lvl]) : classes.main__blk} style={{...mainStyle, backgroundColor: style.color[totalStyle]}}>
+        <div className={type === 'fixed' ? classNames(classes.main__fxd, classes[mainClr], classes[`${lvl}anim`]) : classes.main__blk} style={{...mainStyle, backgroundColor: style.color[totalStyle]}}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
                     <div className={classNames(classes.content__image, classes[imgClr])}>

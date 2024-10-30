@@ -8,6 +8,7 @@ import Btn from "../components/UI/Btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { loginApi } from "../services/api/auth";
 
 
 const Login = () => {
@@ -48,7 +49,10 @@ const Login = () => {
                                 text={"Вход"} 
                                 after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>} 
                                 btnStyle={{borderRadius: "7px"}}
-                                action={() => navigate('/order')}
+                                action={() => {
+                                    loginApi('admin', 'Danny100')
+                                    // navigate('/order')
+                                }}
                             />
                         </div>
                     </div>

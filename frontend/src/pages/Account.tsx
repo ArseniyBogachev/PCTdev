@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import logo from "../accets/images/nl1.png";
 import profile from "../accets/images/profile.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dataAccount } from "../services/data/dataAccount";
+import { dataAccount } from "../services/static_data/dataAccount";
 
 
 const Account = () => {

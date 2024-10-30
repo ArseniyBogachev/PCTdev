@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { PropsFactoryMdl } from "../../services/typing/interfaces/components/BodyMdl/factoryMdl.interfaces";
 import Notification from "../UI/Notification";
 import Inpt from "../UI/Inpt";
-import { listBodyComponent } from "../../services/data/dataFactory";
+import { listBodyComponent } from "../../services/static_data/dataFactory";
 
 
 const FactodyMdl:React.FC<PropsFactoryMdl> = () => {

@@ -15,6 +15,7 @@ const Inpt = ({
     stateError,
     textError,
     value,
+    setValue,
     area,
     placeholder
 }: any) => {
@@ -25,7 +26,15 @@ const Inpt = ({
                 {
                     area ?
                     <textarea className={classNames(classes.main__wrapper__inpt, stateError ? classes.error : "")}></textarea> :
-                    <input type={type} className={classNames(classes.main__wrapper__inpt, stateError ? classes.error : "")} style={inptStyle} value={value} size={1} placeholder={placeholder}/>
+                    <input 
+                        type={type} 
+                        className={classNames(classes.main__wrapper__inpt, stateError ? classes.error : "")} 
+                        style={inptStyle} 
+                        value={value} 
+                        onChange={(e) => setValue(e.target.value)}
+                        size={1} 
+                        placeholder={placeholder}
+                    />
                 }
                 <div className={classes.main__wrapper__after}>{after}</div>
             </div>
