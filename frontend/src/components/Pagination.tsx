@@ -8,8 +8,6 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { range } from "../services/hooks/other";
 
 
-// btnStyle={{borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-
 const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
     return (
         <div className={classes.main}>

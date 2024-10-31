@@ -1,8 +1,10 @@
 // 20.09.2024 20:21
 
-// ['20', '09', '2024', '20', '21']
+// import Notification from "../../components/UI/Notification"; 
+import { GeneralNotification } from "../typing/interfaces/store/general.interfaces";
 
-// 2024-09-20T20:21
+
+
 export function reconstructDateTime (value: string, sep: string, schema: any[]): string {
     let result = '';
     const arr = value.split(new RegExp(sep));        // /[. :]+/

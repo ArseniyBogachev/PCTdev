@@ -39,8 +39,8 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
             className={classes.main}
         >
             <thead className={classes.main__head}>
-                {data.head.map(item => 
-                    <tr className={classes.main__head__tr}>
+                {data.head.map((item, i) => 
+                    <tr className={classes.main__head__tr} key={i}>
                         {item.list.map(text => 
                             <th 
                                 className={classes.main__head__tr__th} 
@@ -54,14 +54,15 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                 )}
             </thead>
             <tbody className={classes.main__body}>
-                {data.body.map(item => 
-                    <tr className={classes.main__body__tr} style={{backgroundColor: "red"}}>
-                        {item.list.map((text: any) => 
+                {data.body.map((item, i) => 
+                    <tr className={classes.main__body__tr} style={{backgroundColor: "red"}} key={i}>
+                        {item.list.map((text: any, i) => 
                             <td 
                                 className={classes.main__body__tr__td}
                                 style={{
                                     textAlign: horizontallyAlign,
                                 }}
+                                key={i}
                             >{text}</td>
                         )}
                     </tr>

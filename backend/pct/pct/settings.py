@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authentification.apps.AuthentificationConfig',
     'rest_framework',
     'corsheaders',
+    'drf_spectacular', 
 ]
 
 CORS_ORIGIN_ALLOW_ALL=True
@@ -86,7 +87,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
 }
 
 WSGI_APPLICATION = 'pct.wsgi.application'

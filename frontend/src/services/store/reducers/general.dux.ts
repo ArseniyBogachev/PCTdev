@@ -1,27 +1,34 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GeneralState, GeneralNotification } from "../../typing/interfaces/store/general.interfaces";
-import Notification from "../../../components/UI/Notification";
+
 
 const generalState: GeneralState = {
-    notification: [
-        Notification(
-            type: 'fixed',
-            mainText: '123',
-            extraText: '123',
-            totalStyle: 'access',
-            lvl:"lvl1",
-            close: true
-        )
-    ]
+    listNotification: [],
+    currentNotification: false,
+    loading: false
 }
 
 export const generalSlice = createSlice({
         name: 'general',
         initialState: generalState,
         reducers: {
-            addNotification: (state: GeneralState, action: PayloadAction<GeneralNotification>) => {
-                state.notification = [...state.notification, action.payload]
+            addListNotification (state: GeneralState, action: PayloadAction<GeneralNotification>) {
+                state.listNotification = [...state.listNotification, action.payload]
+
+                if (state.listNotification.length === 1) {
+                    state.currentNotification = state.listNotification[0]
+                }
+            },
+            delListNotification (state: GeneralState, action: PayloadAction<number>) {
+                state.listNotification.splice(action.payload, 1)
+                state.currentNotification = state.listNotification[0]
+            },
+            setCurrentNotification (state: GeneralState, action: PayloadAction<GeneralNotification>) {
+                state.currentNotification = action.payload
+            },
+            setLoading (state: GeneralState, action: PayloadAction<boolean>) {
+                state.loading = action.payload
             }
         }
     }

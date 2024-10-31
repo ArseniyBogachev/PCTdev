@@ -1,6 +1,9 @@
 
+import { GeneralNotification } from "../store/general.interfaces"
+
+
 type PropsNotificationWrap = {
-    data: React.ReactElement[]
+    data: boolean | GeneralNotification
 }
 
 export {

@@ -8,7 +8,9 @@ const NotificationWrap:React.FC<PropsNotificationWrap> = ({data}) => {
     return (
         <div className={classes.main}>
             <div className={classes.wrapper}>
-                {data.map(item => item)}
+                {
+                    data ? Notification(data) : <></>
+                }
             </div>
         </div>
     )

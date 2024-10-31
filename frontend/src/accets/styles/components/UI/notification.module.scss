@@ -78,39 +78,48 @@
 //     background-color: #E5FFF5;
 // }
 
-
+.lvl0anim {
+    display: none;
+}
 .lvl1anim {
-    animation: lvl1 0.8s ease-in-out forwards;
+    animation: lvl1 5s ease-in-out forwards;
 }
 @keyframes lvl1 {
     0% {
         top: -10vh;
     }
-    100% {
+    5% {
         top: 30px;
     }
-}
-
-.lvl2anim {
-    animation: lvl2 0.8s ease-in-out forwards;
-}
-@keyframes lvl2 {
-    0% {
+    95% {
         top: 30px;
     }
     100% {
-        top: calc(10vh + 60px);
+        // left: calc(100% + 30px);
+        top: -10vh;
     }
 }
 
-.lvl3anim {
-    animation: lvl3 0.8s ease-in-out forwards;
-}
-@keyframes lvl3 {
-    0% {
-        top: calc(10vh + 60px);
-    }
-    100% {
-        top: calc(20vh + 90px);
-    }
-}
+// .lvl2anim {
+//     animation: lvl2 0.8s ease-in-out forwards;
+// }
+// @keyframes lvl2 {
+//     0% {
+//         top: 30px;
+//     }
+//     100% {
+//         top: calc(10vh + 60px);
+//     }
+// }
+
+// .lvl3anim {
+//     animation: lvl3 0.8s ease-in-out forwards;
+// }
+// @keyframes lvl3 {
+//     0% {
+//         top: calc(10vh + 60px);
+//     }
+//     100% {
+//         top: calc(20vh + 90px);
+//     }
+// }

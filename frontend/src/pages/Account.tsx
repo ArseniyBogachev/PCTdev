@@ -26,8 +26,8 @@ const Account = () => {
                     </div>
                     <div className={classes.navbar__menu}>
                         <div className={classes.navbar__menu__list}>
-                            {menu.map(item => 
-                                <div className={classNames(classes.navbar__menu__list__item, location.pathname === item.link ? classes.activeItem : "")} onClick={() => {navigate(item.link)}}>
+                            {menu.map((item, i) => 
+                                <div className={classNames(classes.navbar__menu__list__item, location.pathname === item.link ? classes.activeItem : "")} onClick={() => {navigate(item.link)}} key={i}>
                                     <FontAwesomeIcon icon={item.icon} className={classNames(classes.navbar__menu__list__item__icon, location.pathname === item.link ? classes.activeIcon : "")}/>
                                     <span className={classes.navbar__menu__list__item__text}>{item.text}</span>
                                 </div>

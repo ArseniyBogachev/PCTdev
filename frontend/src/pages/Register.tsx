@@ -8,8 +8,9 @@ import Btn from "../components/UI/Btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-// import { register } from "../services/hooks/auth";
 import { registerApi } from "../services/api/auth";
+import { generalSlice } from "../services/store/reducers/general.dux";
+import { useAppDispatch } from "../services/hooks/redux";
 
 
 const Login = () => {
@@ -26,6 +27,37 @@ const Login = () => {
     const [inn, setInn] = useState();
     const [password, setPassword] = useState();
     const [rePassword, setRePassword] = useState();
+
+    const { addListNotification, setLoading } = generalSlice.actions;
+    const dispatch = useAppDispatch()
+
+    async function register () {
+        dispatch(setLoading(true))
+        const response = await registerApi(email, phone, fio, organization, inn, password);
+        
+        if (response.status === 200) {
+            dispatch(addListNotification({
+                type: 'fixed',
+                mainText: 'Добавлена новая фабрика',
+                extraText: `На ${email} выслано письмо`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            navigate('/login');
+        }
+        else {
+            dispatch(addListNotification({
+                type: 'fixed',
+                mainText: 'Ошибка при регистрации',
+                extraText: 'Проверьте введенные данные',
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+        }
+        dispatch(setLoading(false))
+    }
 
     return (
         <div className={classes.main}>
@@ -110,18 +142,7 @@ const Login = () => {
                                 text={"Создать аккаунт"} 
                                 after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>}  
                                 btnStyle={{borderRadius: "7px"}}
-                                action={
-                                    async () => {
-                                        const response = await registerApi(email, phone, fio, organization, inn, password);
-                                        
-                                        if (response.status === 200) {
-                                            navigate('/login')
-                                        }
-                                        else {
-                                            console.log(response)
-                                        }
-                                    }
-                                }
+                                action={() => register()}
                             />
                         </div>
                     </div>

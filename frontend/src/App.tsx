@@ -9,13 +9,12 @@ import { useAppSelector } from "./services/hooks/redux";
 
 const App = () => {
 
-    const {notification} = useAppSelector(state => state.reducer)
-    // console.log(notification)
+    const { currentNotification, loading } = useAppSelector(state => state.reducer)
 
     return (
         <div className={classes.main}>
-            <NotificationWrap data={notification}/>
-            <Loading state={false}/>
+            <NotificationWrap data={currentNotification}/>
+            <Loading state={loading}/>
             <Outlet/>
         </div>
     )
