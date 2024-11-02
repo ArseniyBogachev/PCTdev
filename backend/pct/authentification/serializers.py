@@ -1,5 +1,7 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from .models import User
+from application.models import Factory
+from application.serializers import ListFactorySerializerUser
 
 
 class AuthSerializer(ModelSerializer):
@@ -10,7 +12,11 @@ class AuthSerializer(ModelSerializer):
 
 
 class AdminUserSerializer(ModelSerializer):
+    # owner = SerializerMethodField()
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'organization', 'email', 'phone', 'fio', 'inn', ]
+
+    # def get_owner(self, instance):
+    #     return Factory.objects.filter(owner=instance.id).values('name')

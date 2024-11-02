@@ -1,10 +1,13 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState, User } from "../../typing/interfaces/store/user.interfaces";
+import { UserState, User, ItemListUser, ChkBx } from "../../typing/interfaces/store/user.interfaces";
 
 
 const userState: UserState = {
-    user: undefined
+    user: undefined,
+    listUser: [],
+    listChkBx: [],
+    allChkBx: false
 }
 
 export const userSlice = createSlice({
@@ -14,6 +17,36 @@ export const userSlice = createSlice({
             write (state: UserState, action: PayloadAction<User>) {
                 state.user = action.payload
             },
+            setListUser (state: UserState, action: PayloadAction<ItemListUser[]>) {
+                state.listUser = action.payload
+            },
+            setListChkBx (state: UserState, action: PayloadAction<ChkBx[]>) {
+                state.listChkBx = action.payload
+            },
+            detailSetListChkBx (state: UserState, action: PayloadAction<number>) {
+                state.listChkBx = state.listChkBx.map(item => {
+                    if (item.id === action.payload) {
+                        item.state = !item.state
+                    }
+                    return item
+                })
+            },
+            allSetListChkBx (state: UserState, action: PayloadAction<undefined>) {
+                if (state.allChkBx) {
+                    state.listChkBx = state.listChkBx.map(item => {
+                        item.state = false;
+                        state.allChkBx = false;
+                        return item;
+                    });
+                }
+                else {
+                    state.listChkBx = state.listChkBx.map(item => {
+                        item.state = true;
+                        state.allChkBx = true;
+                        return item;
+                    });
+                }
+            }
         }
     }
 )

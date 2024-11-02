@@ -8,21 +8,21 @@ import { PropsSearch } from "../../services/typing/interfaces/components/UI/sear
 import Inpt from "./Inpt";
 
 
-const Search:React.FC<PropsSearch> = () => {
+const Search:React.FC<PropsSearch> = ({}) => {
 
-    const [state, setState] = useState(false);
+    const [show, setShow] = useState(false);
 
     return (
         <div className={classes.main}>
             <div className={classes.main__btn}>
                 <FontAwesomeIcon 
                     icon={faMagnifyingGlass}
-                    className={classNames(classes.main__btn__icon, state ? classes.main__btn__icon__active : '')}
-                    onClick={() => setState(!state)}
+                    className={classNames(classes.main__btn__icon, show ? classes.main__btn__icon__active : '')}
+                    onClick={() => setShow(!show)}
                 ></FontAwesomeIcon>
             </div>
             {
-                state ? 
+                show ? 
                 <div className={classes.main__enter}>
                     <Inpt 
                         type={'text'} 

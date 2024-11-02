@@ -6,12 +6,17 @@ type HeadTable = {
     list: any[]
 }
 
+type FilterTable = {
+    list: any[]
+}
+
 type BodyTable = {
     list: any[]
 }
 
 type DataTable = {
     head: HeadTable[]
+    filter?: FilterTable
     body: BodyTable[]
 }
 

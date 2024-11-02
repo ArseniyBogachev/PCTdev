@@ -5,7 +5,7 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 
 
-export const dataAccount = () => {
+export const dataAccount = (is_superuser: boolean) => {
     const menu = [
         {
             id: 1,
@@ -30,7 +30,7 @@ export const dataAccount = () => {
         },
         {
             id: 4,
-            text: "Фабрики",
+            text: is_superuser ? "Фабрики" : "Аккаунты (фабрики)",
             icon: faIndustry,
             link: "/factory",
             onlyAdmin: false

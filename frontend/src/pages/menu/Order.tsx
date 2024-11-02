@@ -61,7 +61,7 @@ const Order = () => {
                                 head: [
                                     {
                                         list: [
-                                            <ChckBx state={true}/>, 
+                                            // <ChckBx state={true}/>, 
                                             <Filter text={'ID'}/>,
                                             'Заказчик', 
                                             <Filter text={'Фабрика'}/>,
@@ -135,7 +135,7 @@ const Order = () => {
                                     },
                                     {
                                         list: [
-                                            <ChckBx state={false}/>, 
+                                            // <ChckBx state={false}/>, 
                                             '123232', 
                                             'TestTest123', 
                                             'Фабрика "WER"',
@@ -189,7 +189,7 @@ const Order = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: 1</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={5} currentPage={2}/>
+                                {/* <Pagination count={5} currentPage={2}/> */}
                             </div>
                         </div>
                     </div>

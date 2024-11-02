@@ -10,11 +10,31 @@ type User = {
     phone: string
 }
 
+type ItemListUser = {
+    email: string
+    fio: string
+    inn: string
+    organization: string
+    phone: string
+    order: []
+}
+
+type ChkBx = {
+    id: number
+    state: boolean
+    setState: Function
+}
+
 type UserState = {
     user: User | undefined
+    listUser: ItemListUser[]
+    listChkBx: ChkBx[],
+    allChkBx: boolean
 }
 
 export {
     UserState,
-    User
+    User,
+    ItemListUser,
+    ChkBx
 }

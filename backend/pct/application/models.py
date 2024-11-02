@@ -7,6 +7,9 @@ class Factory(models.Model):
     email = models.EmailField()
     fio = models.CharField(max_length=100)
     registration_number = models.CharField(max_length=100)
+    company = models.CharField(max_length=100, null=True)
+    phone_company = models.CharField(max_length=100, null=True)
+    owner = models.ForeignKey('authentification.User', null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

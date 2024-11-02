@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -9,7 +9,7 @@ import logo from "../accets/images/nl1.png";
 import profile from "../accets/images/profile.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dataAccount } from "../services/static_data/dataAccount";
-import { meApi } from "../services/api/auth";
+import { meApi } from "../services/api/auth.api";
 import { useAppSelector, useAppDispatch } from "../services/hooks/redux";
 import { userSlice } from "../services/store/reducers/user.dux";
 import { generalSlice } from "../services/store/reducers/general.dux";
@@ -17,13 +17,12 @@ import NotFound from "../components/NotFound";
 
 
 const Account = () => {
-
     const navigate = useNavigate();
     const location = useLocation();
-    const { menu } = dataAccount();
     const [cookies, _, __] = useCookies<string>(["user"]);
 
     const { user } = useAppSelector(state => state.user);
+    const [menu, setMenu] = useState([]);
     const { write } = userSlice.actions;
     const { setLoading } = generalSlice.actions;
     const dispatch = useAppDispatch();
@@ -34,6 +33,7 @@ const Account = () => {
 
             if (response.status === 200) {
                 dispatch(write(response.data[0]));
+                setMenu(dataAccount(response.data[0].is_superuser).menu);
             }
             else {
                 console.log(response);

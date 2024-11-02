@@ -51,7 +51,7 @@ const Product = () => {
                                 body: [
                                     {
                                         list: [
-                                            <ChckBx state={false}/>, 
+                                            // <ChckBx state={false}/>, 
                                             '123232', 
                                             'TestTest123', 
                                             '54х31',
@@ -60,7 +60,7 @@ const Product = () => {
                                     },
                                     {
                                         list: [
-                                            <ChckBx state={false}/>, 
+                                            // <ChckBx state={false}/>, 
                                             '123232', 
                                             'UHF LEG tag', 
                                             '100х10',
@@ -69,7 +69,7 @@ const Product = () => {
                                     },
                                     {
                                         list: [
-                                            <ChckBx state={false}/>, 
+                                            // <ChckBx state={false}/>, 
                                             '123232', 
                                             'CandyTag', 
                                             '96х21',
@@ -94,7 +94,7 @@ const Product = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: 1</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={5} currentPage={2}/>
+                                {/* <Pagination count={5} currentPage={2}/> */}
                             </div>
                         </div>
                     </div>

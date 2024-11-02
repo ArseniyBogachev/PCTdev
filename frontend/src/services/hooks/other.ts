@@ -1,9 +1,3 @@
-// 20.09.2024 20:21
-
-// import Notification from "../../components/UI/Notification"; 
-import { GeneralNotification } from "../typing/interfaces/store/general.interfaces";
-
-
 
 export function reconstructDateTime (value: string, sep: string, schema: any[]): string {
     let result = '';
@@ -36,22 +30,30 @@ export function range (start: number, end?: number, step: number = 1): number[] 
 };
 
 
-export function constructTbl (list: any, filter?: {}): any {
+export function constructTbl (list: any, extra: {index: number, step: number, elem?: React.FC | undefined, props?: any}[]): any {
     let result: any[] = [];
-    // console.log(list)
-
-    if (filter) {
-        console.log(filter)
-        // result = [{list: filter}, {list: Object.values(list[0])}];
-    };
 
     list.forEach((item: any) => {
-        // console.log('Object.values(item)', Object.values(item))
-        result.push({list: Object.values(item)});
+        const add = {list: Object.values(item)};
+        extra.forEach((ex: {index: number, step: number, elem: React.FC, props: any}) => {
+            if (ex.elem) {
+                add.list.splice(ex.index, ex.step, ex.elem(ex.props.find((prop: any) => prop.id === item.id)))
+            }
+            else {
+                add.list.splice(ex.index, ex.step)
+            }
+        });
+        result.push(add);
     });
 
-    // console.log(result)
-    console.log('list', list)
+    result.forEach((item: any) => {
+        item.list.splice()
+    })
 
-    return result
+    return result;
 }
+
+
+export function getNestingFromObj (list: any[], state: any, nesting: string) {
+    return list.filter(itemF => itemF.state === state).map(itemM => itemM[nesting]);
+};

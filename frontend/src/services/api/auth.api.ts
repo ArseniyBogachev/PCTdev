@@ -65,8 +65,29 @@ async function meApi(
 };
 
 
+async function getUsersApi (
+    token: string
+) {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/list/', 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        )
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     loginApi,
     registerApi,
-    meApi
+    meApi,
+    getUsersApi
 }

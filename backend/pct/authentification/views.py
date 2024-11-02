@@ -1,9 +1,9 @@
 import requests
+from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
-from .serializers import AdminUserSerializer, AuthSerializer
+from .serializers import AdminUserSerializer, AuthSerializer, AdminUserSerializer
 from .models import User as UserModel
 
 
@@ -11,14 +11,19 @@ from .models import User as UserModel
 # generics.RetrieveUpdateAPIView !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-class Admin(ModelViewSet):
+# class Admin(ModelViewSet):
+#     queryset = UserModel.objects.all()
+#     serializer_class = AdminUserSerializer
+
+
+# class User(ModelViewSet):
+#     queryset = UserModel.objects.all()
+#     serializer_class = AuthSerializer
+
+
+class ListUserAdmin(ListAPIView):
     queryset = UserModel.objects.all()
     serializer_class = AdminUserSerializer
-
-
-class User(ModelViewSet):
-    queryset = UserModel.objects.all()
-    serializer_class = AuthSerializer
 
 
 @api_view(['GET'])

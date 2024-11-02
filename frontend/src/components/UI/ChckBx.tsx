@@ -5,14 +5,15 @@ import { Form } from "react-bootstrap";
 import { PropsCheck } from "../../services/typing/interfaces/components/UI/chckBx.interfaces";
 
 
-const ChckBx:React.FC<PropsCheck> = ({state}) => {
+const ChckBx:React.FC<PropsCheck> = ({id, state, setState}) => {
     return (
         <div className={classes.main}>
             <Form.Check
                 className={classes.main__check}
                 type={"checkbox"}
                 checked={state}
-                // id={`default-${type}`}
+                onChange={() => setState()}
+                id={`default-${id}`}
                 // label={`default ${type}`}
             />
         </div>

@@ -8,7 +8,7 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { range } from "../services/hooks/other";
 
 
-const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
+const Pagination:React.FC<PropsPagination> = ({count, currentPage, api}) => {
     return (
         <div className={classes.main}>
             <Btn 
@@ -25,6 +25,7 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage}) => {
                         btnStyle={{borderRadius: '5px'}}
                         btnCls={currentPage === item ? 'default' : 'gray'}
                         textStyle={{fontSize: '1.5vh'}}
+                        action={() => api(item)}
                     />
                 )
             }       

@@ -8,7 +8,7 @@ import Btn from "../components/UI/Btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { registerApi } from "../services/api/auth";
+import { registerApi } from "../services/api/auth.api";
 import { generalSlice } from "../services/store/reducers/general.dux";
 import { useAppDispatch } from "../services/hooks/redux";
 

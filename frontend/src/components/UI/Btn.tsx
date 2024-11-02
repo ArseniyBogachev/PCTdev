@@ -12,7 +12,7 @@ const Btn = ({
     before,
     after,
     action,
-    btnCls
+    btnCls,
 }: any) => {
     return (
         <div className={classes.main} style={mainStyle}>
