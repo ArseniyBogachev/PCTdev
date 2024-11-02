@@ -26,11 +26,11 @@ const Product = () => {
                     /> */}
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            add={{
-                                text: 'Добавить продукт'
+                            one={{
+                                textOne: 'Добавить продукт'
                             }}
-                            del={{
-                                text: 'Удалить'
+                            two={{
+                                textTwo: 'Удалить'
                             }}
                         />
                     </div>

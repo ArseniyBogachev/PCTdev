@@ -1,10 +1,18 @@
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import reducer from "./reducers/general.dux";
+import { generalSlice }  from "./reducers/general.dux";
+import {userSlice} from "./reducers/user.dux";
+import { factorySlice } from "./reducers/factory.dux";
 
+
+const general = generalSlice.reducer
+const user = userSlice.reducer
+const factory = factorySlice.reducer
 
 const rootReducer = combineReducers({
-    reducer
+    general,
+    user,
+    factory
 })
 
 export const setupStore = () => configureStore({

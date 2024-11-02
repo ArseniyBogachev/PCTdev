@@ -17,7 +17,8 @@ const Inpt = ({
     value,
     setValue,
     area,
-    placeholder
+    placeholder,
+    disabled
 }: any) => {
     return (
         <div className={classes.main} style={mainStyle}>
@@ -34,6 +35,7 @@ const Inpt = ({
                         onChange={(e) => setValue(e.target.value)}
                         size={1} 
                         placeholder={placeholder}
+                        disabled={disabled}
                     />
                 }
                 <div className={classes.main__wrapper__after}>{after}</div>

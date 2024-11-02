@@ -35,7 +35,7 @@ const Login = () => {
         dispatch(setLoading(true))
         const response = await registerApi(email, phone, fio, organization, inn, password);
         
-        if (response.status === 200) {
+        if (response.status === 201) {
             dispatch(addListNotification({
                 type: 'fixed',
                 mainText: 'Добавлена новая фабрика',

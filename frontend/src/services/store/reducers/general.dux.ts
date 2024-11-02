@@ -33,5 +33,3 @@ export const generalSlice = createSlice({
         }
     }
 )
-
-export default generalSlice.reducer

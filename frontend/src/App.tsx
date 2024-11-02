@@ -1,5 +1,5 @@
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import classes from "./accets/styles/app.module.scss"
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Loading from "./components/Loading";
@@ -9,7 +9,7 @@ import { useAppSelector } from "./services/hooks/redux";
 
 const App = () => {
 
-    const { currentNotification, loading } = useAppSelector(state => state.reducer)
+    const { currentNotification, loading } = useAppSelector(state => state.general);
 
     return (
         <div className={classes.main}>

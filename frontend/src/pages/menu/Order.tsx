@@ -34,9 +34,11 @@ const Order = () => {
                         title={'Добавить заказ'}
                         Body={OrderMdl}
                         btnLeft={{
+                            action: () => setShow(false),
                             text: 'Отмена'
                         }}
                         btnRight={{
+                            action: () => setShow(false),
                             text: 'Импортировать',
                             after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: '10px'}}></FontAwesomeIcon>
                         }}
@@ -45,12 +47,12 @@ const Order = () => {
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn
-                            add={{
-                                valueAdd: '228',
-                                actionAdd: () => setShow(true),
-                                text: 'Добавить заказ'
+                            one={{
+                                valueOne: '228',
+                                actionOne: () => setShow(true),
+                                textOne: 'Добавить заказ'
                             }}
-                            del={{text: 'Удалить'}}
+                            two={{textTwo: 'Удалить'}}
                         />
                     </div>
                     <div className={classes.content__body}>

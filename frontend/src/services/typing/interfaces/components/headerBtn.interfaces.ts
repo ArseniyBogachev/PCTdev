@@ -1,19 +1,23 @@
 
-type BtnAdd = {
-    valueAdd?: any
-    actionAdd?: Function
-    text: string
+type BtnOne = {
+    valueOne?: any
+    actionOne?: Function
+    textOne: string
+    afterOne?: React.ReactElement
+    clsStyleOne?: string | Function
 }
 
-type BtnDel = {
-    valueDel?: any
-    actionDel?: Function
-    text: string
+type BtnTwo = {
+    valueTwo?: any
+    actionTwo?: Function
+    textTwo: string
+    afterTwo?: React.ReactElement
+    clsStyleTwo?: string | Function
 }
 
 type PropsHeaderBtn = {
-    add?: BtnAdd
-    del?: BtnDel
+    one?: BtnOne
+    two?: BtnTwo
 }
 
 export {

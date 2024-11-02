@@ -4,6 +4,7 @@ import { sizeModal } from "../../../typeVar/styles"
 type Button = {
     text: string
     after?: any
+    action: Function
 }
 
 type PropsMdl = {

@@ -12,6 +12,7 @@ import Order from "../pages/menu/Order";
 import Product from "../pages/menu/Product";
 import User from "../pages/menu/User";
 import Factory from "../pages/menu/Factory";
+import Profile from "../pages/menu/Profile";
 
 
 const store = setupStore()
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                     {
                         path: "/factory",
                         element: <MenuBodyWrap body={<Factory/>} title={"Список фабрик"}/>
+                    },
+                    {
+                        path: "/profile",
+                        element: <MenuBodyWrap body={<Profile/>} title={"Список фабрик"}/>
                     },
                 ]
             },

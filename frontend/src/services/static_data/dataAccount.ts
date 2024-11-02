@@ -11,25 +11,29 @@ export const dataAccount = () => {
             id: 1,
             text: "Заказы",
             icon: faFileLines,
-            link: "/order"
+            link: "/order",
+            onlyAdmin: false
         },
         {
             id: 2,
             text: "Продукт",
             icon: faBox,
             link: "/product",
+            onlyAdmin: true
         },
         {
             id: 3,
             text: "Пользователи",
             icon: faUsers,
             link: "/user",
+            onlyAdmin: true
         },
         {
             id: 4,
             text: "Фабрики",
             icon: faIndustry,
             link: "/factory",
+            onlyAdmin: false
         },
     ];
 

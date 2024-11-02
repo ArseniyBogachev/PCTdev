@@ -34,3 +34,24 @@ export function range (start: number, end?: number, step: number = 1): number[] 
 
     return result;
 };
+
+
+export function constructTbl (list: any, filter?: {}): any {
+    let result: any[] = [];
+    // console.log(list)
+
+    if (filter) {
+        console.log(filter)
+        // result = [{list: filter}, {list: Object.values(list[0])}];
+    };
+
+    list.forEach((item: any) => {
+        // console.log('Object.values(item)', Object.values(item))
+        result.push({list: Object.values(item)});
+    });
+
+    // console.log(result)
+    console.log('list', list)
+
+    return result
+}

@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import classes from "../accets/styles/pages/login.module.scss";
 import logo from "../accets/images/nl1.png";
@@ -17,6 +18,8 @@ import { useAppDispatch } from "../services/hooks/redux";
 const Login = () => {
 
     const navigate = useNavigate();
+    const [cookies, setCookie, removeCookie] = useCookies<string>(['user']);
+
     const [showPass, setShowPass] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,8 +40,9 @@ const Login = () => {
                 lvl: 'lvl1',
                 close: true
             }));
-            navigate('/order');
-            console.log(response)
+            setCookie('token', response.data.auth_token);
+            navigate('/order', { replace: true });
+            console.log(response);
         }
         else {
             dispatch(addListNotification({
@@ -49,6 +53,7 @@ const Login = () => {
                 lvl: 'lvl1',
                 close: true
             }));
+            console.log(response);
         }
         setLoading(false)
     }

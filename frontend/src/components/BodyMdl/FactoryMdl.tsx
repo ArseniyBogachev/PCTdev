@@ -5,9 +5,16 @@ import { PropsFactoryMdl } from "../../services/typing/interfaces/components/Bod
 import Notification from "../UI/Notification";
 import Inpt from "../UI/Inpt";
 import { listBodyComponent } from "../../services/static_data/dataFactory";
+import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
+import { factorySlice } from "../../services/store/reducers/factory.dux";
 
 
 const FactodyMdl:React.FC<PropsFactoryMdl> = () => {
+
+    const { newFactory } = useAppSelector(state => state.factory);
+    const dispatch = useAppDispatch()
+    const { setItemFactory } = factorySlice.actions
+
     return (
         <div className={classes.main}>
             <div className={classes.main__header}>
@@ -20,7 +27,15 @@ const FactodyMdl:React.FC<PropsFactoryMdl> = () => {
                             <label className={classes.main__body__item__info__label}>{item.info}</label>
                         </div>
                         <div className={classes.main__body__item__ui}>
-                            <Inpt type={item.ui.type} name={item.ui.name} nameCls={item.ui.nameStyle} mainStyle={item.ui.mainStyle} area={item.type === 'area'}/>
+                            <Inpt 
+                                type={item.ui.type} 
+                                name={item.ui.name} 
+                                nameCls={item.ui.nameStyle} 
+                                mainStyle={item.ui.mainStyle} 
+                                area={item.type === 'area'}
+                                value={newFactory[item.name]}
+                                setValue={(value: string) => dispatch(setItemFactory({name: item.name, value: value}))}
+                            />
                         </div>
                     </div>
                 )}

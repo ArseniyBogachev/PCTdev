@@ -38,6 +38,7 @@ const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft,
                         mainStyle={{width: "auto", marginRight: '10px'}} 
                         btnStyle={{padding: "0 20px"}}
                         after={btnLeft.after}
+                        action={btnLeft.action}
                     />
                     <Btn 
                         type={'button'} 
@@ -45,6 +46,7 @@ const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft,
                         mainStyle={{width: "auto"}} 
                         btnStyle={{padding: "0 20px"}}
                         after={btnRight.after}
+                        action={btnRight.action}
                     />
                 </div>
             </Modal.Footer>

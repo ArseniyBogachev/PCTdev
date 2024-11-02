@@ -29,11 +29,11 @@ const User = () => {
                     /> */}
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            add={{
-                                text: 'Добавить пользователя'
+                            one={{
+                                textOne: 'Добавить пользователя'
                             }} 
-                            del={{
-                                text: 'Удалить'
+                            two={{
+                                textTwo: 'Удалить'
                             }}
                         />
                     </div>

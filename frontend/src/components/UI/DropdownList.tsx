@@ -17,7 +17,7 @@ const DropdownList:React.FC<PropsDropdownList> = ({count, list}) => {
             <div className={classes.main__drop}>
                 <div className={classes.main__drop__item}>
                     {range(count).map(item => 
-                        <span className={classes.main__drop__item__text}>{list[item]},</span>
+                        <span className={classes.main__drop__item__text} key={item}>{list[item]},</span>
                     )}
                 </div>
                 <div className={classes.main__drop__down}>
@@ -26,7 +26,7 @@ const DropdownList:React.FC<PropsDropdownList> = ({count, list}) => {
             </div>
             <div className={classNames(classes.main__list, state ? classes.open : "")}>
                 {list.map(item => 
-                    <div className={classes.main__list__item}>
+                    <div className={classes.main__list__item} key={item}>
                         <span className={classes.main__list__item__text}>{item}</span>
                     </div>
                 )}
