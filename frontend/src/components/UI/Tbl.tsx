@@ -54,6 +54,7 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                 )}
             </thead>
             <tbody className={classes.main__body}>
+                {data.filter ?
                     <tr className={classes.main__body__tr}>
                         {data.filter.list.map((text: any, i) => <td 
                             className={classes.main__body__tr__td}
@@ -62,7 +63,8 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                             }}
                             key={i}
                         >{text}</td>)}
-                    </tr>
+                    </tr> : <></>
+                }
                 {data.body.map((item, i) => 
                     <tr className={classes.main__body__tr} key={i}>
                         {item.list.map((text: any, i) => 

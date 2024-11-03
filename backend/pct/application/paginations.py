@@ -3,7 +3,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 
-class FactoryPagination(PageNumberPagination):
+class DefaultPagination(PageNumberPagination):
     page_size = 14
     max_page_size = 14
 

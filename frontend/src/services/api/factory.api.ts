@@ -14,7 +14,6 @@ async function addFactoryApi(
     }
 ) {
     try {
-        console.log('data.owner', data.owner)
         const response = await axios.post('http://127.0.0.1:8000/api/v1/app/factory/', 
             {
                 name: data.name, 

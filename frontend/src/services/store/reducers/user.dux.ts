@@ -1,13 +1,14 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState, User, ItemListUser, ChkBx } from "../../typing/interfaces/store/user.interfaces";
+import { UserState, User, ItemListUser, ChkBx, Factory } from "../../typing/interfaces/store/user.interfaces";
 
 
 const userState: UserState = {
     user: undefined,
     listUser: [],
     listChkBx: [],
-    allChkBx: false
+    allChkBx: false,
+    listFactory: []
 }
 
 export const userSlice = createSlice({
@@ -46,6 +47,17 @@ export const userSlice = createSlice({
                         return item;
                     });
                 }
+            },
+            setListFactory (state: UserState, action: PayloadAction<Factory[]>) {
+                state.listFactory = action.payload
+            },
+            detailSetListFactory (state: UserState, action: PayloadAction<number>) {
+                state.listFactory = state.listFactory.map(item => {
+                    if (item.id === action.payload) {
+                        item.state = !item.state
+                    }
+                    return item
+                })
             }
         }
     }

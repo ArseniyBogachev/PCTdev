@@ -16,28 +16,52 @@ import { constructTbl } from "../../services/hooks/other";
 import { getUsersApi } from "../../services/api/auth.api";
 import { userSlice } from "../../services/store/reducers/user.dux";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
+import { delUsersApi } from "../../services/api/auth.api";
+import { getNestingFromObj } from "../../services/hooks/other";
 
 
 const User = () => {
 
     const [show, setShow] = useState(false);
+    const [pageCount, setPageCount] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
-    const { listUser, listChkBx, allChkBx } = useAppSelector(state => state.user);
+    const { listUser, listChkBx, allChkBx, listFactory } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx } = userSlice.actions;
+    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, detailSetListFactory } = userSlice.actions;
 
-    async function getUsers () {
+    async function getUsers (page: number | undefined = 1) {
         const response = await getUsersApi(cookies.token);
 
         if (response.status === 200) {
-            console.log(response.data)
-            dispatch(setListUser(response.data));
-            dispatch(setListChkBx(response.data.map((item: any) => ({
+            dispatch(setListUser(response.data.results));
+            dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
                 state: false,
                 setState: () => dispatch(detailSetListChkBx(item.id))
             }))));
+            dispatch(setListFactory(response.data.results.map((item: any) => ({
+                id: item.id,
+                list: item.factory.map((f: any) => f.name),
+                count: 1,
+                state: false,
+                setState: () => dispatch(detailSetListFactory(item.id))
+            }))));
+            setPageCount(response.data.count_page);
+            setCurrentPage(page)
+        }
+        else {
+            console.log(response);
+        }
+    };
+
+    async function delUsers () {
+        const delFactory = getNestingFromObj(listChkBx, true, 'id');
+        const response = await delUsersApi(cookies.token, delFactory);
+
+        if (response.status === 200) {
+            await getUsers();
         }
         else {
             console.log(response);
@@ -65,6 +89,7 @@ const User = () => {
                             }} 
                             two={{
                                 textTwo: 'Удалить',
+                                actionTwo: () => delUsers(),
                                 clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
                             }}
                         />
@@ -130,7 +155,9 @@ const User = () => {
                                 },
                                 body: constructTbl(listUser, [
                                     {index: 0, step: 0, elem: ChckBx, props: listChkBx},
-                                    {index: 1, step: 1}
+                                    {index: 1, step: 1},
+                                    {index: 6, step: 0, elem: DropdownList, props: listFactory},
+                                    {index: 7, step: 1},
                                 ])
                             }}
                             totalStyle={{
@@ -146,10 +173,10 @@ const User = () => {
                     <div className={classes.content__footer}>
                         <div className={classes.content__footer__wrapper}>
                             <div className={classes.content__footer__wrapper__number}>
-                                <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: 1</span>
+                                <span className={classes.content__footer__wrapper__number__text}>Найдено пользователей: {listUser.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                {/* <Pagination count={5} currentPage={2}/> */}
+                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getUsers(page)}/>
                             </div>
                         </div>
                     </div>

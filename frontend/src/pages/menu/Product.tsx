@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import classes from "../../accets/styles/pages/menu/product.module.scss";
 import classNames from "classnames";
 import Tbl from "../../components/UI/Tbl";
@@ -8,11 +9,29 @@ import Pagination from "../../components/Pagination";
 import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
+import { getProductApi } from "../../services/api/product.api";
 
 
 const Product = () => {
 
     const [show, setShow] = useState(false);
+
+    const [cookies, _, __] = useCookies<string>(["user"]); 
+
+    async function getProduct (page: number | undefined = 1) {
+        const response = await getProductApi(cookies.token, page);
+
+        if (response.status === 200) {
+            console.log(response);
+        }
+        else {
+            console.log(response);
+        }
+    };
+
+    useEffect(() => {
+        getProduct()
+    }, []);
 
     return (
         <div className={classes.main}>
@@ -40,11 +59,10 @@ const Product = () => {
                                 head: [
                                     {
                                         list: [
-                                            '', 
+                                            '',
                                             'Артикул',
                                             'Название продукта', 
                                             'Размер (мм)',
-                                            'Для заказчика'
                                         ]
                                     },
                                 ],
@@ -55,7 +73,6 @@ const Product = () => {
                                             '123232', 
                                             'TestTest123', 
                                             '54х31',
-                                            'OOO "РФ"'
                                         ]
                                     },
                                     {
@@ -64,7 +81,6 @@ const Product = () => {
                                             '123232', 
                                             'UHF LEG tag', 
                                             '100х10',
-                                            'OOO "РФ"'
                                         ]
                                     },
                                     {
@@ -73,7 +89,6 @@ const Product = () => {
                                             '123232', 
                                             'CandyTag', 
                                             '96х21',
-                                            'OOO "РСТ"'
                                         ]
                                     }
                                 ]

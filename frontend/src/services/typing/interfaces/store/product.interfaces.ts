@@ -1,0 +1,8 @@
+
+type ProductState = {
+
+}
+
+export {
+    ProductState,
+}

@@ -1,10 +1,13 @@
 import requests
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .serializers import AdminUserSerializer, AuthSerializer, AdminUserSerializer
 from .models import User as UserModel
+from .permissions import IsAdmin
+from application.paginations import DefaultPagination
 
 
 
@@ -24,23 +27,27 @@ from .models import User as UserModel
 class ListUserAdmin(ListAPIView):
     queryset = UserModel.objects.all()
     serializer_class = AdminUserSerializer
+    pagination_class = DefaultPagination
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def user_api_del(request):
+    print(request.data['id'])
+
+    # if factory:
+    return Response({'message': 'User were successfully deleted'})
+    # return Response({'message': 'Factories not found'}, status=404)
 
 
 @api_view(['GET'])
 def activate(request, uid, token, format=None):
     payload = {'uid': uid, 'token': token}
 
-    print('payload', {'uid': uid, 'token': token})
-
-    print('activate')
-
     url = "http://127.0.0.1:8000/api/v1/auth/users/activation/"
     response = requests.post(url, data=payload)
 
-    print(response)
-
     if response.status_code == 204:
-        print(204)
         return Response({}, response.status_code)
     else:
         print('else')

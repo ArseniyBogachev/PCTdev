@@ -69,7 +69,7 @@ async function getUsersApi (
     token: string
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/list/', 
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/user/list/', 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -85,9 +85,32 @@ async function getUsersApi (
 };
 
 
+async function delUsersApi (
+    token: string,
+    data: number[]
+) {
+    try {
+        const response = await axios.delete('http://127.0.0.1:8000/api/v1/auth/user/del/', 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                },
+                data: {id: data}
+            }
+        )
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     loginApi,
     registerApi,
     meApi,
-    getUsersApi
+    getUsersApi,
+    delUsersApi
 }

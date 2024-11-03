@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Factory
+from .models import Factory, Product
 
 
 class CreateFactorySerializerAdmin(ModelSerializer):
@@ -28,3 +28,10 @@ class ListFactorySerializerUser(ModelSerializer):
     class Meta:
         model = Factory
         fields = ['id', 'name', 'phone', 'email', 'fio', 'registration_number']
+
+
+class ProductSerializer(ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = '__all__'

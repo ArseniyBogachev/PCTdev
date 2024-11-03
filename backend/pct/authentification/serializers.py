@@ -12,11 +12,11 @@ class AuthSerializer(ModelSerializer):
 
 
 class AdminUserSerializer(ModelSerializer):
-    # owner = SerializerMethodField()
+    factory = SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['id', 'organization', 'email', 'phone', 'fio', 'inn', ]
+        fields = ['id', 'organization', 'email', 'phone', 'fio', 'inn', 'factory']
 
-    # def get_owner(self, instance):
-    #     return Factory.objects.filter(owner=instance.id).values('name')
+    def get_factory(self, instance):
+        return Factory.objects.filter(owner=instance.id).values('name')

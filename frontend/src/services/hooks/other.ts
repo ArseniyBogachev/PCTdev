@@ -31,6 +31,8 @@ export function range (start: number, end?: number, step: number = 1): number[] 
 
 
 export function constructTbl (list: any, extra: {index: number, step: number, elem?: React.FC | undefined, props?: any}[]): any {
+    // console.log('list', list)
+    // console.log('extra', extra)
     let result: any[] = [];
 
     list.forEach((item: any) => {
@@ -38,6 +40,7 @@ export function constructTbl (list: any, extra: {index: number, step: number, el
         extra.forEach((ex: {index: number, step: number, elem: React.FC, props: any}) => {
             if (ex.elem) {
                 add.list.splice(ex.index, ex.step, ex.elem(ex.props.find((prop: any) => prop.id === item.id)))
+                // console.log(ex.index, add)
             }
             else {
                 add.list.splice(ex.index, ex.step)
@@ -46,10 +49,7 @@ export function constructTbl (list: any, extra: {index: number, step: number, el
         result.push(add);
     });
 
-    result.forEach((item: any) => {
-        item.list.splice()
-    })
-
+    console.log('result', result)
     return result;
 }
 

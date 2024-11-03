@@ -36,6 +36,7 @@
         background-color: white;
         border-radius: 1.5vh;
         overflow-y: auto;
+        z-index: 1;
         &::-webkit-scrollbar {
             width: 7px;
             margin-left: 3px;

@@ -25,16 +25,26 @@ type ChkBx = {
     setState: Function
 }
 
+type Factory = {
+    id: number
+    list: string[]
+    count: number
+    state: boolean
+    setState: Function
+}
+
 type UserState = {
     user: User | undefined
     listUser: ItemListUser[]
-    listChkBx: ChkBx[],
+    listChkBx: ChkBx[]
     allChkBx: boolean
+    listFactory: Factory[]
 }
 
 export {
     UserState,
     User,
     ItemListUser,
-    ChkBx
+    ChkBx,
+    Factory
 }
