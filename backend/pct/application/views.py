@@ -2,13 +2,16 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .models import Factory, Product
+from .models import Factory, Product, Order
 from .serializers import (
     CreateFactorySerializerAdmin, 
     CreateFactorySerializerUser, 
     ListFactorySerializerUser, 
     ListFactorySerializerAdmin, 
-    ProductSerializer
+    ProductSerializer,
+    ListOrderSerializerAdmin,
+    ListOrderSerializerUser,
+    CreateOrderSerializer
 )
 from .paginations import DefaultPagination
 from authentification.permissions import IsAdmin
@@ -45,3 +48,27 @@ class ProductApiCL(ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin)
     pagination_class = DefaultPagination
     serializer_class = ProductSerializer
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def product_api_del(request):
+    product = Product.objects.filter(id__in=request.data['id']).delete()
+
+    if product:
+        return Response({'message': 'Factories were successfully deleted'})
+    return Response({'message': 'Factories not found'}, status=404)
+
+
+class OrderApiCL(ListCreateAPIView):
+    queryset = Order.objects.all()
+    permission_classes = (IsAuthenticated,)
+    pagination_class = DefaultPagination
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            if self.request.user.is_superuser == True:
+                return ListOrderSerializerAdmin
+            return ListOrderSerializerUser
+        else:
+            return CreateOrderSerializer

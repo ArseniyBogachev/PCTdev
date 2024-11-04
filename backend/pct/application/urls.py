@@ -1,9 +1,11 @@
 from django.urls import path, include, re_path
-from .views import FactoryApiCL, factory_api_del, ProductApiCL
+from .views import FactoryApiCL, factory_api_del, ProductApiCL, product_api_del, OrderApiCL
 
 
 urlpatterns = [
     path('factory/', FactoryApiCL.as_view(), name='factoryCL'),
     path('factory/del/', factory_api_del, name='factoryD'),
     path('product/', ProductApiCL.as_view(), name='productCL'),
+    path('product/del/', product_api_del, name='productD'),
+    path('order/', OrderApiCL.as_view(), name='orderCD'),
 ]

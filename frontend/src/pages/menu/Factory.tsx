@@ -44,7 +44,7 @@ const Factory = () => {
                 setState: () => dispatch(detailSetListChkBx(item.id))
             }))));
             setPageCount(response.data.count_page);
-            setCurrentPage(page)
+            setCurrentPage(page);
         }
         else {
             console.log(response);
