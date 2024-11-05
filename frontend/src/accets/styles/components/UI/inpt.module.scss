@@ -68,3 +68,9 @@
         border: 1px solid rgb(253, 80, 80);
     }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

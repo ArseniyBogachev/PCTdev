@@ -117,35 +117,37 @@ const User = () => {
                                             data={[
                                                 {
                                                     id: 1,
-                                                    text: 'test one'
+                                                    name: 'test one'
                                                 },
                                                 {
                                                     id: 2,
-                                                    text: 'test two'
+                                                    name: 'test two'
                                                 },
                                                 {
                                                     id: 3,
-                                                    text: 'test three'
+                                                    name: 'test three'
                                                 }
                                             ]}
-                                            currentItem={1}
+                                            state={1}
+                                            setState={() => {}}
                                         />, 
                                         <Slct 
                                             data={[
                                                 {
                                                     id: 1,
-                                                    text: 'test one'
+                                                    name: 'test one'
                                                 },
                                                 {
                                                     id: 2,
-                                                    text: 'test two'
+                                                    name: 'test two'
                                                 },
                                                 {
                                                     id: 3,
-                                                    text: 'test three'
+                                                    name: 'test three'
                                                 }
                                             ]}
-                                            currentItem={1}
+                                            state={1}
+                                            setState={() => {}}
                                         />,
                                         '',
                                         '',

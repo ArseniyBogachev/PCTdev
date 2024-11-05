@@ -53,3 +53,18 @@ export function constructTbl (list: any, extra: {index: number, step: number, el
 export function getNestingFromObj (list: any[], state: any, nesting: string) {
     return list.filter(itemF => itemF.state === state).map(itemM => itemM[nesting]);
 };
+
+
+export function getContentFile(e: any) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (e) => resolve(e.target.result)        
+        reader.onerror = (e) => reject(e)
+        reader.readAsText(e.target.files[0], 'utf-8')
+    })
+};
+
+
+export function strToBinary(text: string) {
+    return text.split('').map((char) => char.charCodeAt(0).toString(2));
+}

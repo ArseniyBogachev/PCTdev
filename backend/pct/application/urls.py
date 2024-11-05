@@ -1,5 +1,13 @@
 from django.urls import path, include, re_path
-from .views import FactoryApiCL, factory_api_del, ProductApiCL, product_api_del, OrderApiCL
+from .views import (
+    FactoryApiCL, 
+    factory_api_del, 
+    ProductApiCL, 
+    product_api_del, 
+    OrderApiCL, 
+    all_product_and_factory,
+    QuantityProductApiC
+)
 
 
 urlpatterns = [
@@ -8,4 +16,6 @@ urlpatterns = [
     path('product/', ProductApiCL.as_view(), name='productCL'),
     path('product/del/', product_api_del, name='productD'),
     path('order/', OrderApiCL.as_view(), name='orderCD'),
+    path('quantity_product/create/', QuantityProductApiC.as_view(), name='quantity-productL'),
+    path('factory_product/list/', all_product_and_factory, name='factory-productL'),
 ]

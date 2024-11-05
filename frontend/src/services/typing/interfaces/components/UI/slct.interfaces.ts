@@ -2,12 +2,14 @@ import { ReactNode } from "react"
 
 type DataSelect = {
     id: number
-    text: string | ReactNode
+    name: string | ReactNode
 }
 
 type PropsSelect = {
     data: DataSelect[]
-    currentItem: number
+    state: number
+    setState: Function
+    defaultOpt?: string
     label?: string
     mainStyle?: {}
 }
