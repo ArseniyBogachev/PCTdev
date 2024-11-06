@@ -13,6 +13,11 @@ export const productSlice = createSlice({
         name: 'factory',
         initialState: productState,
         reducers: {
+            cleanState (state: ProductState, action: PayloadAction<undefined>) {
+                state.listProduct = [];
+                state.listChkBx = [];
+                state.allChkBx = false;
+            },
             setListProduct (state: ProductState, action: PayloadAction<Product[]>) {
                 state.listProduct = action.payload
             },

@@ -15,7 +15,13 @@ export const userSlice = createSlice({
         name: 'user',
         initialState: userState,
         reducers: {
-            write (state: UserState, action: PayloadAction<User>) {
+            cleanState (state: UserState, action: PayloadAction<undefined>) {
+                state.listUser = [];
+                state.listChkBx = [];
+                state.allChkBx = false;
+                state.listFactory = [];
+            },
+            write (state: UserState, action: PayloadAction<User | undefined>) {
                 state.user = action.payload
             },
             setListUser (state: UserState, action: PayloadAction<ItemListUser[]>) {

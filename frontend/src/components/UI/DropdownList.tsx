@@ -8,7 +8,6 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 
 const DropdownList:React.FC<PropsDropdownList> = ({id, count, list, state, setState}) => {
-
     return (
         <div className={classes.main}>
             <div className={classes.main__drop}>

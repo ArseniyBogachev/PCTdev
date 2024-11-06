@@ -50,8 +50,12 @@ class ListOrderSerializerAdmin(ModelSerializer):
         model = Order
         fields = ['id', 'customer', 'factory', 'status', 'receiving_order', 'shipping_date', 'accepted_factory', 'xml', 'quantity_product']
 
-    def get_status(self, obj):
-        return obj.get_status_display()
+    def get_status(self, instance):
+        stts_values = list(instance.STATUS_ORDER.values())
+        return {
+            'current': instance.status,
+            'choice': [{'id': index, 'name': stts_values[index]} for index in range(len(stts_values))]
+        }
     
     def get_factory(self, instance):
         return instance.factory.name
@@ -60,15 +64,18 @@ class ListOrderSerializerAdmin(ModelSerializer):
         return instance.customer.organization
     
     def get_quantity_product(self, instance):
+        query = QuantityProduct.objects.filter(product__in=instance.quantity_product.all(), order=instance.id)
         return [{
-            'product': item.name,
-            'order': instance.id
-        } for item in instance.quantity_product.all()]
+            'product': item.product.name,
+            'quantity': item.quantity
+        } for item in query]
 
 
 class ListOrderSerializerUser(ModelSerializer):
 
     status = SerializerMethodField()
+    customer = SerializerMethodField()
+    factory = SerializerMethodField()
 
     class Meta:
         model = Order
@@ -76,6 +83,12 @@ class ListOrderSerializerUser(ModelSerializer):
 
     def get_status(self,obj):
         return obj.get_status_display()
+    
+    def get_customer(self, instance):
+        return instance.customer.organization
+    
+    def get_factory(self, instance):
+        return instance.factory.name
 
 
 class CreateOrderSerializer(ModelSerializer):

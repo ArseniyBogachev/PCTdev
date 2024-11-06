@@ -1,7 +1,10 @@
 
 type PropsSearch = {
-    // state: string
-    // setState: Function
+    value: string
+    setValue: Function
+    show: boolean
+    setShow: Function
+    clickEnter: Function
 }
 
 export {

@@ -101,9 +101,32 @@ async function getOrderApi(
 };
 
 
+async function delOrderApi(
+    token: string,
+    data: number[]
+) {
+    try {
+        const response = await axios.delete('http://127.0.0.1:8000/api/v1/app/order/del/', 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                },
+                data: {id: data}
+            }
+        )
+
+        return response
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     getFactoryProductApi,
     addQuantityProductApi,
     addOrderApi,
     getOrderApi,
+    delOrderApi
 }

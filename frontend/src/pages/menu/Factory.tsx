@@ -8,6 +8,7 @@ import Slct from "../../components/UI/Slct";
 import ChckBx from "../../components/UI/ChckBx";
 import Search from "../../components/UI/Search";
 import Pagination from "../../components/Pagination";
+import Filter from "../../components/UI/Filter";
 import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
@@ -21,28 +22,46 @@ import { constructTbl, getNestingFromObj } from "../../services/hooks/other";
 
 const Factory = () => {
 
+    useEffect(() => {
+        setLoading(true);
+        getFactory();
+        setLoading(false);
+
+        return () => {dispatch(cleanState())};
+    }, []);
+
     const [show, setShow] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-    const [idSearch, setIdSearch] = useState('');
+    const [currentOpt, setCurrentOpt] = useState<undefined | number>();
+    const [factorySlct, setFactorySlct] = useState([]);
+    const [orderId, setOrderId] = useState(true);
 
-    const { newFactory, listFactory, listChkBx, allChkBx } = useAppSelector(state => state.factory);
+    const { newFactory, listFactory, listChkBx, allChkBx, searchId, searchPhone } = useAppSelector(state => state.factory);
     const { user } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx } = factorySlice.actions
+    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch } = factorySlice.actions
     const { setLoading } = generalSlice.actions
     const [cookies, _, __] = useCookies<string>(["user"]);
 
-    async function getFactory (page: number | undefined = 1) {
-        const response = await getFactoryApi(cookies.token, page);
+    async function getFactory (
+            page: number | undefined = 1, 
+            filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string} = {id: null, name: null, phone: null, ordering: 'id'}
+    ) {
+        const response = await getFactoryApi(cookies.token, page, filter);
 
         if (response.status === 200) {
+            console.log(response)
             dispatch(setListFactory(response.data.results));
             dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
                 state: false,
                 setState: () => dispatch(detailSetListChkBx(item.id))
             }))));
+            setFactorySlct(response.data.results.map((item: any) => ({
+                id: item.id,
+                name: item.name
+            })));
             setPageCount(response.data.count_page);
             setCurrentPage(page);
         }
@@ -56,7 +75,7 @@ const Factory = () => {
         const response = await addFactoryApi(cookies.token, {...newFactory, owner: user.id});
 
         if (response.status === 201) {
-            await getFactory();
+            await getFactory(currentPage);
             setShow(false);
             dispatch(cleanItemFactory());
         }
@@ -79,12 +98,6 @@ const Factory = () => {
         }
         setLoading(false);
     };
-
-    useEffect(() => {
-        setLoading(true);
-        getFactory();
-        setLoading(false);
-    }, []);
 
     return (
         <div className={classes.main}>
@@ -127,7 +140,7 @@ const Factory = () => {
                                     {
                                         list: user.is_superuser ? [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            'ID', 
+                                            <Filter text={'ID'}/>, 
                                             'Название фабрики',
                                             'Телефон',
                                             'Email',
@@ -137,7 +150,7 @@ const Factory = () => {
                                             'Телефон копании'
                                         ] : [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            'ID', 
+                                            // <Filter text={'ID'}/>, 
                                             'Название фабрики',
                                             'Телефон',
                                             'Email',
@@ -149,49 +162,71 @@ const Factory = () => {
                                 filter: {
                                     list: user.is_superuser ? [
                                         '', 
-                                        <Search/>,
+                                        Search({
+                                            show: searchId.show, 
+                                            value: searchId.value, 
+                                            setShow: () => dispatch(setSearch({search: 'id', value: undefined})),
+                                            setValue: (value: string) => dispatch(setSearch({search: 'id', value: value})),
+                                            clickEnter: () => getFactory(1, {
+                                                id: searchId.value ? searchId.value : null, 
+                                                name: factorySlct.find(item => item.id === currentOpt) ? factorySlct.find(item => item.id === currentOpt).name : null,
+                                                phone: searchPhone.value ? searchPhone.value : null
+                                            })
+                                        }),
                                         <Slct 
-                                            data={[
-                                                {
-                                                    id: 1,
-                                                    name: 'test one'
-                                                },
-                                                {
-                                                    id: 2,
-                                                    name: 'test two'
-                                                },
-                                                {
-                                                    id: 3,
-                                                    name: 'test three'
-                                                }
-                                            ]}
-                                            state={1}
-                                            setState={() => {}}
+                                            data={factorySlct}
+                                            state={currentOpt}
+                                            setState={async (value: number) => {
+                                                setCurrentOpt(value);
+                                                await getFactory(1, {
+                                                    id: searchId.value ? searchId.value : null, 
+                                                    name: factorySlct.find(item => item.id === value) ? factorySlct.find(item => item.id === value).name : null, 
+                                                    phone: searchPhone.value ? searchPhone.value : null
+                                                });
+                                            }}
+                                            defaultOpt={'Все'}
                                         />,
-                                        <Search/>,
+                                        Search({
+                                            show: searchPhone.show, 
+                                            value: searchPhone.value, 
+                                            setShow: () => dispatch(setSearch({search: 'phone', value: undefined})),
+                                            setValue: (value: string) => dispatch(setSearch({search: 'phone', value: value})),
+                                            clickEnter: () => getFactory(1, {
+                                                id: searchId.value ? searchId.value : null, 
+                                                name: factorySlct.find(item => item.id === currentOpt) ? factorySlct.find(item => item.id === currentOpt).name : null,
+                                                phone: searchPhone.value ? searchPhone.value : null
+                                            })
+                                        }),
                                         '', '', '', '', ''
                                     ] : [
                                         '', 
-                                        <Search/>,
+                                        Search({
+                                            show: searchId.show, 
+                                            value: searchId.value, 
+                                            setShow: () => dispatch(setSearch({search: 'id', value: undefined})),
+                                            setValue: (value: string) => dispatch(setSearch({search: 'id', value: value})),
+                                            clickEnter: () => getFactory(1, {id: searchId.value ? searchId.value : null, phone: searchPhone.value ? searchPhone.value : null})
+                                        }),
                                         <Slct 
-                                            data={[
-                                                {
-                                                    id: 1,
-                                                    name: 'test one'
-                                                },
-                                                {
-                                                    id: 2,
-                                                    name: 'test two'
-                                                },
-                                                {
-                                                    id: 3,
-                                                    name: 'test three'
-                                                }
-                                            ]}
-                                            state={1}
-                                            setState={() => {}}
+                                            data={factorySlct}
+                                            state={currentOpt}
+                                            setState={async (value: number) => {
+                                                setCurrentOpt(value);
+                                                await getFactory(1, {
+                                                    id: searchId.value ? searchId.value : null, 
+                                                    name: factorySlct.find(item => item.id === value).name, 
+                                                    phone: searchPhone.value ? searchPhone.value : null
+                                                });
+                                            }}
+                                            defaultOpt={'Все'}
                                         />,
-                                        <Search/>,
+                                        Search({
+                                            show: searchPhone.show, 
+                                            value: searchPhone.value, 
+                                            setShow: () => dispatch(setSearch({search: 'phone', value: undefined})),
+                                            setValue: (value: string) => dispatch(setSearch({search: 'phone', value: value})),
+                                            clickEnter: () => getFactory(1, {id: searchId.value ? searchId.value : null, phone: searchPhone.value ? searchPhone.value : null})
+                                        }),
                                         '', '', ''
                                     ]
                                 },

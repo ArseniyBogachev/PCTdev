@@ -6,6 +6,7 @@ type DataSelect = {
 }
 
 type PropsSelect = {
+    id?: number
     data: DataSelect[]
     state: number
     setState: Function

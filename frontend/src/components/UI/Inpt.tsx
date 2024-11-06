@@ -18,8 +18,16 @@ const Inpt = ({
     setValue,
     area,
     placeholder,
-    disabled
+    disabled,
+    clickEnter
 }: any) => {
+
+    const handleKeyDown = (event: any) => {
+        if (event.key === 'Enter') {
+            clickEnter()
+        }
+    }
+
     return (
         <div className={classes.main} style={mainStyle}>
             {name ? <span className={nameCls ? classes[`main__${nameCls}`] : classes.main__name} style={nameStyle}>{name}</span> : <></>}
@@ -36,6 +44,7 @@ const Inpt = ({
                         size={1} 
                         placeholder={placeholder}
                         disabled={disabled}
+                        onKeyDown={clickEnter ? handleKeyDown : () => {}}
                     />
                 }
                 <div className={classes.main__wrapper__after}>{after}</div>

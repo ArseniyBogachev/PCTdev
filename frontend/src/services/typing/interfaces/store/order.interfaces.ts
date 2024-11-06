@@ -1,8 +1,15 @@
 
+import { PropsDropdownList } from "../components/UI/dropdownList.interfaces";
+import { PropsSelect } from "../components/UI/slct.interfaces";
+import { PropsDownload } from "../components/UI/download.interfaces";
+import { PropsEditDataInpt } from "../components/UI/editDateInpt.interfaces";
+
+
 type OrderAdmin = {
     id: number
     customer: string
     factory: string
+    // исправить status
     status: string
     receiving_order: Date
     shipping_date: Date
@@ -12,6 +19,16 @@ type OrderAdmin = {
         product: number
         quantity: number
     }[]
+}
+
+type OrderUser = {
+    id: number
+    customer: string
+    factory: string
+    status: string
+    creator_at: Date
+    last_update: Date
+    company: string
 }
 
 type NewOrder = {
@@ -43,19 +60,30 @@ type ChkBx = {
     setState: Function
 }
 
-type
-
 type OrderState = {
     newOrder: NewOrder
     listProductFactory: ProductFactory
     listOrderAdmin: OrderAdmin[]
+    listOrderUser: OrderUser[]
     listChkBx: ChkBx[]
+    listDropdown: PropsDropdownList[]
+    listSlct: PropsSelect[]
+    listFile: PropsDownload[]
+    listDateOrder: PropsEditDataInpt[]
+    listDateShipping: PropsEditDataInpt[]
+    listDateFactory: PropsEditDataInpt[]
+    allChkBx: boolean
 }
 
 export {
+    PropsEditDataInpt,
+    PropsDropdownList,
     ProductFactory,
     OrderState,
     NewOrder,
     OrderAdmin,
-    ChkBx
+    OrderUser,
+    ChkBx,
+    PropsSelect,
+    PropsDownload
 }

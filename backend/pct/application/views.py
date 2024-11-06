@@ -3,10 +3,11 @@ from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 from .models import Factory, Product, Order, QuantityProduct
 from .serializers import (
-    CreateFactorySerializerAdmin, 
-    CreateFactorySerializerUser, 
+    CreateFactorySerializerAdmin,  
     ListFactorySerializerUser, 
     ListFactorySerializerAdmin, 
     ProductSerializer,
@@ -20,9 +21,11 @@ from authentification.permissions import IsAdmin
 
 
 class FactoryApiCL(ListCreateAPIView):
-    queryset = Factory.objects.all()
     permission_classes = (IsAuthenticated,)
     pagination_class = DefaultPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id', 'name', 'phone']
+    ordering_fields = ['id']
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -30,9 +33,12 @@ class FactoryApiCL(ListCreateAPIView):
                 return ListFactorySerializerAdmin
             return ListFactorySerializerUser
         else:
-            if self.request.user.is_superuser == True:
-                return CreateFactorySerializerAdmin
-            return CreateFactorySerializerUser
+            return CreateFactorySerializerAdmin
+        
+    def get_queryset(self):
+        if self.request.user.is_superuser == True:
+            return Factory.objects.all()
+        return Factory.objects.filter(owner=self.request.user.id)
 
 
 @api_view(["DELETE"])
@@ -69,7 +75,7 @@ class OrderApiCL(ListCreateAPIView):
     def get_queryset(self):
         if self.request.user.is_superuser == True:
             return Order.objects.all()
-        return Order.objects.filter(id=self.request.user.id)
+        return Order.objects.filter(customer=self.request.user.id)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -87,6 +93,16 @@ class OrderApiCL(ListCreateAPIView):
         srlz.save()
 
         return Response(srlz.data)
+    
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def order_api_del(request):
+    product = Order.objects.filter(id__in=request.data['id']).delete()
+
+    if product:
+        return Response({'message': 'Factories were successfully deleted'})
+    return Response({'message': 'Factories not found'}, status=404)
     
 
 class QuantityProductApiC(CreateAPIView):

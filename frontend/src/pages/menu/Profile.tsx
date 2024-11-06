@@ -9,12 +9,15 @@ import HeaderBtn from "../../components/HeaderBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useAppSelector } from "../../services/hooks/redux";
+import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
+import { userSlice } from "../../services/store/reducers/user.dux";
 
 
 const Profile = () => {
 
     const { user } = useAppSelector(state => state.user);
+    const dispatch = useAppDispatch();
+    const { write } = userSlice.actions;
     const [cookies, _, removeCookie] = useCookies<string>(["user"]);
     const navigate = useNavigate();
     const deepEqual = require('deep-equal')
@@ -53,6 +56,7 @@ const Profile = () => {
                                 textTwo: 'Выйти',
                                 actionTwo: () => {
                                     removeCookie('token');
+                                    dispatch(write(undefined));
                                     navigate('/login', { replace: true });
                                 },
                                 afterTwo: <FontAwesomeIcon icon={faArrowRightFromBracket} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,

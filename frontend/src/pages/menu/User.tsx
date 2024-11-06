@@ -22,6 +22,13 @@ import { getNestingFromObj } from "../../services/hooks/other";
 
 const User = () => {
 
+    useEffect(() => {
+        getUsers();
+
+        return () => {dispatch(cleanState())}
+    }, []);
+
+
     const [show, setShow] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +36,7 @@ const User = () => {
     const [cookies, _, __] = useCookies<string>(["user"]);
     const { listUser, listChkBx, allChkBx, listFactory } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, detailSetListFactory } = userSlice.actions;
+    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, detailSetListFactory, cleanState } = userSlice.actions;
 
     async function getUsers (page: number | undefined = 1) {
         const response = await getUsersApi(cookies.token);
@@ -49,7 +56,7 @@ const User = () => {
                 setState: () => dispatch(detailSetListFactory(item.id))
             }))));
             setPageCount(response.data.count_page);
-            setCurrentPage(page)
+            setCurrentPage(page);
         }
         else {
             console.log(response);
@@ -61,16 +68,12 @@ const User = () => {
         const response = await delUsersApi(cookies.token, delFactory);
 
         if (response.status === 200) {
-            await getUsers();
+            await getUsers(currentPage);
         }
         else {
             console.log(response);
         }
     };
-
-    useEffect(() => {
-        getUsers();
-    }, []);
 
     return (
         <div className={classes.main}>
@@ -152,7 +155,7 @@ const User = () => {
                                         '',
                                         '',
                                         '',
-                                        <Search />
+                                        // <Search />
                                     ]
                                 },
                                 body: constructTbl(listUser, [

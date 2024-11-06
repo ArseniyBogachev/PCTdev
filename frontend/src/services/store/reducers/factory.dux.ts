@@ -1,6 +1,6 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { FactoryState, Factory, SetItemFactory, ListFactory, ItemListFactory, ChkBx } from "../../typing/interfaces/store/factory.interfaces";
+import { FactoryState, Factory, SetItemFactory, ListFactory, ItemListFactory, ChkBx, PropsSearch } from "../../typing/interfaces/store/factory.interfaces";
 
 
 const factoryState: FactoryState = {
@@ -13,13 +13,51 @@ const factoryState: FactoryState = {
     },
     listFactory: [],
     listChkBx: [],
-    allChkBx: false
+    allChkBx: false,
+    searchId: {
+        show: false,
+        value: '',
+    },
+    searchPhone: {
+        show: false,
+        value: '',
+    }
 }
 
 export const factorySlice = createSlice({
         name: 'factory',
         initialState: factoryState,
         reducers: {
+            setSearch (state: FactoryState, action: PayloadAction<{search: string, value?: string | undefined}>) {
+                if (action.payload.search === 'id') {
+                    if (typeof action.payload.value === 'string') {
+                        state.searchId.value = action.payload.value
+                    }
+                    else {
+                        state.searchId.show = !state.searchId.show
+                    }
+                }
+                else if (action.payload.search === 'phone') {
+                    if (typeof action.payload.value === 'string') {
+                        state.searchPhone.value = action.payload.value
+                    }
+                    else {
+                        state.searchPhone.show = !state.searchPhone.show
+                    }
+                }
+            },
+            cleanState (state: FactoryState, action: PayloadAction<undefined>) {
+                state.newFactory = {
+                    name: '',
+                    phone: '',
+                    email: '',
+                    fio: '',
+                    registration_number: '',
+                };
+                state.listFactory = [];
+                state.listChkBx = [];
+                state.allChkBx = false;
+            },
             setItemFactory (state: FactoryState, action: PayloadAction<SetItemFactory>) {
                 state.newFactory[action.payload.name] = action.payload.value
             },

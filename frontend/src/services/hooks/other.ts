@@ -32,6 +32,7 @@ export function range (start: number, end?: number, step: number = 1): number[] 
 
 export function constructTbl (list: any, extra: {index: number, step: number, elem?: React.FC | undefined, props?: any}[]): any {
     let result: any[] = [];
+    // console.log('list -> ', list)
 
     list.forEach((item: any) => {
         const add = {list: Object.values(item)};
@@ -46,6 +47,7 @@ export function constructTbl (list: any, extra: {index: number, step: number, el
         result.push(add);
     });
 
+    // console.log('result -> ', result)
     return result;
 }
 
@@ -67,4 +69,12 @@ export function getContentFile(e: any) {
 
 export function strToBinary(text: string) {
     return text.split('').map((char) => char.charCodeAt(0).toString(2));
+}
+
+export function createFileForDownload(data: any, name?: string, type?: string) {
+    let a = document.createElement('a')
+    let file = new Blob([data], {type: `text/${type ?? 'xml'}`})
+    a.href = URL.createObjectURL(file)
+    a.download = `${name ?? 'pct'}.${type ?? 'xml'}`
+    a.click()
 }

@@ -18,6 +18,11 @@ import { getNestingFromObj } from "../../services/hooks/other";
 
 const Product = () => {
 
+    useEffect(() => {
+        getProduct(currentPage);
+        return () => {dispatch(cleanState())}
+    }, []);
+
     const [show, setShow] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +30,7 @@ const Product = () => {
     const [cookies, _, __] = useCookies<string>(["user"]);
     const { listProduct, listChkBx, allChkBx } = useAppSelector(state => state.product);
     const dispatch = useAppDispatch();
-    const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx } = productSlice.actions
+    const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState } = productSlice.actions
 
     async function getProduct (page: number | undefined = 1) {
         const response = await getProductApi(cookies.token, page);
@@ -57,10 +62,6 @@ const Product = () => {
             console.log(response);
         }
     };
-
-    useEffect(() => {
-        getProduct()
-    }, []);
 
     return (
         <div className={classes.main}>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'application.apps.ApplicationConfig',
     'rest_framework',
     'corsheaders',
+    'django_filters',
     'drf_spectacular', 
     'rest_framework.authtoken',
     'djoser'
