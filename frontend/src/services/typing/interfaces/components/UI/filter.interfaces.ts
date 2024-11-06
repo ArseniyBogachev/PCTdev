@@ -1,7 +1,7 @@
 
 type PropsFilter = {
     text: string
-    // click: Function
+    click: Function
 }
 
 export {

@@ -1,11 +1,15 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { OrderState, ProductFactory, OrderAdmin, ChkBx, PropsDropdownList, PropsSelect, PropsDownload, PropsEditDataInpt, OrderUser } from "../../typing/interfaces/store/order.interfaces";
+import { OrderState, ProductFactory, OrderAdmin, ChkBx, PropsDropdownList, PropsSelect, PropsDownload, PropsEditDataInpt, OrderUser, XML } from "../../typing/interfaces/store/order.interfaces";
 
 
 const orderState: OrderState = {
     newOrder: {
-        xml: undefined,
+        xml: {
+            file: undefined,
+            name: undefined,
+            size: undefined
+        },
         factory: undefined,
         quantityProduct: [{
             product: undefined,
@@ -32,15 +36,48 @@ const orderState: OrderState = {
     listDateShipping: [],
     listDateFactory: [],
     allChkBx: false,
+    searchId: {
+        show: false,
+        value: '',
+    },
+    factorySlct: {
+        list: [],
+        current: null
+    },
 }
 
 export const orderSlice = createSlice({
         name: 'factory',
         initialState: orderState,
         reducers: {
+            setSlct (state: OrderState, action: PayloadAction<{select: string, list?: [] | undefined, current?: number | undefined}>) {
+                if (action.payload.select === 'factory') {
+                    if (action.payload.list) {
+                        state.factorySlct.list = action.payload.list;
+                    };
+                    if (action.payload.current) {
+                        state.factorySlct.current = action.payload.current;
+                    };
+                }
+                else {
+                    console.log('1')
+                }
+            },
+            setSearch (state: OrderState, action: PayloadAction<{value?: string | undefined}>) {
+                if (typeof action.payload.value === 'string') {
+                    state.searchId.value = action.payload.value
+                }
+                else {
+                    state.searchId.show = !state.searchId.show
+                }
+            },
             cleanState (state: OrderState, action: PayloadAction<undefined>) {
                 state.newOrder = {
-                    xml: undefined,
+                    xml: {
+                        file: undefined,
+                        name: undefined,
+                        size: undefined
+                    },
                     factory: undefined,
                     quantityProduct: [{
                         product: undefined,
@@ -93,7 +130,7 @@ export const orderSlice = createSlice({
             }>) {
                 state.newOrder.quantityProduct = [...state.newOrder.quantityProduct, action.payload]
             },
-            setNewOrderXML (state: OrderState, action: PayloadAction<any>) {
+            setNewOrderXML (state: OrderState, action: PayloadAction<XML>) {
                 state.newOrder.xml = action.payload
             },
             setListChkBx (state: OrderState, action: PayloadAction<ChkBx[]>) {

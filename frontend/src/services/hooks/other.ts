@@ -32,7 +32,6 @@ export function range (start: number, end?: number, step: number = 1): number[] 
 
 export function constructTbl (list: any, extra: {index: number, step: number, elem?: React.FC | undefined, props?: any}[]): any {
     let result: any[] = [];
-    // console.log('list -> ', list)
 
     list.forEach((item: any) => {
         const add = {list: Object.values(item)};
@@ -47,7 +46,6 @@ export function constructTbl (list: any, extra: {index: number, step: number, el
         result.push(add);
     });
 
-    // console.log('result -> ', result)
     return result;
 }
 
@@ -77,4 +75,24 @@ export function createFileForDownload(data: any, name?: string, type?: string) {
     a.href = URL.createObjectURL(file)
     a.download = `${name ?? 'pct'}.${type ?? 'xml'}`
     a.click()
+}
+
+
+export function currentOrdering (list: {id: number, value: string, state: boolean}[], increase: number, decreasing: number) {
+    console.log('list', list)
+    if (list.find(item => item.id === decreasing && item.state) || 
+        (!list.find(item => item.id === decreasing).state && !list.find(item => item.id === increase).state)) {
+            console.log('1')
+        return list.map(item => {
+            item.id === increase ? item.state = true : item.state = false
+            return item
+        })
+    }
+    else {
+        console.log('2')
+        return list.map(item => {
+            item.id === decreasing ? item.state = true : item.state = false
+            return item
+        })
+    }
 }

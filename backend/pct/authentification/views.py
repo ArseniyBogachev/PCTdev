@@ -4,6 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 from .serializers import AdminUserSerializer, AuthSerializer, AdminUserSerializer
 from .models import User as UserModel
 from .permissions import IsAdmin
@@ -25,9 +27,11 @@ from application.paginations import DefaultPagination
 
 
 class ListUserAdmin(ListAPIView):
-    queryset = UserModel.objects.all()
+    queryset = UserModel.objects.filter(is_superuser=False)
     serializer_class = AdminUserSerializer
     pagination_class = DefaultPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['organization', 'email']
 
 
 @api_view(["DELETE"])

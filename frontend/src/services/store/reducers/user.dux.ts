@@ -8,13 +8,51 @@ const userState: UserState = {
     listUser: [],
     listChkBx: [],
     allChkBx: false,
-    listFactory: []
+    listFactory: [],
+    orgSlct: {
+        list: [],
+        current: null
+    },
+    emailSlct: {
+        list: [],
+        current: null
+    },
+    searchFactory: {
+        show: false,
+        value: '',
+    },
 }
 
 export const userSlice = createSlice({
         name: 'user',
         initialState: userState,
         reducers: {
+            setSearch (state: UserState, action: PayloadAction<{value?: string | undefined}>) {
+                if (typeof action.payload.value === 'string') {
+                    state.searchFactory.value = action.payload.value
+                }
+                else {
+                    state.searchFactory.show = !state.searchFactory.show
+                }
+            },
+            setOrgSlct (state: UserState, action: PayloadAction<{list?: [] | undefined, current?: number | undefined}>) {
+                if (action.payload.list) {
+                    state.orgSlct.list = action.payload.list;
+                };
+                if (action.payload.current) {
+                    console.log('action.payload.current', action.payload.current)
+                    state.orgSlct.current = action.payload.current;
+                };
+            },
+            setEmailSlct (state: UserState, action: PayloadAction<{list?: [] | undefined, current?: number | undefined}>) {
+                if (action.payload.list) {
+                    state.emailSlct.list = action.payload.list;
+                };
+                if (action.payload.current) {
+                    console.log('action.payload.current', action.payload.current)
+                    state.emailSlct.current = action.payload.current;
+                };
+            },
             cleanState (state: UserState, action: PayloadAction<undefined>) {
                 state.listUser = [];
                 state.listChkBx = [];

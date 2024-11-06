@@ -14,12 +14,19 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { productSlice } from "../../services/store/reducers/product.dux";
 import { constructTbl } from "../../services/hooks/other";
 import { getNestingFromObj } from "../../services/hooks/other";
+import { generalSlice } from "../../services/store/reducers/general.dux";
 
 
 const Product = () => {
 
     useEffect(() => {
-        getProduct(currentPage);
+        const get = async () => {
+            dispatch(setLoading(true));
+            await getProduct();
+            dispatch(setLoading(false));
+        };
+        get();
+
         return () => {dispatch(cleanState())}
     }, []);
 
@@ -28,6 +35,7 @@ const Product = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
+    const { setLoading } = generalSlice.actions
     const { listProduct, listChkBx, allChkBx } = useAppSelector(state => state.product);
     const dispatch = useAppDispatch();
     const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState } = productSlice.actions

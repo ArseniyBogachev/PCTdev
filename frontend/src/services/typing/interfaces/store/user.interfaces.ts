@@ -33,12 +33,28 @@ type Factory = {
     setState: Function
 }
 
+type Slct = {
+    list: {
+        id: number
+        name: string
+    }[]
+    current: number | null
+}
+
+type Search = {
+    show: boolean
+    value: string
+}
+
 type UserState = {
     user: User | undefined
     listUser: ItemListUser[]
     listChkBx: ChkBx[]
     allChkBx: boolean
     listFactory: Factory[]
+    orgSlct: Slct
+    emailSlct: Slct
+    searchFactory: Search
 }
 
 export {

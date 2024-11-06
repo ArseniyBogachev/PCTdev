@@ -18,14 +18,18 @@ import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
 import { factorySlice } from "../../services/store/reducers/factory.dux";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { constructTbl, getNestingFromObj } from "../../services/hooks/other";
+import { currentOrdering } from "../../services/hooks/other";
 
 
 const Factory = () => {
 
     useEffect(() => {
-        setLoading(true);
-        getFactory();
-        setLoading(false);
+        const get = async () => {
+            dispatch(setLoading(true));
+            await getFactory();
+            dispatch(setLoading(false));
+        };
+        get();
 
         return () => {dispatch(cleanState())};
     }, []);
@@ -33,35 +37,43 @@ const Factory = () => {
     const [show, setShow] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentOpt, setCurrentOpt] = useState<undefined | number>();
-    const [factorySlct, setFactorySlct] = useState([]);
-    const [orderId, setOrderId] = useState(true);
+    const [ listOrder, setListOrder ] = useState([
+        {
+            id: 1,
+            value: 'id',
+            state: false
+        },
+        {
+            id: 2,
+            value: '-id',
+            state: true
+        }
+    ]);
 
-    const { newFactory, listFactory, listChkBx, allChkBx, searchId, searchPhone } = useAppSelector(state => state.factory);
+    const { newFactory, listFactory, listChkBx, allChkBx, searchId, searchPhone, factorySlct } = useAppSelector(state => state.factory);
     const { user } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch } = factorySlice.actions
+    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch, setFactorySlct } = factorySlice.actions
     const { setLoading } = generalSlice.actions
     const [cookies, _, __] = useCookies<string>(["user"]);
 
     async function getFactory (
             page: number | undefined = 1, 
-            filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string} = {id: null, name: null, phone: null, ordering: 'id'}
+            filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string} = {id: null, name: null, phone: null, ordering: '-id'},
     ) {
         const response = await getFactoryApi(cookies.token, page, filter);
 
         if (response.status === 200) {
-            console.log(response)
             dispatch(setListFactory(response.data.results));
             dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
                 state: false,
                 setState: () => dispatch(detailSetListChkBx(item.id))
             }))));
-            setFactorySlct(response.data.results.map((item: any) => ({
+            dispatch(setFactorySlct({list: response.data.results.map((item: any) => ({
                 id: item.id,
                 name: item.name
-            })));
+            }))}));
             setPageCount(response.data.count_page);
             setCurrentPage(page);
         }
@@ -71,22 +83,20 @@ const Factory = () => {
     };
 
     async function addFactory () {
-        setLoading(true);
         const response = await addFactoryApi(cookies.token, {...newFactory, owner: user.id});
 
         if (response.status === 201) {
             await getFactory(currentPage);
+            setListOrder(listOrder);
             setShow(false);
             dispatch(cleanItemFactory());
         }
         else {
             console.log(response);
         }
-        setLoading(false);
     };
 
     async function delFactory () {
-        setLoading(true);
         const delFactory = getNestingFromObj(listChkBx, true, 'id');
         const response = await delFactoryApi(cookies.token, delFactory);
 
@@ -96,7 +106,15 @@ const Factory = () => {
         else {
             console.log(response);
         }
-        setLoading(false);
+    };
+
+    function getCurrentFilter (id?: string | undefined, name?: number | undefined, phone?: string | undefined, ordering?: {id: number, value: string, state: boolean}[] | undefined) {
+        return {
+            id: id ? id : null, 
+            name: factorySlct.list.find(item => item.id === name) ? factorySlct.list.find(item => item.id === name).name : null,
+            phone: phone ? phone : null,
+            ordering: ordering.find(item => item.state).value
+        }
     };
 
     return (
@@ -140,7 +158,11 @@ const Factory = () => {
                                     {
                                         list: user.is_superuser ? [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            <Filter text={'ID'}/>, 
+                                            <Filter text={'ID'} click={async () => {
+                                                const ordering = currentOrdering(listOrder, 1, 2);
+                                                setListOrder(ordering);
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, ordering)});
+                                            }}/>, 
                                             'Название фабрики',
                                             'Телефон',
                                             'Email',
@@ -150,7 +172,11 @@ const Factory = () => {
                                             'Телефон копании'
                                         ] : [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            // <Filter text={'ID'}/>, 
+                                            <Filter text={'ID'} click={async () => {
+                                                const ordering = currentOrdering(listOrder, 1, 2);
+                                                setListOrder(ordering);
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, ordering)});
+                                            }}/>,  
                                             'Название фабрики',
                                             'Телефон',
                                             'Email',
@@ -167,35 +193,29 @@ const Factory = () => {
                                             value: searchId.value, 
                                             setShow: () => dispatch(setSearch({search: 'id', value: undefined})),
                                             setValue: (value: string) => dispatch(setSearch({search: 'id', value: value})),
-                                            clickEnter: () => getFactory(1, {
-                                                id: searchId.value ? searchId.value : null, 
-                                                name: factorySlct.find(item => item.id === currentOpt) ? factorySlct.find(item => item.id === currentOpt).name : null,
-                                                phone: searchPhone.value ? searchPhone.value : null
-                                            })
+                                            clickEnter: async () => {
+                                                dispatch(setFactorySlct({current: -1}));
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, -1, searchPhone.value, listOrder)});
+                                            }
                                         }),
                                         <Slct 
-                                            data={factorySlct}
-                                            state={currentOpt}
+                                            data={factorySlct.list}
+                                            state={factorySlct.current}
                                             setState={async (value: number) => {
-                                                setCurrentOpt(value);
-                                                await getFactory(1, {
-                                                    id: searchId.value ? searchId.value : null, 
-                                                    name: factorySlct.find(item => item.id === value) ? factorySlct.find(item => item.id === value).name : null, 
-                                                    phone: searchPhone.value ? searchPhone.value : null
-                                                });
+                                                dispatch(setFactorySlct({current: value}));
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, value, searchPhone.value, listOrder)});
                                             }}
-                                            defaultOpt={'Все'}
+                                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Все'}}
                                         />,
                                         Search({
                                             show: searchPhone.show, 
                                             value: searchPhone.value, 
                                             setShow: () => dispatch(setSearch({search: 'phone', value: undefined})),
                                             setValue: (value: string) => dispatch(setSearch({search: 'phone', value: value})),
-                                            clickEnter: () => getFactory(1, {
-                                                id: searchId.value ? searchId.value : null, 
-                                                name: factorySlct.find(item => item.id === currentOpt) ? factorySlct.find(item => item.id === currentOpt).name : null,
-                                                phone: searchPhone.value ? searchPhone.value : null
-                                            })
+                                            clickEnter: async () => {
+                                                dispatch(setFactorySlct({current: -1}));
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, -1, searchPhone.value, listOrder)});
+                                            }
                                         }),
                                         '', '', '', '', ''
                                     ] : [
@@ -205,27 +225,23 @@ const Factory = () => {
                                             value: searchId.value, 
                                             setShow: () => dispatch(setSearch({search: 'id', value: undefined})),
                                             setValue: (value: string) => dispatch(setSearch({search: 'id', value: value})),
-                                            clickEnter: () => getFactory(1, {id: searchId.value ? searchId.value : null, phone: searchPhone.value ? searchPhone.value : null})
+                                            clickEnter: async () => {await getFactory(1, {...getCurrentFilter(searchId.value, -1, searchPhone.value, listOrder)})}
                                         }),
                                         <Slct 
-                                            data={factorySlct}
-                                            state={currentOpt}
+                                            data={factorySlct.list}
+                                            state={factorySlct.current}
                                             setState={async (value: number) => {
-                                                setCurrentOpt(value);
-                                                await getFactory(1, {
-                                                    id: searchId.value ? searchId.value : null, 
-                                                    name: factorySlct.find(item => item.id === value).name, 
-                                                    phone: searchPhone.value ? searchPhone.value : null
-                                                });
+                                                dispatch(setFactorySlct({current: value}));
+                                                await getFactory(1, {...getCurrentFilter(searchId.value, value, searchPhone.value, listOrder)});
                                             }}
-                                            defaultOpt={'Все'}
+                                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Все'}}
                                         />,
                                         Search({
                                             show: searchPhone.show, 
                                             value: searchPhone.value, 
                                             setShow: () => dispatch(setSearch({search: 'phone', value: undefined})),
                                             setValue: (value: string) => dispatch(setSearch({search: 'phone', value: value})),
-                                            clickEnter: () => getFactory(1, {id: searchId.value ? searchId.value : null, phone: searchPhone.value ? searchPhone.value : null})
+                                            clickEnter: async () => {await getFactory(1, {...getCurrentFilter(searchId.value, -1, searchPhone.value, listOrder)})}
                                         }),
                                         '', '', ''
                                     ]
@@ -248,7 +264,7 @@ const Factory = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {listFactory.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getFactory(page)}/>
+                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getFactory(page, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, listOrder)})}/>
                             </div>
                         </div>
                     </div>

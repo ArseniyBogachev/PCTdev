@@ -28,7 +28,7 @@ const Login = () => {
     const dispatch = useAppDispatch()
 
     async function login () {
-        setLoading(true)
+        dispatch(setLoading(true));
         const response = await loginApi(email, password);
 
         if (response.status === 200) {
@@ -55,7 +55,7 @@ const Login = () => {
             }));
             console.log(response);
         }
-        setLoading(false)
+        dispatch(setLoading(false));
     }
 
     return (

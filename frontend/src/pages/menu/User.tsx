@@ -18,12 +18,18 @@ import { userSlice } from "../../services/store/reducers/user.dux";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { delUsersApi } from "../../services/api/auth.api";
 import { getNestingFromObj } from "../../services/hooks/other";
+import { generalSlice } from "../../services/store/reducers/general.dux";
 
 
 const User = () => {
 
     useEffect(() => {
-        getUsers();
+        const get = async () => {
+            dispatch(setLoading(true));
+            await getUsers();
+            dispatch(setLoading(false));
+        };
+        get();
 
         return () => {dispatch(cleanState())}
     }, []);
@@ -34,12 +40,17 @@ const User = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
-    const { listUser, listChkBx, allChkBx, listFactory } = useAppSelector(state => state.user);
+    const { setLoading } = generalSlice.actions
+    const { listUser, listChkBx, allChkBx, listFactory, orgSlct, emailSlct, searchFactory } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, detailSetListFactory, cleanState } = userSlice.actions;
+    const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, 
+        detailSetListFactory, cleanState, setOrgSlct, setEmailSlct, setSearch } = userSlice.actions;
 
-    async function getUsers (page: number | undefined = 1) {
-        const response = await getUsersApi(cookies.token);
+    async function getUsers (
+        page: number | undefined = 1,
+        filter: {organization?: string | null, email?: string | null, factory?: string | null} = {organization: null, email: null, factory: null},
+    ) {
+        const response = await getUsersApi(cookies.token, page, filter);
 
         if (response.status === 200) {
             dispatch(setListUser(response.data.results));
@@ -51,10 +62,18 @@ const User = () => {
             dispatch(setListFactory(response.data.results.map((item: any) => ({
                 id: item.id,
                 list: item.factory.map((f: any) => f.name),
-                count: 1,
+                count: 2,
                 state: false,
                 setState: () => dispatch(detailSetListFactory(item.id))
             }))));
+            dispatch(setOrgSlct({list: response.data.results.map((item: any) => ({
+                id: item.id,
+                name: item.organization
+            }))}));
+            dispatch(setEmailSlct({list: response.data.results.map((item: any) => ({
+                id: item.id,
+                name: item.email
+            }))}));
             setPageCount(response.data.count_page);
             setCurrentPage(page);
         }
@@ -72,6 +91,14 @@ const User = () => {
         }
         else {
             console.log(response);
+        }
+    };
+
+    function getCurrentFilter (organization?: number | null, email?: number | null, factory?: string | null) {
+        return {
+            organization: orgSlct.list.find(item => item.id === organization) ? orgSlct.list.find(item => item.id === organization).name : null, 
+            email: emailSlct.list.find(item => item.id === email) ? emailSlct.list.find(item => item.id === email).name : null,
+            factory: factory ? factory : null
         }
     };
 
@@ -117,45 +144,27 @@ const User = () => {
                                     list: [
                                         '',
                                         <Slct 
-                                            data={[
-                                                {
-                                                    id: 1,
-                                                    name: 'test one'
-                                                },
-                                                {
-                                                    id: 2,
-                                                    name: 'test two'
-                                                },
-                                                {
-                                                    id: 3,
-                                                    name: 'test three'
-                                                }
-                                            ]}
-                                            state={1}
-                                            setState={() => {}}
+                                            data={orgSlct.list}
+                                            state={orgSlct.current}
+                                            setState={async (value: number) => {
+                                                dispatch(setOrgSlct({current: value}));
+                                                await getUsers(1, {...getCurrentFilter(value, emailSlct.current)});
+                                            }}
+                                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Все'}}
                                         />, 
                                         <Slct 
-                                            data={[
-                                                {
-                                                    id: 1,
-                                                    name: 'test one'
-                                                },
-                                                {
-                                                    id: 2,
-                                                    name: 'test two'
-                                                },
-                                                {
-                                                    id: 3,
-                                                    name: 'test three'
-                                                }
-                                            ]}
-                                            state={1}
-                                            setState={() => {}}
+                                            data={emailSlct.list}
+                                            state={emailSlct.current}
+                                            setState={async (value: number) => {
+                                                dispatch(setEmailSlct({current: value}));
+                                                await getUsers(1, {...getCurrentFilter(orgSlct.current, value)});
+                                            }}
+                                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Все'}}
                                         />,
                                         '',
                                         '',
                                         '',
-                                        // <Search />
+                                        '',
                                     ]
                                 },
                                 body: constructTbl(listUser, [
@@ -181,7 +190,7 @@ const User = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено пользователей: {listUser.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getUsers(page)}/>
+                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getUsers(page, {...getCurrentFilter(orgSlct.current, emailSlct.current)})}/>
                             </div>
                         </div>
                     </div>

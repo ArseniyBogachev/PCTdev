@@ -1,8 +1,13 @@
 
 type PropsFile = {
     accept?: string
-    value: string
+    value: {
+        file: string,
+        name: string,
+        size: number
+    }
     setValue: Function
+    delValue: Function
 }
 
 export {

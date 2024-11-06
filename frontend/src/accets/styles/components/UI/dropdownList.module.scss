@@ -23,11 +23,11 @@
     }
     &__list {
         position: absolute;
-        top: 125%;
-        left: 0;
+        top: 140%;
+        left: -10%;
         display: none;
-        width: 100%;
-        height: 300%;
+        width: 120%;
+        height: 500%;
         justify-content: space-between;
         flex-direction: column;
         border: 1px solid #E2E2F1;
@@ -42,7 +42,7 @@
             margin-left: 3px;
         }
         &::-webkit-scrollbar-thumb {
-            border-left: 2px solid #9D9BB4;
+            border-left: 2px solid #d8d7e2;
         }
         &__item {
             height: 100%;

@@ -31,10 +31,16 @@ type OrderUser = {
     company: string
 }
 
+type XML = {
+    file: string | undefined
+    name: string | undefined
+    size: number | undefined
+}
+
 type NewOrder = {
     // [k: string]: number | BinaryData
 
-    xml: string | undefined
+    xml: XML
     factory: number | undefined
     quantityProduct: {
         // id: number
@@ -60,6 +66,19 @@ type ChkBx = {
     setState: Function
 }
 
+type Search = {
+    show: boolean
+    value: string
+}
+
+type FactorySlct = {
+    list: {
+        id: number
+        name: string
+    }[]
+    current: number | null
+}
+
 type OrderState = {
     newOrder: NewOrder
     listProductFactory: ProductFactory
@@ -73,6 +92,8 @@ type OrderState = {
     listDateShipping: PropsEditDataInpt[]
     listDateFactory: PropsEditDataInpt[]
     allChkBx: boolean
+    searchId: Search
+    factorySlct: FactorySlct
 }
 
 export {
@@ -85,5 +106,6 @@ export {
     OrderUser,
     ChkBx,
     PropsSelect,
-    PropsDownload
+    PropsDownload,
+    XML
 }

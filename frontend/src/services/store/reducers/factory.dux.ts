@@ -1,6 +1,6 @@
 
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { FactoryState, Factory, SetItemFactory, ListFactory, ItemListFactory, ChkBx, PropsSearch } from "../../typing/interfaces/store/factory.interfaces";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { FactoryState, SetItemFactory, ListFactory, ChkBx } from "../../typing/interfaces/store/factory.interfaces";
 
 
 const factoryState: FactoryState = {
@@ -21,13 +21,25 @@ const factoryState: FactoryState = {
     searchPhone: {
         show: false,
         value: '',
-    }
+    },
+    factorySlct: {
+        list: [],
+        current: null
+    },
 }
 
 export const factorySlice = createSlice({
         name: 'factory',
         initialState: factoryState,
         reducers: {
+            setFactorySlct (state: FactoryState, action: PayloadAction<{list?: [] | undefined, current?: number | undefined}>) {
+                if (action.payload.list) {
+                    state.factorySlct.list = action.payload.list;
+                };
+                if (action.payload.current) {
+                    state.factorySlct.current = action.payload.current;
+                };
+            },
             setSearch (state: FactoryState, action: PayloadAction<{search: string, value?: string | undefined}>) {
                 if (action.payload.search === 'id') {
                     if (typeof action.payload.value === 'string') {
@@ -57,6 +69,18 @@ export const factorySlice = createSlice({
                 state.listFactory = [];
                 state.listChkBx = [];
                 state.allChkBx = false;
+                state.searchId = {
+                    show: false,
+                    value: '',
+                };
+                state.searchPhone = {
+                    show: false,
+                    value: '',
+                };
+                state.factorySlct = {
+                    list: [],
+                    current: null
+                };
             },
             setItemFactory (state: FactoryState, action: PayloadAction<SetItemFactory>) {
                 state.newFactory[action.payload.name] = action.payload.value

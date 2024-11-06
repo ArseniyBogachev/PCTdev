@@ -41,7 +41,7 @@ async function addFactoryApi(
 async function getFactoryApi(
     token: string,
     page: number | undefined = 1,
-    filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string | null}
+    filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string | null},
 ) {
     try {
         const response = await axios.get(`http://127.0.0.1:8000/api/v1/app/factory/`, 

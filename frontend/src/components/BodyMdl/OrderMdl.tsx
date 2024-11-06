@@ -21,16 +21,25 @@ const OrderMdl:React.FC<PropsOrderMdl> = () => {
 
     return (
         <div className={classes.main}>
-            <div className={classes.main__file}>
-                <File value={undefined} setValue={async (e: any) => {
-                    const file: any = await getContentFile(e);
-                    // const binary = strToBinary(file)
-                    // console.log('binary -> ', binary)
-                    // console.log('file -> ', file)
-                    dispatch(setNewOrderXML(file));
-                }}/>
+            <div className={classNames(classes.main__file, newOrder.xml.file ? classes.main__fileAdd : '')}>
+                <File value={newOrder.xml} setValue={async (e: any) => {
+                        const file: any = await getContentFile(e);
+                        const name: string = e.target.files[0].name;
+                        const size: number = e.target.files[0].size;
+                        dispatch(setNewOrderXML({
+                            file: file,
+                            name: name,
+                            size: size
+                        }))}
+                    }
+                    delValue={() => dispatch(setNewOrderXML({
+                        file: undefined,
+                        name: undefined,
+                        size: undefined
+                    }))}
+                />
             </div>
-            <div className={classes.main__body}>
+            <div className={classNames(classes.main__body, newOrder.xml.file ? classes.main__bodyAdd : '')}>
                 <div className={classes.main__body__list}>
                     <div className={classes.main__body__list__factory}>
                         <Slct 

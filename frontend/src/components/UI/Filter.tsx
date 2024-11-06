@@ -6,9 +6,9 @@ import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { PropsFilter } from "../../services/typing/interfaces/components/UI/filter.interfaces";
 
 
-const Filter:React.FC<PropsFilter> = ({text}) => {
+const Filter:React.FC<PropsFilter> = ({text, click}) => {
     return (
-        <div className={classes.main}>
+        <div className={classes.main} onClick={() => click()}>
             <div className={classes.main__text}>{text}</div>
             <FontAwesomeIcon 
                 icon={faSort} 

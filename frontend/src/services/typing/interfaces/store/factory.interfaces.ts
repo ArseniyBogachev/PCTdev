@@ -32,8 +32,16 @@ type Search = {
     value: string
 }
 
+type FactorySlct = {
+    list: {
+        id: number
+        name: string
+    }[]
+    current: number | null
+}
+
 type FactoryState = {
-    [k: string]: Search | boolean | ChkBx[] | ListFactory | Factory
+    [k: string]: Search | boolean | ChkBx[] | ListFactory | Factory | FactorySlct
 
     newFactory: Factory
     listFactory: ListFactory
@@ -41,6 +49,7 @@ type FactoryState = {
     allChkBx: boolean
     searchId: Search
     searchPhone: Search
+    factorySlct: FactorySlct
 }
 
 export {

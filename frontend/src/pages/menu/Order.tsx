@@ -10,7 +10,7 @@ import Filter from "../../components/UI/Filter";
 import Search from "../../components/UI/Search";
 import Download from "../../components/UI/Download";
 import EditDataInpt from "../../components/UI/EditDateInpt";
-import { reconstructDateTime } from "../../services/hooks/other";
+import { currentOrdering, reconstructDateTime } from "../../services/hooks/other";
 import Pagination from "../../components/Pagination";
 import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
@@ -24,30 +24,74 @@ import { orderSlice } from "../../services/store/reducers/order.dux";
 import { constructTbl } from "../../services/hooks/other";
 import DropdownList from "../../components/UI/DropdownList";
 import { getNestingFromObj } from "../../services/hooks/other";
+import { generalSlice } from "../../services/store/reducers/general.dux";
 
 
 const Order = () => {
 
     useEffect(() => {
-        console.log('useEffect ORDER ----->')
-        getOrder();
+        const get = async () => {
+            dispatch(setLoading(true));
+            await getOrder();
+            dispatch(setLoading(false));
+        };
+        get();
+
         return () => {dispatch(cleanState())}
     }, []);
 
     const [show, setShow] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [ listOrder, setListOrder ] = useState([
+        {
+            id: 1,
+            value: 'id',
+            state: false
+        },
+        {
+            id: 2,
+            value: '-id',
+            state: true
+        },
+        {
+            id: 3,
+            value: 'factory',
+            state: false
+        },
+        {
+            id: 4,
+            value: '-factory',
+            state: false
+        },
+        {
+            id: 5,
+            value: 'status',
+            state: false
+        },
+        {
+            id: 6,
+            value: '-status',
+            state: false
+        },
+    ]);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.user);
-    const { listProductFactory, newOrder, listOrderAdmin, listOrderUser, listChkBx, listDropdown, listSlct, listFile, listDateOrder, listDateShipping, listDateFactory, allChkBx } = useAppSelector(state => state.order);
+    const { setLoading } = generalSlice.actions;
+    const { listProductFactory, newOrder, listOrderAdmin, listOrderUser, listChkBx, listDropdown, 
+        listSlct, listFile, listDateOrder, listDateShipping, listDateFactory, allChkBx, searchId, factorySlct } = useAppSelector(state => state.order);
     const { setListProductFactory, setListOrderAdmin, setListChkBx, detailSetListChkBx, setListDropdown, 
         setStateDropdown, setListSlct, detailSetListSlct, setListFile, setListDateOrder, detailSetListDateOrder, 
-        setListDateShipping, detailSetListDateShipping, setListDateFactory, detailSetListDateFactory, allSetListChkBx, setListOrderUser, cleanState } = orderSlice.actions;
+        setListDateShipping, detailSetListDateShipping, setListDateFactory, detailSetListDateFactory, allSetListChkBx, 
+        setListOrderUser, cleanState, setSearch, setSlct } = orderSlice.actions;
 
-    async function getOrder (page: number | undefined = 1) {
-        const responseOrder = await getOrderApi(cookies.token);
+    async function getOrder (
+        page: number | undefined = 1,
+        filter: {id?: string | undefined, factory?: string | null, ordering?: string | undefined} = {id: null, factory: null, ordering: '-id'}
+    ) {
+        const responseOrder = await getOrderApi(cookies.token, page, filter);
 
         if (responseOrder.status === 200 && user.is_superuser) {
             const responsePF = await getFactoryProductApi(cookies.token);
@@ -102,6 +146,10 @@ const Order = () => {
                     state: false,
                     setState: () => dispatch(detailSetListDateFactory(item.id))
                 }))));
+                dispatch(setSlct({select: 'factory', list: responseOrder.data.results.map((item: any) => ({
+                    id: item.id,
+                    name: item.factory
+                }))}));
                 setPageCount(responseOrder.data.count_page);
                 setCurrentPage(page);
             }
@@ -138,7 +186,7 @@ const Order = () => {
 
     async function addOrder () {
         const responseOrder = await addOrderApi(cookies.token, {
-            xml: newOrder.xml,
+            xml: newOrder.xml.file,
             factory: newOrder.factory
         });
 
@@ -151,6 +199,7 @@ const Order = () => {
 
             if (responseQP.status === 200) {
                 await getOrder(currentPage);
+                setListOrder(listOrder);
                 setShow(false);
             }
             else {
@@ -171,6 +220,16 @@ const Order = () => {
         }
         else {
             console.log(response);
+        }
+    };
+
+    function getCurrentFilter (id?: string | undefined, factory?: number | undefined, ordering?: {id: number, value: string, state: boolean}[] | undefined) {
+        return {
+            id: id ? id : null,
+            // customer: factorySlct.list.find(item => item.id === name) ? factorySlct.list.find(item => item.id === name).name : null,
+            factory: factorySlct.list.find(item => item.id === factory) ? factorySlct.list.find(item => item.id === factory).name : null,
+            // status: factorySlct.list.find(item => item.id === name) ? factorySlct.list.find(item => item.id === name).name : null,
+            ordering: ordering.find(item => item.state).value
         }
     };
 
@@ -202,7 +261,6 @@ const Order = () => {
                     <div className={classes.content__header}>
                         <HeaderBtn
                             one={{
-                                valueOne: '228',
                                 actionOne: () => setShow(true),
                                 textOne: 'Добавить заказ'
                             }}
@@ -220,10 +278,22 @@ const Order = () => {
                                     {
                                         list: user.is_superuser ? [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            <Filter text={'ID'}/>,
+                                            <Filter text={'ID'} click={async () => {
+                                                const ordering = currentOrdering(listOrder, 1, 2);
+                                                setListOrder(ordering);
+                                                await getOrder(1, {...getCurrentFilter(searchId.value, factorySlct.current, ordering)});
+                                            }}/>,
                                             'Заказчик', 
-                                            <Filter text={'Фабрика'}/>,
-                                            <Filter text={'Статус'}/>,
+                                            <Filter text={'Фабрика'} click={async () => {
+                                                const ordering = currentOrdering(listOrder, 3, 4);
+                                                setListOrder(ordering);
+                                                await getOrder(1, {...getCurrentFilter(searchId.value, factorySlct.current, ordering)});
+                                            }}/>,
+                                            <Filter text={'Статус'} click={async () => {
+                                                const ordering = currentOrdering(listOrder, 5, 6);
+                                                setListOrder(ordering);
+                                                await getOrder(1, {...getCurrentFilter(searchId.value, factorySlct.current, ordering)});
+                                            }}/>,
                                             'Получ. заказа',
                                             'Дата отгрузки',
                                             'Получ. фабр.',
@@ -232,10 +302,10 @@ const Order = () => {
                                         ] :
                                         [
                                             <ChckBx id={0} state={allChkBx} setState={() => dispatch(allSetListChkBx())}/>,
-                                            <Filter text={'ID'}/>,
-                                            <Filter text={'Заказчик'}/>, 
-                                            <Filter text={'Фабрика'}/>,
-                                            <Filter text={'Статус'}/>,
+                                            <Filter text={'ID'} click={() => {}}/>,
+                                            <Filter text={'Заказчик'} click={() => {}}/>, 
+                                            <Filter text={'Фабрика'} click={() => {}}/>,
+                                            <Filter text={'Статус'} click={() => {}}/>,
                                             'Время загрузки',
                                             'Последнее обновление',
                                             'Имя компании',
@@ -245,7 +315,15 @@ const Order = () => {
                                 filter: {
                                     list: user.is_superuser ? [
                                         '', 
-                                        // <Search />, 
+                                        Search({
+                                            show: searchId.show, 
+                                            value: searchId.value, 
+                                            setShow: () => dispatch(setSearch({value: undefined})),
+                                            setValue: (value: string) => dispatch(setSearch({value: value})),
+                                            clickEnter: async () => {
+                                                await getOrder(1, {...getCurrentFilter(searchId.value, -1, listOrder)});
+                                            }
+                                        }),
                                         <Slct 
                                             data={[
                                                 {
@@ -265,22 +343,13 @@ const Order = () => {
                                             setState={() => {}}
                                         />, 
                                         <Slct 
-                                            data={[
-                                                {
-                                                    id: 1,
-                                                    name: 'test one'
-                                                },
-                                                {
-                                                    id: 2,
-                                                    name: 'test two'
-                                                },
-                                                {
-                                                    id: 3,
-                                                    name: 'test three'
-                                                }
-                                            ]}
-                                            state={1}
-                                            setState={() => {}}
+                                            data={factorySlct.list}
+                                            state={factorySlct.current}
+                                            setState={async (value: number) => {
+                                                dispatch(setSlct({select: 'factory', current: value}));
+                                                await getOrder(1, {...getCurrentFilter(searchId.value, value, listOrder)});
+                                            }}
+                                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Все'}}
                                         />,
                                         <Slct 
                                             data={[
@@ -300,7 +369,7 @@ const Order = () => {
                                             state={1}
                                             setState={() => {}}
                                         />,
-                                        '', '', '', '',
+                                        '', '', '', '', ''
                                     ] : [
                                         '', 
                                         // <Search />, 
@@ -393,7 +462,7 @@ const Order = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {listOrderAdmin.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getOrder(page)}/>
+                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getOrder(page, {...getCurrentFilter(searchId.value, factorySlct.current, listOrder)})}/>
                             </div>
                         </div>
                     </div>

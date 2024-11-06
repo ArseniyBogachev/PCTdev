@@ -17,6 +17,7 @@ const Mdl:React.FC<PropsMdl> = ({show, setShow, sizeModal, title, Body, btnLeft,
             contentClassName={classes.main}
             dialogClassName={classes[`dialog__${bodyW}`]}
             centered
+            backdrop={'static'}
         >
             <Modal.Header className={classes.main__header}>
                 <Modal.Title id="example-modal-sizes-title-sm" className={classes.main__header__title}>

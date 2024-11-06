@@ -37,8 +37,8 @@ class FactoryApiCL(ListCreateAPIView):
         
     def get_queryset(self):
         if self.request.user.is_superuser == True:
-            return Factory.objects.all()
-        return Factory.objects.filter(owner=self.request.user.id)
+            return Factory.objects.all().order_by('-id')
+        return Factory.objects.filter(owner=self.request.user.id).order_by('-id')
 
 
 @api_view(["DELETE"])
@@ -71,11 +71,14 @@ def product_api_del(request):
 class OrderApiCL(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     pagination_class = DefaultPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['id', 'customer', 'factory', 'status']
+    ordering_fields = ['id', 'factory', 'status']
 
     def get_queryset(self):
         if self.request.user.is_superuser == True:
-            return Order.objects.all()
-        return Order.objects.filter(customer=self.request.user.id)
+            return Order.objects.all().order_by('-id')
+        return Order.objects.filter(customer=self.request.user.id).order_by('-id')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -106,7 +109,7 @@ def order_api_del(request):
     
 
 class QuantityProductApiC(CreateAPIView):
-    queryset = QuantityProduct.objects.all()
+    queryset = QuantityProduct.objects.all().order_by('-id')
     permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):

@@ -66,11 +66,19 @@ async function meApi(
 
 
 async function getUsersApi (
-    token: string
+    token: string,
+    page: number | undefined,
+    filter: {organization?: string | null, email?: string | null, factory?: string | null}
 ) {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/user/list/', 
             {
+                params: {
+                    page: page,
+                    organization: filter.organization,
+                    email: filter.email,
+                    factory: filter.factory
+                },
                 headers: {
                     "Authorization": `Token ${token}`
                 }

@@ -10,7 +10,12 @@ type PropsSelect = {
     data: DataSelect[]
     state: number
     setState: Function
-    defaultOpt?: string
+    defaultOpt?: {
+        value: number
+        selected: boolean
+        disabled: boolean
+        text: string
+    } | undefined
     label?: string
     mainStyle?: {}
 }

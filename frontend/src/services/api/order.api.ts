@@ -83,10 +83,18 @@ async function getFactoryProductApi(
 
 async function getOrderApi(
     token: string,
+    page: number | undefined = 1,
+    filter: {id?: string | undefined, factory?: string | null, ordering?: string | null},
 ) {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/v1/app/order/',
             {
+                params: {
+                    page: page,
+                    id: filter.id,
+                    factory: filter.factory,
+                    ordering: filter.ordering
+                },
                 headers: {
                     "Authorization": `Token ${token}`
                 }

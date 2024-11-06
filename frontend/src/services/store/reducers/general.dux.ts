@@ -24,7 +24,7 @@ export const generalSlice = createSlice({
                 state.listNotification.splice(action.payload, 1)
                 state.currentNotification = state.listNotification[0]
             },
-            setCurrentNotification (state: GeneralState, action: PayloadAction<GeneralNotification>) {
+            setCurrentNotification (state: GeneralState, action: PayloadAction<GeneralNotification | boolean>) {
                 state.currentNotification = action.payload
             },
             setLoading (state: GeneralState, action: PayloadAction<boolean>) {
