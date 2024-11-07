@@ -16,5 +16,5 @@ class DefaultPagination(PageNumberPagination):
             },
             'count': self.page.paginator.count,
             'results': data,
-            'count_page': math.ceil(self.page.paginator.count / self.page_size)
+            'count_page': math.ceil(self.page.paginator.count / self.page_size) if self.page.paginator.count > 0 else 1
         })

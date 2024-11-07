@@ -3,6 +3,7 @@ import { ReactNode } from "react"
 type DataSelect = {
     id: number
     name: string | ReactNode
+    other_name?: any
 }
 
 type PropsSelect = {

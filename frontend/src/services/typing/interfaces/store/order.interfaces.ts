@@ -71,15 +71,18 @@ type Search = {
     value: string
 }
 
-type FactorySlct = {
+type Slct = {
     list: {
         id: number
         name: string
+        other_name?: any 
     }[]
     current: number | null
 }
 
 type OrderState = {
+    [k: string]: any
+
     newOrder: NewOrder
     listProductFactory: ProductFactory
     listOrderAdmin: OrderAdmin[]
@@ -93,7 +96,8 @@ type OrderState = {
     listDateFactory: PropsEditDataInpt[]
     allChkBx: boolean
     searchId: Search
-    factorySlct: FactorySlct
+    factorySlct: Slct
+    statusSlct: Slct
 }
 
 export {

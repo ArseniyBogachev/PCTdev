@@ -84,7 +84,7 @@ async function getFactoryProductApi(
 async function getOrderApi(
     token: string,
     page: number | undefined = 1,
-    filter: {id?: string | undefined, factory?: string | null, ordering?: string | null},
+    filter: {id?: string | undefined, factory?: string | null, status?: string | null, ordering?: string | null},
 ) {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/v1/app/order/',
@@ -92,8 +92,9 @@ async function getOrderApi(
                 params: {
                     page: page,
                     id: filter.id,
-                    factory: filter.factory,
-                    ordering: filter.ordering
+                    factory__name: filter.factory,
+                    ordering: filter.ordering,
+                    status: filter.status
                 },
                 headers: {
                     "Authorization": `Token ${token}`
@@ -131,10 +132,34 @@ async function delOrderApi(
 };
 
 
+async function updateOrderApi(
+    token: string,
+    data: {status?: number | undefined, shipping_date?: Date | undefined, accepted_factory?: Date | undefined},
+    id: number
+) {
+    try {
+        const response = await axios.put(`http://127.0.0.1:8000/api/v1/app/order/update/${id}`, 
+            data,
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                },
+            }
+        )
+
+        return response
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     getFactoryProductApi,
     addQuantityProductApi,
     addOrderApi,
     getOrderApi,
-    delOrderApi
+    delOrderApi,
+    updateOrderApi
 }

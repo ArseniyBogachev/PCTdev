@@ -44,24 +44,23 @@ const orderState: OrderState = {
         list: [],
         current: null
     },
+    statusSlct: {
+        list: [],
+        current: null
+    },
 }
 
 export const orderSlice = createSlice({
         name: 'factory',
         initialState: orderState,
         reducers: {
-            setSlct (state: OrderState, action: PayloadAction<{select: string, list?: [] | undefined, current?: number | undefined}>) {
-                if (action.payload.select === 'factory') {
-                    if (action.payload.list) {
-                        state.factorySlct.list = action.payload.list;
-                    };
-                    if (action.payload.current) {
-                        state.factorySlct.current = action.payload.current;
-                    };
-                }
-                else {
-                    console.log('1')
-                }
+            setSlct (state: OrderState, action: PayloadAction<{select: string, list?: { id: number, name: string, other_name?: any }[] | undefined, current?: number | undefined}>) {
+                if (action.payload.list) {
+                    state[action.payload.select].list = action.payload.list;
+                };
+                if (action.payload.current) {
+                    state[action.payload.select].current = action.payload.current;
+                };
             },
             setSearch (state: OrderState, action: PayloadAction<{value?: string | undefined}>) {
                 if (typeof action.payload.value === 'string') {
@@ -183,10 +182,17 @@ export const orderSlice = createSlice({
             setListDateShipping (state: OrderState, action: PayloadAction<PropsEditDataInpt[]>) {
                 state.listDateShipping = action.payload
             },
-            detailSetListDateShipping (state: OrderState, action: PayloadAction<number>) {
+            detailSetListDateShipping (state: OrderState, action: PayloadAction<{id: number, value?: string | undefined, text?: string | undefined}>) {
                 state.listDateShipping = state.listDateShipping.map(item => {
-                    if (item.id === action.payload) {
-                        item.state = true;
+                    if (item.id === action.payload.id) {
+                        if (action.payload.value) {
+                            item.value = action.payload.value
+                            item.text = action.payload.text
+                            item.state = false
+                        }
+                        else {
+                            item.state = true;
+                        }
                     }
                     return item
                 })
@@ -194,10 +200,17 @@ export const orderSlice = createSlice({
             setListDateFactory (state: OrderState, action: PayloadAction<PropsEditDataInpt[]>) {
                 state.listDateFactory = action.payload
             },
-            detailSetListDateFactory (state: OrderState, action: PayloadAction<number>) {
+            detailSetListDateFactory (state: OrderState, action: PayloadAction<{id: number, value?: string | undefined, text?: string | undefined}>) {
                 state.listDateFactory = state.listDateFactory.map(item => {
-                    if (item.id === action.payload) {
-                        item.state = true;
+                    if (item.id === action.payload.id) {
+                        if (action.payload.value) {
+                            item.value = action.payload.value
+                            item.text = action.payload.text
+                            item.state = false
+                        }
+                        else {
+                            item.state = true;
+                        }
                     }
                     return item
                 })

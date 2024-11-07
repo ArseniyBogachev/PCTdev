@@ -12,7 +12,8 @@ import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { loginApi } from "../services/api/auth.api";
 import { generalSlice } from "../services/store/reducers/general.dux";
 import { useAppDispatch } from "../services/hooks/redux";
-
+import { userSlice } from "../services/store/reducers/user.dux";
+import { meApi } from "../services/api/auth.api";
 
 
 const Login = () => {
@@ -24,7 +25,8 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { addListNotification, setLoading } = generalSlice.actions;
+    const { addListNotification, setLoading, setCurrentNotification } = generalSlice.actions;
+    const { write } = userSlice.actions
     const dispatch = useAppDispatch()
 
     async function login () {
@@ -32,28 +34,34 @@ const Login = () => {
         const response = await loginApi(email, password);
 
         if (response.status === 200) {
-            dispatch(addListNotification({
-                type: 'fixed',
-                mainText: 'Успешная авторизация',
-                extraText: `Вход выполнен под почтой ${email}`,
-                totalStyle: 'access',
-                lvl: 'lvl1',
-                close: true
-            }));
-            setCookie('token', response.data.auth_token);
-            navigate('/order', { replace: true });
-            console.log(response);
+            const responseMe = await meApi(response.data.auth_token);
+
+            if (responseMe.status === 200) {
+                dispatch(setCurrentNotification({
+                    type: 'fixed',
+                    mainText: 'Успешная авторизация',
+                    extraText: `Вход выполнен под почтой ${email}`,
+                    totalStyle: 'access',
+                    lvl: 'lvl1',
+                    close: true
+                }));
+                setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+                setCookie('token', response.data.auth_token);
+                dispatch(write(responseMe.data[0]))
+                navigate('/order', { replace: true });
+            }
+            
         }
         else {
-            dispatch(addListNotification({
+            dispatch(setCurrentNotification({
                 type: 'fixed',
-                mainText: 'Не удалось авторизоваться',
-                extraText: `Некорректные данные пользователя`,
+                mainText: 'Ошибка',
+                extraText: `Не удалось авторизоваться`,
                 totalStyle: 'reject',
                 lvl: 'lvl1',
                 close: true
             }));
-            console.log(response);
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         dispatch(setLoading(false));
     }

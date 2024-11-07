@@ -8,8 +8,17 @@ export type GeneralNotification = {
     close: boolean
 }
 
+export type ItemMenu = {
+    id: number
+    text: string
+    icon: any
+    link: string
+    onlyAdmin: boolean
+}
+
 export type GeneralState = {
     listNotification: GeneralNotification[]
     currentNotification: boolean | GeneralNotification
-    loading: boolean
+    loading: boolean,
+    // listMenu: ItemMenu[]
 }

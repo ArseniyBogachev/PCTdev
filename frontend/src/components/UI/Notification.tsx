@@ -20,7 +20,7 @@ const Notification = ({
     totalStyle
 }: any) => {
     
-    const {delListNotification} = generalSlice.actions
+    const {setCurrentNotification} = generalSlice.actions
     const dispatch = useAppDispatch()
 
     return (
@@ -42,7 +42,7 @@ const Notification = ({
                         <FontAwesomeIcon 
                             icon={faXmark} 
                             className={classes.content__xmark} 
-                            onClick={() => dispatch(delListNotification(0))}
+                            onClick={() => dispatch(setCurrentNotification(false))}
                         /> : 
                         <></>
                     }

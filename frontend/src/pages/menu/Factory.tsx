@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import classes from "../../accets/styles/pages/menu/factory.module.scss";
 import classNames from 'classnames';
 import Tbl from "../../components/UI/Tbl";
@@ -19,6 +20,7 @@ import { factorySlice } from "../../services/store/reducers/factory.dux";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { constructTbl, getNestingFromObj } from "../../services/hooks/other";
 import { currentOrdering } from "../../services/hooks/other";
+import { checkUrl } from "../../router/protectedRouter";
 
 
 const Factory = () => {
@@ -31,7 +33,9 @@ const Factory = () => {
         };
         get();
 
-        return () => {dispatch(cleanState())};
+        return () => {
+            dispatch(cleanState());
+        };
     }, []);
 
     const [show, setShow] = useState(false);
@@ -54,7 +58,8 @@ const Factory = () => {
     const { user } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch, setFactorySlct } = factorySlice.actions
-    const { setLoading } = generalSlice.actions
+    const { setLoading, setCurrentNotification } = generalSlice.actions;
+    const navigate = useNavigate();
     const [cookies, _, __] = useCookies<string>(["user"]);
 
     async function getFactory (
@@ -89,10 +94,27 @@ const Factory = () => {
             await getFactory(currentPage);
             setListOrder(listOrder);
             setShow(false);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Добавлено',
+                extraText: `Фабрика ${newFactory.name} добавлена`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
             dispatch(cleanItemFactory());
         }
         else {
-            console.log(response);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось добавить фабрику`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
     };
 
@@ -102,9 +124,26 @@ const Factory = () => {
 
         if (response.status === 200) {
             await getFactory();
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Удалена',
+                extraText: `Фабрика ${newFactory.name} удалена`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
-            console.log(response);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось удалить фабрику`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
     };
 
@@ -128,7 +167,10 @@ const Factory = () => {
                         title={'Новая фабрика'}
                         Body={FactodyMdl}
                         btnLeft={{
-                            action: () => setShow(false),
+                            action: () => {
+                                setShow(false);
+                                dispatch(cleanItemFactory());
+                            },
                             text: 'Отмена'
                         }}
                         btnRight={{
@@ -264,7 +306,11 @@ const Factory = () => {
                                 <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {listFactory.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
-                                <Pagination count={pageCount} currentPage={currentPage} api={(page: number | undefined = 1) => getFactory(page, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, listOrder)})}/>
+                                <Pagination 
+                                    count={pageCount} 
+                                    currentPage={currentPage} 
+                                    api={(page: number | undefined = 1) => getFactory(page, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, listOrder)})}
+                                />
                             </div>
                         </div>
                     </div>

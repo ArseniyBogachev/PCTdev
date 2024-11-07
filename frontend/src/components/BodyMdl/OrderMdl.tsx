@@ -48,6 +48,7 @@ const OrderMdl:React.FC<PropsOrderMdl> = () => {
                             setState={(value: number) => dispatch(setNewOrderFactory(value))}
                             label={'Выберите фабрику'}
                             mainStyle={{height: '5vh'}}
+                            defaultOpt={{disabled: false, selected: false, value: -1, text: 'Ничего не выбрано'}}
                         />
                     </div>
                     
@@ -60,6 +61,7 @@ const OrderMdl:React.FC<PropsOrderMdl> = () => {
                                 
                                 label={'Выберите продукт 1'}
                                 mainStyle={{height: '5vh'}}
+                                defaultOpt={{disabled: false, selected: false, value: -1, text: 'Ничего не выбрано'}}
                             />
                             <Inpt 
                                 type={'number'} 

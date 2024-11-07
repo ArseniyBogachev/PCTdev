@@ -35,7 +35,7 @@ const Product = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
-    const { setLoading } = generalSlice.actions
+    const { setLoading, setCurrentNotification } = generalSlice.actions
     const { listProduct, listChkBx, allChkBx } = useAppSelector(state => state.product);
     const dispatch = useAppDispatch();
     const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState } = productSlice.actions
@@ -65,9 +65,26 @@ const Product = () => {
 
         if (response.status === 200) {
             await getProduct();
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Удалено',
+                extraText: `Продукт успешно удален`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
-            console.log(response);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Удалено',
+                extraText: `Не удалось удалить продукт`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
     };
 

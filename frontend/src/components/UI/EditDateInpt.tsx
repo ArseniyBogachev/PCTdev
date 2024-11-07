@@ -11,7 +11,8 @@ const EditDataInpt:React.FC<PropsEditDataInpt> = ({
     text,
     value,
     state,
-    setState
+    setState,
+    setValue
 }) => {
     return (
         <div className={classes.main}>
@@ -23,6 +24,7 @@ const EditDataInpt:React.FC<PropsEditDataInpt> = ({
                     value={value} 
                     mainStyle={{position: 'absolute', top: '0', left: '0'}}
                     inptStyle={{borderRadius: '0'}}
+                    setValue={(value: any) => setValue(value)}
                 /> : <></>
             }
         </div>

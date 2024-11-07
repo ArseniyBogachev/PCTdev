@@ -40,7 +40,7 @@ const User = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const [cookies, _, __] = useCookies<string>(["user"]);
-    const { setLoading } = generalSlice.actions
+    const { setLoading, setCurrentNotification } = generalSlice.actions
     const { listUser, listChkBx, allChkBx, listFactory, orgSlct, emailSlct, searchFactory } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const { setListUser, setListChkBx, detailSetListChkBx, allSetListChkBx, setListFactory, 
@@ -88,9 +88,26 @@ const User = () => {
 
         if (response.status === 200) {
             await getUsers(currentPage);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Удалено',
+                extraText: `Пользователь успешно удален`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
-            console.log(response);
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось удалить пользователя`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
     };
 

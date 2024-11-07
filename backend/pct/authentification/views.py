@@ -28,6 +28,7 @@ from application.paginations import DefaultPagination
 
 class ListUserAdmin(ListAPIView):
     queryset = UserModel.objects.filter(is_superuser=False)
+    permission_classes = (IsAuthenticated, IsAdmin)
     serializer_class = AdminUserSerializer
     pagination_class = DefaultPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]

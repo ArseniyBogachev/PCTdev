@@ -6,6 +6,7 @@ type PropsEditDataInpt = {
     value: string
     state: boolean
     setState: Function
+    setValue: Function
 }
 
 export {

@@ -1,6 +1,8 @@
-from rest_framework.serializers import ModelSerializer, IntegerField, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, IntegerField, SerializerMethodField, DateTimeField
 from .serializer_fields import BinaryField
 from .models import Factory, Product, Order, QuantityProduct
+from datetime import datetime
+from django.utils import timezone
 
 
 class CreateFactorySerializerAdmin(ModelSerializer):
@@ -101,6 +103,24 @@ class CreateOrderSerializer(ModelSerializer):
 
     def create(self, validated_data):
         return Order.objects.create(**validated_data)
+    
+
+class UpdateOrderSerializer(ModelSerializer):
+
+    shipping_date = DateTimeField(required=False)
+    accepted_factory = DateTimeField(required=False)
+
+    class Meta:
+        model = Order
+        fields = ['status', 'shipping_date', 'accepted_factory']
+
+    def update(self, instance, validated_data):
+        print('validated_data', validated_data)
+        instance.status = validated_data.get('status', instance.status)
+        instance.shipping_date = validated_data.get('shipping_date', instance.shipping_date)
+        instance.accepted_factory = validated_data.get('accepted_factory', instance.accepted_factory)
+        instance.save()
+        return instance
     
 
 class QuantityProductSerializer(ModelSerializer):

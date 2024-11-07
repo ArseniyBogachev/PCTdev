@@ -1,5 +1,6 @@
-import json
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
+import re
+from datetime import datetime
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -14,6 +15,7 @@ from .serializers import (
     ListOrderSerializerAdmin,
     ListOrderSerializerUser,
     CreateOrderSerializer,
+    UpdateOrderSerializer,
     QuantityProductSerializer
 )
 from .paginations import DefaultPagination
@@ -72,7 +74,7 @@ class OrderApiCL(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     pagination_class = DefaultPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['id', 'customer', 'factory', 'status']
+    filterset_fields = ['id', 'customer', 'factory__name', 'status']
     ordering_fields = ['id', 'factory', 'status']
 
     def get_queryset(self):
@@ -96,15 +98,43 @@ class OrderApiCL(ListCreateAPIView):
         srlz.save()
 
         return Response(srlz.data)
+
+
+class OrderApiU(UpdateAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin)
     
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        print(request.data)
+
+        if not pk:
+            return Response({'message': 'ID not listed in URL'}, status=404)
+
+        if request.data.get('shipping_date', False):
+            request.data['shipping_date'] = f'{request.data['shipping_date']}'
+
+        if request.data.get('accepted_factory', False):
+            request.data['accepted_factory'] = f'{request.data['accepted_factory']}'
+        
+        try:
+            instance = Order.objects.get(pk=pk)
+        except:
+            return Response({'message': 'ID not found'}, status=404)
+        
+        srlz = UpdateOrderSerializer(data=request.data, instance=instance)
+        srlz.is_valid(raise_exception=True)
+        srlz.save()
+        return Response({'message': 'OK'})
+
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def order_api_del(request):
-    product = Order.objects.filter(id__in=request.data['id']).delete()
+    if request.data['id']:
+        product = Order.objects.filter(id__in=request.data['id']).delete()
 
-    if product:
-        return Response({'message': 'Factories were successfully deleted'})
+        if product:
+            return Response({'message': 'Factories were successfully deleted'})
     return Response({'message': 'Factories not found'}, status=404)
     
 
