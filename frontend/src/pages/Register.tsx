@@ -215,6 +215,7 @@ const Login = () => {
                                     textError={errPass.message}
                                 />
                             </div>
+                            <div className={classes.content__wrapper__body__login} onClick={() => navigate('/login')}>Авторизоваться</div>
                         </div>
                         <div className={classes.content__wrapper__footer}>
                             <Btn 

@@ -1,9 +1,14 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { ProductState, Product, ChkBx } from "../../typing/interfaces/store/product.interfaces";
+import { ProductState, Product, ChkBx, SetNewProduct } from "../../typing/interfaces/store/product.interfaces";
 
 
 const productState: ProductState = {
+    newProduct: {
+        article_number: '',
+        name: '',
+        size: '',
+    },
     listProduct: [],
     listChkBx: [],
     allChkBx: false
@@ -13,6 +18,16 @@ export const productSlice = createSlice({
         name: 'factory',
         initialState: productState,
         reducers: {
+            setNewProduct (state: ProductState, action: PayloadAction<SetNewProduct>) {
+                state.newProduct[action.payload.name] = action.payload.value
+            },
+            cleanNewProduct (state: ProductState, action: PayloadAction<undefined>) {
+                state.newProduct = {
+                    article_number: '',
+                    name: '',
+                    size: '',
+                }
+            },
             cleanState (state: ProductState, action: PayloadAction<undefined>) {
                 state.listProduct = [];
                 state.listChkBx = [];

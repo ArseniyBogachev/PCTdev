@@ -106,6 +106,7 @@ const Login = () => {
                                     textError={error.message}
                                 />
                             </div>
+                            <div className={classes.content__wrapper__body__register} onClick={() => navigate('/register')}>Создать аккаунт</div>
                         </div>
                         <div className={classes.content__wrapper__footer}>
                             <Btn 

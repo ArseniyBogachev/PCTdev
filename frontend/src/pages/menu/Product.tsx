@@ -15,6 +15,8 @@ import { productSlice } from "../../services/store/reducers/product.dux";
 import { constructTbl } from "../../services/hooks/other";
 import { getNestingFromObj } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
+import ProductMdl from "../../components/BodyMdl/ProductMdl";
+import { addProductApi } from "../../services/api/product.api";
 
 
 const Product = () => {
@@ -36,15 +38,14 @@ const Product = () => {
 
     const [cookies, _, __] = useCookies<string>(["user"]);
     const { setLoading, setCurrentNotification } = generalSlice.actions
-    const { listProduct, listChkBx, allChkBx } = useAppSelector(state => state.product);
+    const { listProduct, listChkBx, allChkBx, newProduct } = useAppSelector(state => state.product);
     const dispatch = useAppDispatch();
-    const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState } = productSlice.actions
+    const { setListProduct, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, cleanNewProduct } = productSlice.actions
 
     async function getProduct (page: number | undefined = 1) {
         const response = await getProductApi(cookies.token, page);
 
         if (response.status === 200) {
-            console.log(response);
             dispatch(setListProduct(response.data.results));
             dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
@@ -59,7 +60,39 @@ const Product = () => {
         }
     };
 
+    async function addProduct () {
+        dispatch(setLoading(true));
+        const response = await addProductApi(cookies.token, newProduct);
+
+        if (response.status === 201) {
+            dispatch(cleanNewProduct());
+            await getProduct();
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Добавлено',
+                extraText: `Продукт успешно добавлен`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+        }
+        else {
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось добавить продукт`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+        };
+        dispatch(setLoading(false));
+    };
+
     async function delProduct () {
+        dispatch(setLoading(true));
         const delFactory = getNestingFromObj(listChkBx, true, 'id');
         const response = await delProductApi(cookies.token, delFactory);
 
@@ -78,29 +111,46 @@ const Product = () => {
         else {
             dispatch(setCurrentNotification({
                 type: 'fixed',
-                mainText: 'Удалено',
+                mainText: 'Ошибка',
                 extraText: `Не удалось удалить продукт`,
                 totalStyle: 'reject',
                 lvl: 'lvl1',
                 close: true
             }));
             setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
-        }
+        };
+        dispatch(setLoading(false));
     };
 
     return (
         <div className={classes.main}>
             <div className={classes.wrapper}>
                 <div className={classes.content}>
-                    {/* <Mdl 
+                    <Mdl 
                         show={show} 
                         setShow={setShow} 
                         sizeModal={sizeModal.Small}
                         title={'Новый продукт'}
-                    /> */}
+                        Body={ProductMdl}
+                        btnLeft={{
+                            action: () => setShow(false),
+                            text: 'Отмена'
+                        }}
+                        btnRight={{
+                            action: async () => {
+                                setShow(false);
+                                await addProduct();
+                            },
+                            text: 'Создать',
+                        }}
+                        bodyH='45vh'
+                        bodyW='24vh'
+
+                    />
                     <div className={classes.content__header}>
                         <HeaderBtn 
                             one={{
+                                actionOne: () => setShow(true),
                                 textOne: 'Добавить продукт'
                             }}
                             two={{
