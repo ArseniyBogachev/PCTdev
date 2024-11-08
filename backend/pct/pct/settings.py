@@ -11,18 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-# from .env import *
+from .env import *
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+SECRET_KEY = SRV_SECRET_KEY
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-a(*m4)doo&soa&2jo=b%$9oze$88#fb&-t*fyhxi^hy5n@w8ou"
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1"]
@@ -110,8 +104,8 @@ AUTH_USER_MODEL = "authentification.User"
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = "arsen.bogach@gmail.com"
-EMAIL_HOST_PASSWORD = "zhwg qacr viwp frsb"
+EMAIL_HOST_USER = SMTP_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = SMTP_EMAIL_HOST_PASSWORD
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
