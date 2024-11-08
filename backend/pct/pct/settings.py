@@ -15,7 +15,6 @@ from .env import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -49,11 +48,6 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL=True
-
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:3000',
-#     'http://127.0.0.1:3000'
-# ]
 
 CORS_ORIGIN_WHITELIST = [SRV_CORS_ORIGIN_WHITELIST]
 
@@ -104,10 +98,16 @@ WSGI_APPLICATION = 'pct.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST
+        # 'NAME': DB_NAME,
+        # 'USER': DB_USER,
+        # 'PASSWORD': DB_PASSWORD,
+        # 'HOST': DB_HOST,
+        # 'PORT': DB_PORT
+        'NAME': "PCT",
+        'USER': "postgres",
+        'PASSWORD': "Danny100",
+        'HOST': "db",
+        'PORT': "5432"
     }
 }
 
@@ -122,10 +122,10 @@ EMAIL_PORT = SMTP_EMAIL_PORT
 EMAIL_USE_TLS = SMTP_EMAIL_USE_TLS
 
 DJOSER = {
-    'DOMAIN': DJ_DOMAIN,
-    'PASSWORD_RESET_CONFIRM_URL': DJ_PASSWORD_RESET_CONFIRM_URL,
-    'USERNAME_RESET_CONFIRM_URL': DJ_USERNAME_RESET_CONFIRM_URL,
-    'ACTIVATION_URL': DJ_ACTIVATION_URL,
+    'DOMAIN': "localhost:8000",
+    'PASSWORD_RESET_CONFIRM_URL': "#/password/reset/confirm/{uid}/{token}",
+    'USERNAME_RESET_CONFIRM_URL': "#/username/reset/confirm/{uid}/{token}",
+    'ACTIVATION_URL': "activate/{uid}/{token}",
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user': 'authentification.serializers.AuthSerializer',

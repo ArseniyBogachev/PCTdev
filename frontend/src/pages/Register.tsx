@@ -11,6 +11,7 @@ import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { registerApi } from "../services/api/auth.api";
 import { generalSlice } from "../services/store/reducers/general.dux";
 import { useAppDispatch } from "../services/hooks/redux";
+import { emailPattern, phonePattern } from "../services/validate/pattern";
 
 
 const Login = () => {
@@ -20,23 +21,86 @@ const Login = () => {
     const [showPass, setShowPass] = useState(false);
     const [showRePass, setShowRePass] = useState(false);
 
-    const [email, setEmail] = useState();
-    const [phone, setPhone] = useState();
-    const [fio, setFio] = useState();
-    const [organization, setOrganization] = useState();
-    const [inn, setInn] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState<string>();
+    const [phone, setPhone] = useState<string>();
+    const [fio, setFio] = useState<string>();
+    const [organization, setOrganization] = useState<string>();
+    const [inn, setInn] = useState<string>();
+    const [password, setPassword] = useState<string>();
     const [rePassword, setRePassword] = useState();
+    const [errPass, setErrPass] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
+    const [errEmail, setErrEmail] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
+    const [errPhone, setErrPhone] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
+    const [errFio, setErrFio] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
+    const [errOrganization, setErrOrganization] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
+    const [errInn, setErrInn] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: ''
+    });
 
-    const { addListNotification, setLoading } = generalSlice.actions;
+    const { setCurrentNotification, setLoading } = generalSlice.actions;
     const dispatch = useAppDispatch()
+
+    function validateReg () {
+        setErrPass({state: false, message: ''});
+        setErrEmail({state: false, message: ''});
+        setErrPhone({state: false, message: ''});
+        setErrFio({state: false, message: ''});
+        setErrOrganization({state: false, message: ''});
+        setErrInn({state: false, message: ''});
+
+        if (!emailPattern.test(email)) {
+            setErrEmail({state: true, message: 'Некорректный ввод EMAIL'});
+            return false
+        }
+        else if (!phonePattern.test(phone)) {
+            setErrPhone({state: true, message: 'Некорректный ввод номера'});
+            return false
+        }
+        else if (fio.length < 1) {
+            setErrFio({state: true, message: 'Введите ФИО'});
+            return false
+        }
+        else if (organization.length < 1) {
+            setErrOrganization({state: true, message: 'Введите организацию'});
+            return false
+        }
+        else if (inn.length < 1) {
+            setErrInn({state: true, message: 'Введите ИНН'});
+            return false
+        }
+        else if (password !== rePassword) {
+            setErrPass({state: true, message: 'Пароли не совпадают'});
+            return false
+        }
+        else if (password.length < 8) {
+            setErrPass({state: true, message: 'Пароль менее 8 символов'});
+            return false
+        }
+        return true
+    }
 
     async function register () {
         dispatch(setLoading(true))
         const response = await registerApi(email, phone, fio, organization, inn, password);
         
         if (response.status === 201) {
-            dispatch(addListNotification({
+            dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Добавлена новая фабрика',
                 extraText: `На ${email} выслано письмо`,
@@ -44,10 +108,11 @@ const Login = () => {
                 lvl: 'lvl1',
                 close: true
             }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
             navigate('/login');
         }
         else {
-            dispatch(addListNotification({
+            dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка при регистрации',
                 extraText: 'Проверьте введенные данные',
@@ -55,6 +120,7 @@ const Login = () => {
                 lvl: 'lvl1',
                 close: true
             }));
+            setTimeout(() => {dispatch(setCurrentNotification(false))}, 5100);
         }
         dispatch(setLoading(false))
     }
@@ -77,6 +143,8 @@ const Login = () => {
                                     name={"Почта"}
                                     value={email}
                                     setValue={setEmail}
+                                    stateError={errEmail.state}
+                                    textError={errEmail.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -86,6 +154,8 @@ const Login = () => {
                                     name={"Телефон"}
                                     value={phone}
                                     setValue={setPhone}
+                                    stateError={errPhone.state}
+                                    textError={errPhone.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -95,6 +165,8 @@ const Login = () => {
                                     name={"ФИО"}
                                     value={fio}
                                     setValue={setFio}
+                                    stateError={errFio.state}
+                                    textError={errFio.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -104,6 +176,8 @@ const Login = () => {
                                     name={"Наименование организации"}
                                     value={organization}
                                     setValue={setOrganization}
+                                    stateError={errOrganization.state}
+                                    textError={errOrganization.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -113,6 +187,8 @@ const Login = () => {
                                     name={"ИНН"}
                                     value={inn}
                                     setValue={setInn}
+                                    stateError={errInn.state}
+                                    textError={errInn.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -123,6 +199,8 @@ const Login = () => {
                                     value={password}
                                     setValue={setPassword}
                                     after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
+                                    stateError={errPass.state}
+                                    textError={errPass.message}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__item}>
@@ -132,7 +210,9 @@ const Login = () => {
                                     name={"Подтверждение пароля"}
                                     value={rePassword}
                                     setValue={setRePassword}
-                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
+                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowRePass(!showRePass)}/>}
+                                    stateError={errPass.state}
+                                    textError={errPass.message}
                                 />
                             </div>
                         </div>
@@ -142,7 +222,11 @@ const Login = () => {
                                 text={"Создать аккаунт"} 
                                 after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>}  
                                 btnStyle={{borderRadius: "7px"}}
-                                action={() => register()}
+                                action={async () => {
+                                    if (validateReg()) {
+                                        await register();
+                                    }
+                                }}
                             />
                         </div>
                     </div>

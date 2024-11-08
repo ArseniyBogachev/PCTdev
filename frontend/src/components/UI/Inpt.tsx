@@ -49,7 +49,7 @@ const Inpt = ({
                 }
                 <div className={classes.main__wrapper__after}>{after}</div>
             </div>
-            <label className={classes.main__error}>{textError}</label>
+            {stateError ? <label className={classes.main__error}>{textError}</label> : <></>}
         </div>
     )
 }

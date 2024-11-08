@@ -19,13 +19,17 @@ import { meApi } from "../services/api/auth.api";
 const Login = () => {
 
     const navigate = useNavigate();
-    const [cookies, setCookie, removeCookie] = useCookies<string>(['user']);
+    const [_, setCookie, __] = useCookies<string>(['user']);
 
     const [showPass, setShowPass] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState<{state: boolean, message: string}>({
+        state: false,
+        message: 'Неверный пароль'
+    });
 
-    const { addListNotification, setLoading, setCurrentNotification } = generalSlice.actions;
+    const { setLoading, setCurrentNotification } = generalSlice.actions;
     const { write } = userSlice.actions
     const dispatch = useAppDispatch()
 
@@ -53,6 +57,7 @@ const Login = () => {
             
         }
         else {
+            setError({state: true, message: error.message});
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка',
@@ -61,7 +66,10 @@ const Login = () => {
                 lvl: 'lvl1',
                 close: true
             }));
-            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+            setTimeout(() => {
+                dispatch(setCurrentNotification(false));
+                setError({state: false, message: error.message});
+            }, 5100);
         }
         dispatch(setLoading(false));
     }
@@ -94,6 +102,8 @@ const Login = () => {
                                     value={password}
                                     setValue={setPassword}
                                     after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
+                                    stateError={error.state}
+                                    textError={error.message}
                                 />
                             </div>
                         </div>

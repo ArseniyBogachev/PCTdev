@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:12-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: 'PCT'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'Danny100'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    networks:
+      - djangonetwork
+
+  backend:
+    build: ./backend
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    links:
+      - db:db
+    networks:
+      - djangonetwork
+  #  volumes:
+  #    - ./backend:/backend
+  #   command: python football/manage.py runserver
+
+  # frontend:
+  #   build: ./frontend
+  #   volumes:
+  #     - './frontend:/frontend'
+  #     - '/frontend/node_modules'
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - db
+
+networks:
+  djangonetwork:
+    driver: bridge
