@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from .env import *
+# from .env import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SRV_SECRET_KEY
+SECRET_KEY = "django-insecure-a(*m4)doo&soa&2jo=b%$9oze$88#fb&-t*fyhxi^hy5n@w8ou"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [SRV_HOST]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL=True
 
-CORS_ORIGIN_WHITELIST = [SRV_CORS_ORIGIN_WHITELIST]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -98,15 +98,10 @@ WSGI_APPLICATION = 'pct.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': DB_NAME,
-        # 'USER': DB_USER,
-        # 'PASSWORD': DB_PASSWORD,
-        # 'HOST': DB_HOST,
-        # 'PORT': DB_PORT
         'NAME': "PCT",
         'USER': "postgres",
         'PASSWORD': "Danny100",
-        'HOST': "db",
+        'HOST': "postgres",
         'PORT': "5432"
     }
 }
@@ -115,11 +110,11 @@ AUTH_USER_MODEL = "authentification.User"
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = SMTP_EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = SMTP_EMAIL_HOST_PASSWORD
-EMAIL_HOST = SMTP_EMAIL_HOST
-EMAIL_PORT = SMTP_EMAIL_PORT
-EMAIL_USE_TLS = SMTP_EMAIL_USE_TLS
+EMAIL_HOST_USER = "arsen.bogach@gmail.com"
+EMAIL_HOST_PASSWORD = "zhwg qacr viwp frsb"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 DJOSER = {
     'DOMAIN': "localhost:8000",

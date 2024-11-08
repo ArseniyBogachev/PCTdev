@@ -5,6 +5,10 @@ class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields):
 
+        if not self.all().count():
+            extra_fields.setdefault('is_staff', True)
+            extra_fields.setdefault('is_superuser', True)
+
         extra_fields.setdefault('is_active', False)
 
         if not email:

@@ -1,14 +1,17 @@
 FROM python:3.12.2
 WORKDIR /backend
 
-COPY requirements.txt ./
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+ENV POSTGRES_DB=PCT
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=Danny100
+ENV POSTGRES_HOST=postgres
+ENV POSTGRES_PORT=5432
+
+COPY . .
+
 RUN pip install -r requirements.txt
 
-COPY .env ./
-COPY pct ./
-
-RUN cd pct
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-
-CMD ["python", "manage.py", "runserver"]
+EXPOSE 8000
