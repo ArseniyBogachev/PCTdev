@@ -11,22 +11,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from .env import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print(BASE_DIR)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a(*m4)doo&soa&2jo=b%$9oze$88#fb&-t*fyhxi^hy5n@w8ou'
+SECRET_KEY = SRV_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [SRV_HOST]
 
 
 # Application definition
@@ -50,10 +50,12 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL=True
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3000',
+#     'http://127.0.0.1:3000'
+# ]
+
+CORS_ORIGIN_WHITELIST = [SRV_CORS_ORIGIN_WHITELIST]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,17 +101,13 @@ REST_FRAMEWORK = {
 
 WSGI_APPLICATION = 'pct.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PCT',
-        'USER': 'postgres',
-        'PASSWORD': 'Danny100',
-        'HOST': 'localhost'
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST
     }
 }
 
@@ -117,25 +115,22 @@ AUTH_USER_MODEL = "authentification.User"
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = 'arsen.bogach@gmail.com'
-EMAIL_HOST_PASSWORD = 'zhwg qacr viwp frsb'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = SMTP_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = SMTP_EMAIL_HOST_PASSWORD
+EMAIL_HOST = SMTP_EMAIL_HOST
+EMAIL_PORT = SMTP_EMAIL_PORT
+EMAIL_USE_TLS = SMTP_EMAIL_USE_TLS
 
 DJOSER = {
-    'DOMAIN': 'localhost:8000',
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'DOMAIN': DJ_DOMAIN,
+    'PASSWORD_RESET_CONFIRM_URL': DJ_PASSWORD_RESET_CONFIRM_URL,
+    'USERNAME_RESET_CONFIRM_URL': DJ_USERNAME_RESET_CONFIRM_URL,
+    'ACTIVATION_URL': DJ_ACTIVATION_URL,
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user': 'authentification.serializers.AuthSerializer',
     },
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -153,10 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Moscow'
@@ -165,13 +156,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
