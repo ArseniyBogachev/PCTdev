@@ -51,7 +51,7 @@ const Login = () => {
                 }));
                 setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
                 setCookie('token', response.data.auth_token);
-                dispatch(write(responseMe.data[0]))
+                dispatch(write(responseMe.data))
                 navigate('/order', { replace: true });
             }
             
@@ -106,7 +106,10 @@ const Login = () => {
                                     textError={error.message}
                                 />
                             </div>
-                            <div className={classes.content__wrapper__body__register} onClick={() => navigate('/register')}>Создать аккаунт</div>
+                            <div className={classes.content__wrapper__body__btn}>
+                                <div className={classes.content__wrapper__body__btn__register} onClick={() => navigate('/register')}>Создать аккаунт</div>
+                                <div className={classes.content__wrapper__body__btn__reset} onClick={() => navigate('/reset')}>Сброс пароля</div>
+                            </div>
                         </div>
                         <div className={classes.content__wrapper__footer}>
                             <Btn 

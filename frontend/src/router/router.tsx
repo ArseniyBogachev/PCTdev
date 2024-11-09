@@ -13,6 +13,8 @@ import Product from "../pages/menu/Product";
 import User from "../pages/menu/User";
 import Factory from "../pages/menu/Factory";
 import Profile from "../pages/menu/Profile";
+import Reset from "../pages/Reset";
+import NewPass from "../pages/NewPass";
 
 
 const store = setupStore()
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register/>,
+            },
+            {
+                path: "/reset",
+                element: <Reset/>,
+            },
+            {
+                path: "/new/password/:uid/:token/",
+                element: <NewPass/>
             },
             {
                 element: <Account/>,

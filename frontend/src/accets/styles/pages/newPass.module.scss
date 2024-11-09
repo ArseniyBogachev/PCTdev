@@ -12,21 +12,18 @@
 }
 
 .content {
-    width: 16%;
-    height: 85%;
+    width: 18%;
+    height: 44%;
     box-shadow: 0 0 8px 1px rgb(240, 240, 240);
     border-radius: 20px;
     border: 1px solid #ebebf5;
     &__wrapper {
         width: 100%;
         height: 100%;
-        padding: 8%;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
+        padding: 6%;
         &__header {
             width: 100%;
-            height: 8%;
+            height: 15%;
             &__image {
                 width: 100%;
                 height: 100%;
@@ -39,32 +36,20 @@
         }
         &__body {
             width: 100%;
-            height: 75%;
-            position: relative;
+            height: 65%;
             display: flex;
-            justify-content: space-between;
+            position: relative;
+            justify-content: space-around;
             flex-direction: column;
-            &__item {
+            margin-top: 5%;
+            &__pass {
                 width: 100%;
-                height: 8.5%;
-            }
-            &__login {
-                font-family: "Montserrat", sans-serif;
-                position: absolute;
-                font-size: 1.5vh;
-                bottom: -3vh;
-                right: 0;
-                cursor: pointer;
-                &:hover {
-                    text-decoration: underline;
-                }
+                height: 20%;
             }
         }
         &__footer {
             width: 100%;
-            height: 7%;
-            display: flex;
-            align-items: end;
+            height: 15%;
         }
     }
 }

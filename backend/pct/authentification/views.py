@@ -1,29 +1,16 @@
 import requests
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from django.http import HttpResponseRedirect
 from .serializers import AdminUserSerializer, AuthSerializer, AdminUserSerializer
 from .models import User as UserModel
 from .permissions import IsAdmin
 from application.paginations import DefaultPagination
-
-
-
-# generics.RetrieveUpdateAPIView !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-# class Admin(ModelViewSet):
-#     queryset = UserModel.objects.all()
-#     serializer_class = AdminUserSerializer
-
-
-# class User(ModelViewSet):
-#     queryset = UserModel.objects.all()
-#     serializer_class = AuthSerializer
 
 
 class ListUserAdmin(ListAPIView):
@@ -38,11 +25,11 @@ class ListUserAdmin(ListAPIView):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated, IsAdmin])
 def user_api_del(request):
-    print(request.data['id'])
+    user = UserModel.objects.filter(id__in=request.data['id']).delete()
 
-    # if factory:
-    return Response({'message': 'User were successfully deleted'})
-    # return Response({'message': 'Factories not found'}, status=404)
+    if user:
+        return Response({'message': 'User were successfully deleted'})
+    return Response({'message': 'User not found'}, status=404)
 
 
 @api_view(['GET'])
@@ -53,19 +40,14 @@ def activate(request, uid, token, format=None):
     response = requests.post(url, data=payload)
 
     if response.status_code == 204:
-        return Response({}, response.status_code)
+        return Response({'message': 'OK'}, response.status_code)
     else:
-        print('else')
-        return Response(response.json())
+        return Response({'message': 'Error activated'})
+    
 
-
-
-
-
-
-
-
-
+@api_view(['GET'])
+def reset_password(request, uid, token, format=None):
+    return HttpResponseRedirect(f'http://localhost:3000/new/password/{uid}/{token}/')
 
 
 

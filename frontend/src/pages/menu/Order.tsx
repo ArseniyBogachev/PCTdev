@@ -95,7 +95,6 @@ const Order = () => {
         filter: {id?: string | undefined, factory?: string | null, status?: string | null, ordering?: string | undefined} = {id: null, factory: null, status: null, ordering: '-id'}
     ) {
         const responseOrder = await getOrderApi(cookies.token, page, filter);
-        console.log(responseOrder)
 
         if (responseOrder.status === 200 && user.is_superuser) {
             const responsePF = await getFactoryProductApi(cookies.token);

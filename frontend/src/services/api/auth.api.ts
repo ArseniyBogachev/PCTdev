@@ -9,7 +9,8 @@ async function loginApi(email: string, password: string) {
                 email: email, 
                 password: password
             }
-        )
+        );
+
         return response;
     }
     catch (e) {
@@ -35,7 +36,7 @@ async function registerApi(
                 organization: organization, 
                 inn: inn
             }
-        )
+        );
 
         return response;
     }
@@ -49,13 +50,40 @@ async function meApi(
     token: string
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/', 
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me/', 
             {
                 headers: {
                     "Authorization": `Token ${token}`
                 }
             }
-        )
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
+async function updateMeApi(
+    token: string,
+    data: {
+        phone: string,
+        fio: string,
+        organization: string,
+        inn: string
+    }
+) {
+    try {
+        const response = await axios.put('http://127.0.0.1:8000/api/v1/auth/users/me/', 
+            data,
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        );
 
         return response;
     }
@@ -83,7 +111,7 @@ async function getUsersApi (
                     "Authorization": `Token ${token}`
                 }
             }
-        )
+        );
 
         return response;
     }
@@ -105,7 +133,43 @@ async function delUsersApi (
                 },
                 data: {id: data}
             }
-        )
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
+async function sendEmailApi (
+    email: string
+) {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/reset_password/', 
+            {
+                email: email
+            }
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
+async function updatePasswordApi (
+    data: {
+        uid: string
+        token: string
+        new_password: string
+    }
+) {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/reset_password_confirm/', data);
 
         return response;
     }
@@ -120,5 +184,8 @@ export {
     registerApi,
     meApi,
     getUsersApi,
-    delUsersApi
+    delUsersApi,
+    updateMeApi,
+    sendEmailApi,
+    updatePasswordApi
 }

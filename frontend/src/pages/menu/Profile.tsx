@@ -3,7 +3,6 @@ import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "../../accets/styles/pages/menu/profile.module.scss";
-import Btn from "../../components/UI/Btn";
 import Inpt from "../../components/UI/Inpt";
 import HeaderBtn from "../../components/HeaderBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +10,8 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
 import { userSlice } from "../../services/store/reducers/user.dux";
+import { updateMeApi } from "../../services/api/auth.api";
+import { generalSlice } from "../../services/store/reducers/general.dux";
 
 
 const Profile = () => {
@@ -20,7 +21,8 @@ const Profile = () => {
     const { write } = userSlice.actions;
     const [cookies, _, removeCookie] = useCookies<string>(["user"]);
     const navigate = useNavigate();
-    const deepEqual = require('deep-equal')
+    const deepEqual = require('deep-equal');
+    const { setLoading, setCurrentNotification } = generalSlice.actions
 
     const [disabled, setDisabled] = useState(true);
     const [phone, setPhone] = useState('');
@@ -30,12 +32,47 @@ const Profile = () => {
     const [email, setEmail] = useState('');
 
     useEffect(() => {
-        setPhone(user.phone)
-        setFio(user.fio)
-        setOrganization(user.organization)
-        setInn(user.inn)
-        setEmail(user.email)
+        setPhone(user.phone);
+        setFio(user.fio);
+        setOrganization(user.organization);
+        setInn(user.inn);
+        setEmail(user.email);
     }, [])
+
+    async function updateMe () {
+        dispatch(setLoading(true));
+        const response = await updateMeApi(cookies.token, {
+            phone: phone,
+            fio: fio,
+            organization: organization,
+            inn: inn
+        });
+
+        if (response.status === 200) {
+            dispatch(write({...user, ...{phone: phone, fio: fio, organization: organization, inn: inn}}));
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Изменено',
+                extraText: `Данные изменены`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+        }
+        else {
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось изменить данные`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+        }
+        dispatch(setLoading(false));
+    }
 
     return (
         <div className={classes.main}>
@@ -44,7 +81,7 @@ const Profile = () => {
                     <div className={classes.content__header}>
                         <HeaderBtn 
                             one={{
-                                actionOne: () => {},
+                                actionOne: () => updateMe(),
                                 textOne: 'Сохранить',
                                 afterOne: <FontAwesomeIcon icon={faSave} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
                                 clsStyleOne: deepEqual(

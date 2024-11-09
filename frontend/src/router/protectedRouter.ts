@@ -5,7 +5,8 @@ import { User } from "../services/typing/interfaces/store/user.interfaces";
 const auth = [
     '/login',
     '/register',
-    '/'
+    '/',
+    '/reset'
 ];
 
 const notAuth = [
