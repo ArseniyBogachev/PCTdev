@@ -46,10 +46,11 @@ class FactoryApiCL(ListCreateAPIView):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def factory_api_del(request):
-    factory = Factory.objects.filter(id__in=request.data['id']).delete()
+    if request.data['id']:
+        factory = Factory.objects.filter(id__in=request.data['id']).delete()
 
-    if factory:
-        return Response({'message': 'Factories were successfully deleted'})
+        if factory[0]:
+            return Response({'message': 'Factories were successfully deleted'})
     return Response({'message': 'Factories not found'}, status=404)
 
 
@@ -63,10 +64,11 @@ class ProductApiCL(ListCreateAPIView):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated, IsAdmin])
 def product_api_del(request):
-    product = Product.objects.filter(id__in=request.data['id']).delete()
+    if request.data['id']:
+        product = Product.objects.filter(id__in=request.data['id']).delete()
 
-    if product:
-        return Response({'message': 'Factories were successfully deleted'})
+        if product[0]:
+            return Response({'message': 'Factories were successfully deleted'})
     return Response({'message': 'Factories not found'}, status=404)
 
 
@@ -133,7 +135,7 @@ def order_api_del(request):
     if request.data['id']:
         product = Order.objects.filter(id__in=request.data['id']).delete()
 
-        if product:
+        if product[0]:
             return Response({'message': 'Factories were successfully deleted'})
     return Response({'message': 'Factories not found'}, status=404)
     

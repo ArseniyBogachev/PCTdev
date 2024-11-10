@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import classes from "../accets/styles/components/pagination.module.scss";
 import classNames from 'classnames';
 import { PropsPagination } from "../services/typing/interfaces/components/pagination.interfaces";
@@ -9,23 +10,29 @@ import { range } from "../services/hooks/other";
 
 
 const Pagination:React.FC<PropsPagination> = ({count, currentPage, api}) => {
+
+    const [currentGroup, setCurrentGroup] = useState<number>(1);
+
+    const maxGroup = Math.ceil(count / 3);
+
     return (
         <div className={classes.main}>
             <Btn 
                 before={<FontAwesomeIcon icon={faChevronLeft} style={{fontSize: '1.2vh'}}/>} 
                 mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                 btnStyle={{borderRadius: '5px'}} 
-                btnCls={'gray'}
+                btnCls={currentGroup > 1 ? 'gray' : 'inactive'}
+                action={() => setCurrentGroup(currentGroup > 1 ? currentGroup - 1 : currentGroup)}
             />
             {
-                range(1, count + 1).map(item =>
+                range(currentGroup * 3 - 2, currentGroup * 3 + 1).map(item =>
                     <Btn
                         text={item} 
                         mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                         btnStyle={{borderRadius: '5px'}}
-                        btnCls={currentPage === item ? 'default' : 'gray'}
+                        btnCls={currentPage === item ? 'default' : item > count ? 'inactive' : 'gray'}
                         textStyle={{fontSize: '1.5vh'}}
-                        action={() => api(item)}
+                        action={() => {if (item <= count) {api(item)}}}
                     />
                 )
             }       
@@ -33,7 +40,8 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage, api}) => {
                 after={<FontAwesomeIcon icon={faChevronRight} style={{fontSize: '1.2vh'}}/>} 
                 mainStyle={{width: '4vh', height: '4vh',}} 
                 btnStyle={{borderRadius: '5px'}} 
-                btnCls={'gray'}
+                btnCls={currentGroup < Math.ceil(count/3) ? 'gray' : 'inactive'}
+                action={() => setCurrentGroup(currentGroup < maxGroup ? currentGroup + 1 : currentGroup)}
             />
         </div>
     )

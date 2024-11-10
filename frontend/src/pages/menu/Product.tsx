@@ -155,7 +155,7 @@ const Product = () => {
                             }}
                             two={{
                                 textTwo: 'Удалить',
-                                actionTwo: () => delProduct(),
+                                actionTwo: () => listChkBx.some(item => item.state === true) ? delProduct() : {},
                                 clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
                             }}
                         />

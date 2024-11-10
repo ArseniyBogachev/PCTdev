@@ -368,7 +368,7 @@ const Order = () => {
                             }}
                             two={{
                                 textTwo: 'Удалить',
-                                actionTwo: () => delOrder(),
+                                actionTwo: () => listChkBx.some(item => item.state === true) ? delOrder() : {},
                                 clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
                             }}
                         />

@@ -20,7 +20,6 @@ import { factorySlice } from "../../services/store/reducers/factory.dux";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { constructTbl, getNestingFromObj } from "../../services/hooks/other";
 import { currentOrdering } from "../../services/hooks/other";
-import { checkUrl } from "../../router/protectedRouter";
 
 
 const Factory = () => {
@@ -188,7 +187,7 @@ const Factory = () => {
                             }}
                             two={{
                                 textTwo: 'Удалить',
-                                actionTwo: () => delFactory(),
+                                actionTwo: () => listChkBx.some(item => item.state === true) ? delFactory() : {},
                                 clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
                             }}
                         />
@@ -310,6 +309,7 @@ const Factory = () => {
                                     count={pageCount} 
                                     currentPage={currentPage} 
                                     api={(page: number | undefined = 1) => getFactory(page, {...getCurrentFilter(searchId.value, factorySlct.current, searchPhone.value, listOrder)})}
+                                    // currentGroup={}
                                 />
                             </div>
                         </div>

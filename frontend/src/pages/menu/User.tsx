@@ -136,7 +136,7 @@ const User = () => {
                             }} 
                             two={{
                                 textTwo: 'Удалить',
-                                actionTwo: () => delUsers(),
+                                actionTwo: () => listChkBx.some(item => item.state === true) ? delUsers() : {},
                                 clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
                             }}
                         />

@@ -25,10 +25,11 @@ class ListUserAdmin(ListAPIView):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated, IsAdmin])
 def user_api_del(request):
-    user = UserModel.objects.filter(id__in=request.data['id']).delete()
+    if request.data['id']:
+        user = UserModel.objects.filter(id__in=request.data['id']).delete()
 
-    if user:
-        return Response({'message': 'User were successfully deleted'})
+        if user[0]:
+            return Response({'message': 'User were successfully deleted'})
     return Response({'message': 'User not found'}, status=404)
 
 

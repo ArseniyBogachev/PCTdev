@@ -41,18 +41,18 @@
             position: relative;
             justify-content: space-around;
             flex-direction: column;
-            margin-top: 5%;
+            margin-top: 4%;
             &__login {
                 width: 100%;
-                height: 23%;
+                height: 22%;
             }
             &__pass {
                 width: 100%;
-                height: 20%;
+                height: 22%;
             }
             &__btn {
                 position: absolute;
-                bottom: 0;
+                bottom: -4%;
                 right: 0;
                 width: 100%;
                 display: flex;

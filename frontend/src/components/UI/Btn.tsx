@@ -20,7 +20,9 @@ const Btn = ({
                 className={classNames(classes.main__btn, classes[`main__${btnCls ?? 'default'}`])} 
                 type={type}
                 style={btnStyle}
+                // style={{...btnStyle, cursor: 'default'}}
                 onClick={action}
+                role="button"
             >
                 {before}
                 <span style={textStyle}>{text}</span>
