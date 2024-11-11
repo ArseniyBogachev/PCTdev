@@ -24,24 +24,15 @@ const notRight = [
 ]
 
 export function checkUrl (url: string, navigate: any, user?: User,) {
-    console.log('url', url)
-    console.log('user', user)
-    if (auth.find(item => {
-        console.log('item -> ', item);
-        console.log('item.test(url) -> ', item.test(url))
-        return item.test(url)
-    }) && user) {
-        console.log('1')
+    if (auth.find(item => item.test(url)) && user) {
         navigate('/profile');
         return
     }
     else if (notAuth.find(item => item.test(url)) && !user) {
-        console.log('2')
         navigate('/login');
         return
     }
     else if (notRight.find(item => item.test(url)) && !user.is_superuser) {
-        console.log('3')
         navigate('/profile');
         return
     }

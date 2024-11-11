@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
 import { userSlice } from "../../services/store/reducers/user.dux";
 import { updateMeApi } from "../../services/api/auth.api";
 import { generalSlice } from "../../services/store/reducers/general.dux";
+import { logoutApi } from "../../services/api/auth.api";
 
 
 const Profile = () => {
@@ -72,7 +73,30 @@ const Profile = () => {
             setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         dispatch(setLoading(false));
-    }
+    };
+
+    async function logout () {
+        dispatch(setLoading(true));
+        const response = await logoutApi(cookies.token);
+
+        if (response.status === 204) {
+            removeCookie('token');
+            dispatch(write(undefined));
+            navigate('/login', { replace: true });
+        }
+        else {
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Ошибка',
+                extraText: `Не удалось выйти из аккаунта`,
+                totalStyle: 'reject',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
+        }
+        dispatch(setLoading(false));
+    };
 
     return (
         <div className={classes.main}>
@@ -91,11 +115,7 @@ const Profile = () => {
                             }}
                             two={{
                                 textTwo: 'Выйти',
-                                actionTwo: () => {
-                                    removeCookie('token');
-                                    dispatch(write(undefined));
-                                    navigate('/login', { replace: true });
-                                },
+                                actionTwo: () => logout(),
                                 afterTwo: <FontAwesomeIcon icon={faArrowRightFromBracket} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
                                 clsStyleTwo: "red"
                             }}

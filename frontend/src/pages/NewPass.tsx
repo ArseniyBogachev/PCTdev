@@ -8,7 +8,7 @@ import Btn from "../components/UI/Btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { updatePasswordApi } from "../services/api/auth.api";
+import { updatePasswordApi, loginApi } from "../services/api/auth.api";
 import { generalSlice } from "../services/store/reducers/general.dux";
 import { useAppDispatch } from "../services/hooks/redux";
 
@@ -20,6 +20,7 @@ const NewPass = () => {
     const dispatch = useAppDispatch();
     const { setLoading, setCurrentNotification } = generalSlice.actions;
 
+    const [disabled, setDisabled] = useState<boolean>(false);
     const [showPass, setShowPass] = useState<boolean>(false);
     const [reShowPass, setReShowPass] = useState<boolean>(false);
     const [password, setPassword] = useState<string>('');
@@ -54,6 +55,7 @@ const NewPass = () => {
         const response = await updatePasswordApi({uid: uid, token: token, new_password: password});
 
         if (response.status === 204) {
+            setDisabled(true);
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Изменено',
@@ -63,7 +65,6 @@ const NewPass = () => {
                 close: true
             }));
             setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
-            navigate('/login', { replace: true });
         }
         else {
             dispatch(setCurrentNotification({
@@ -97,9 +98,14 @@ const NewPass = () => {
                                     name={"Новый пароль"}
                                     value={password}
                                     setValue={setPassword}
-                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!showPass)}/>}
+                                    after={<FontAwesomeIcon 
+                                        icon={faEyeSlash} 
+                                        style={{fontSize: '2.5vh', cursor: disabled ? "default" : "pointer", color: '#9D9BB4'}} 
+                                        onClick={() => disabled ? {} : setShowPass(!showPass)}
+                                    />}
                                     stateError={errorPass.state}
                                     textError={errorPass.message}
+                                    disabled={disabled}
                                 />
                             </div>
                             <div className={classes.content__wrapper__body__pass}>
@@ -109,9 +115,14 @@ const NewPass = () => {
                                     name={"Повторите пароль"}
                                     value={rePassword}
                                     setValue={setRePassword}
-                                    after={<FontAwesomeIcon icon={faEyeSlash} style={{fontSize: '2.5vh', cursor: "pointer", color: '#9D9BB4'}} onClick={() => setShowPass(!setReShowPass)}/>}
+                                    after={<FontAwesomeIcon 
+                                        icon={faEyeSlash} 
+                                        style={{fontSize: '2.5vh', cursor: disabled ? "default" : "pointer", color: '#9D9BB4'}} 
+                                        onClick={() => disabled ? {} : setReShowPass(!reShowPass)}
+                                    />}
                                     stateError={errorRePass.state}
                                     textError={errorRePass.message}
+                                    disabled={disabled}
                                 />
                             </div>
                         </div>

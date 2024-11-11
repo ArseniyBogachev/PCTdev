@@ -18,6 +18,26 @@ async function loginApi(email: string, password: string) {
     }
 };
 
+
+async function logoutApi(token: string) {
+    try { 
+        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/token/logout/', 
+            {}, 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 async function registerApi(
     email: string,
     phone: string,
@@ -180,6 +200,7 @@ async function updatePasswordApi (
 
 
 export {
+    logoutApi,
     loginApi,
     registerApi,
     meApi,

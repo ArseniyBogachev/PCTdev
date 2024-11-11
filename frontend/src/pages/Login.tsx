@@ -117,7 +117,7 @@ const Login = () => {
                                 text={"Вход"} 
                                 after={<FontAwesomeIcon icon={faChevronRight} style={{marginLeft: "10px", fontSize: '1.5vh'}}/>} 
                                 btnStyle={{borderRadius: "7px"}}
-                                action={() => login()}
+                                action={async () => await login()}
                             />
                         </div>
                     </div>
