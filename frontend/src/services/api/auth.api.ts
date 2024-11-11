@@ -3,8 +3,9 @@ import axios from "axios";
 
 
 async function loginApi(email: string, password: string) {
+    console.log('ENV -> ', process.env.REACT_APP_SERVER)
     try { 
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/token/login/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/auth/token/login/`, 
             {
                 email: email, 
                 password: password
@@ -21,7 +22,7 @@ async function loginApi(email: string, password: string) {
 
 async function logoutApi(token: string) {
     try { 
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/token/logout/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/auth/token/logout/`, 
             {}, 
             {
                 headers: {
@@ -47,7 +48,7 @@ async function registerApi(
     password: string,
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/auth/users/`, 
             {
                 email: email, 
                 password: password,
@@ -70,7 +71,7 @@ async function meApi(
     token: string
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me/', 
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/auth/users/me/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -96,7 +97,7 @@ async function updateMeApi(
     }
 ) {
     try {
-        const response = await axios.patch('http://127.0.0.1:8000/api/v1/auth/users/me/', 
+        const response = await axios.patch(`${process.env.REACT_APP_SERVER}/api/v1/auth/users/me/`, 
             data,
             {
                 headers: {
@@ -119,7 +120,7 @@ async function getUsersApi (
     filter: {organization?: string | null, email?: string | null, factory?: string | null}
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/auth/user/list/', 
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/auth/user/list/`, 
             {
                 params: {
                     page: page,
@@ -146,7 +147,7 @@ async function delUsersApi (
     data: number[]
 ) {
     try {
-        const response = await axios.delete('http://127.0.0.1:8000/api/v1/auth/user/del/', 
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/v1/auth/user/del/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -167,7 +168,7 @@ async function sendEmailApi (
     email: string
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/reset_password/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/auth/users/reset_password/`, 
             {
                 email: email
             }
@@ -189,7 +190,7 @@ async function updatePasswordApi (
     }
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/reset_password_confirm/', data);
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/auth/users/reset_password_confirm/`, data);
 
         return response;
     }

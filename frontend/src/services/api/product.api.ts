@@ -8,7 +8,7 @@ async function getProductApi(
     page: number | undefined = 1
 ) {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/app/product/?page=${page}`, 
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/app/product/?page=${page}`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -29,7 +29,7 @@ async function addProductApi(
     data: Product
 ) {
     try {
-        const response = await axios.post(`http://127.0.0.1:8000/api/v1/app/product/`,
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/product/`,
             data, 
             {
                 headers: {
@@ -51,7 +51,7 @@ async function delProductApi(
     data: number[]
 ) {
     try {
-        const response = await axios.delete('http://127.0.0.1:8000/api/v1/app/product/del/', 
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/v1/app/product/del/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`

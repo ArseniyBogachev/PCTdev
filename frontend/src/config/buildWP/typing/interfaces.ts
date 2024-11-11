@@ -11,6 +11,7 @@ interface Paths {
     entry: string,
     output: string,
     html: string
+    dotenv: string
 }
 
 interface Opt {

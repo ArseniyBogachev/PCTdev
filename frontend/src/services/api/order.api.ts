@@ -10,7 +10,7 @@ async function addOrderApi(
     }
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/app/order/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/order/`, 
             {
                 xml: data.xml, 
                 factory: data.factory, 
@@ -41,7 +41,7 @@ async function addQuantityProductApi(
     }
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/app/quantity_product/create/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/quantity_product/create/`, 
             {
                 order: data.order, 
                 quantity_product: data.quantityProduct, 
@@ -65,7 +65,7 @@ async function getFactoryProductApi(
     token: string,
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/app/factory_product/list/', 
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/app/factory_product/list/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -87,7 +87,7 @@ async function getOrderApi(
     filter: {id?: string | undefined, factory?: string | null, status?: string | null, ordering?: string | null},
 ) {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/app/order/',
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/app/order/`,
             {
                 params: {
                     page: page,
@@ -115,7 +115,7 @@ async function delOrderApi(
     data: number[]
 ) {
     try {
-        const response = await axios.delete('http://127.0.0.1:8000/api/v1/app/order/del/', 
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/v1/app/order/del/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`
@@ -138,7 +138,7 @@ async function updateOrderApi(
     id: number
 ) {
     try {
-        const response = await axios.put(`http://127.0.0.1:8000/api/v1/app/order/update/${id}`, 
+        const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/v1/app/order/update/${id}`, 
             data,
             {
                 headers: {

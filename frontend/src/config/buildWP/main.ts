@@ -19,7 +19,7 @@ export const buildConf = (opt: Opt): webpack.Configuration => {
             clean: true,
             publicPath: '/',
         },
-        plugins: plugins({paths: paths}),
+        plugins: plugins({paths: paths, env: env}),
         module: module({isDev: isDev}),
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],

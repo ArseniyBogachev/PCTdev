@@ -14,7 +14,7 @@ async function addFactoryApi(
     }
 ) {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/app/factory/', 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/factory/`, 
             {
                 name: data.name, 
                 phone: data.phone,
@@ -44,7 +44,7 @@ async function getFactoryApi(
     filter: {id?: string | null, name?: string | null, phone?: string | null, ordering?: string | null},
 ) {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/app/factory/`, 
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/app/factory/`, 
             {
                 params: {
                     page: page,
@@ -72,7 +72,7 @@ async function delFactoryApi(
     data: number[]
 ) {
     try {
-        const response = await axios.delete('http://127.0.0.1:8000/api/v1/app/factory/del/', 
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/v1/app/factory/del/`, 
             {
                 headers: {
                     "Authorization": `Token ${token}`

@@ -25,7 +25,6 @@ const App = () => {
         const response = await meApi(cookies.token);
 
         if (response.status === 200) {
-            console.log('me APP', response)
             dispatch(write(response.data));
             checkUrl(window.location.pathname, navigate, response.data);
         }

@@ -1,5 +1,5 @@
 
-import webpack from 'webpack'
+import webpack from 'webpack';
 import path from 'path';
 import { buildConf } from './src/config/buildWP/main';
 import { Env } from './src/config/buildWP/typing/interfaces';
@@ -16,7 +16,8 @@ export default (env: Env) => {
         paths: {
             entry: path.resolve(__dirname, 'src', 'index.tsx'),
             output: path.resolve(__dirname, 'build'),
-            html: path.resolve(__dirname, 'public', 'index.html')
+            html: path.resolve(__dirname, 'public', 'index.html'),
+            dotenv: path.resolve(__dirname, `.env.${env.mode}`)
         }
     })
     
