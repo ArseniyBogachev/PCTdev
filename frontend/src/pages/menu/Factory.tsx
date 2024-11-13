@@ -14,7 +14,7 @@ import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
 import FactodyMdl from "../../components/BodyMdl/FactoryMdl";
-import { addFactoryApi, getFactoryApi, delFactoryApi } from "../../services/api/factory.api";
+import { addFactoryApi, getFactoryApi, delFactoryApi, getFactoryFilterApi } from "../../services/api/factory.api";
 import { useAppSelector, useAppDispatch } from "../../services/hooks/redux";
 import { factorySlice } from "../../services/store/reducers/factory.dux";
 import { generalSlice } from "../../services/store/reducers/general.dux";
@@ -56,7 +56,7 @@ const Factory = () => {
     const { newFactory, listFactory, listChkBx, allChkBx, searchId, searchPhone, factorySlct } = useAppSelector(state => state.factory);
     const { user } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch, setFactorySlct } = factorySlice.actions
+    const { setListFactory, cleanItemFactory, setListChkBx, detailSetListChkBx, allSetListChkBx, cleanState, setSearch, setFactorySlct, setValidateNewFactory } = factorySlice.actions
     const { setLoading, setCurrentNotification } = generalSlice.actions;
     const navigate = useNavigate();
     const [cookies, _, __] = useCookies<string>(["user"]);
@@ -68,18 +68,23 @@ const Factory = () => {
         const response = await getFactoryApi(cookies.token, page, filter);
 
         if (response.status === 200) {
-            dispatch(setListFactory(response.data.results));
-            dispatch(setListChkBx(response.data.results.map((item: any) => ({
-                id: item.id,
-                state: false,
-                setState: () => dispatch(detailSetListChkBx(item.id))
-            }))));
-            dispatch(setFactorySlct({list: response.data.results.map((item: any) => ({
-                id: item.id,
-                name: item.name
-            }))}));
-            setPageCount(response.data.count_page);
-            setCurrentPage(page);
+            const responseFilterName = await getFactoryFilterApi(cookies.token);
+            console.log(responseFilterName)
+
+            if (responseFilterName.status === 200) {
+                dispatch(setListFactory(response.data.results));
+                dispatch(setListChkBx(response.data.results.map((item: any) => ({
+                    id: item.id,
+                    state: false,
+                    setState: () => dispatch(detailSetListChkBx(item.id))
+                }))));
+                dispatch(setFactorySlct({list: responseFilterName.data.map((item: {name: string}, index: number) => ({
+                    id: index,
+                    name: item.name
+                }))}));
+                setPageCount(response.data.count_page);
+                setCurrentPage(page);
+            }
         }
         else {
             console.log(response);
@@ -105,6 +110,7 @@ const Factory = () => {
             dispatch(cleanItemFactory());
         }
         else {
+            dispatch(setValidateNewFactory());
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка',
@@ -176,7 +182,7 @@ const Factory = () => {
                             action: () => addFactory(),
                             text: 'Применить'
                         }}
-                        bodyH='60vh'
+                        bodyH='65vh'
                         bodyW='25vh'
                     />
                     <div className={classes.content__header}>

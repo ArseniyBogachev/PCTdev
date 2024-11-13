@@ -20,3 +20,17 @@ class AdminUserSerializer(ModelSerializer):
 
     def get_factory(self, instance):
         return Factory.objects.filter(owner=instance.id).values('name')
+    
+
+class UserFilterOrgSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['organization']
+
+
+class UserFilterEmailSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['email']

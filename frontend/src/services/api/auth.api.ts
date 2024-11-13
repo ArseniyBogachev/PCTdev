@@ -200,6 +200,46 @@ async function updatePasswordApi (
 };
 
 
+async function getFilterOrgApi (
+    token: string
+) {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/auth/user/filter/org/`, 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
+async function getFilterEmailApi (
+    token: string
+) {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/auth/user/filter/email/`, 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        );
+
+        return response;
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     logoutApi,
     loginApi,
@@ -209,5 +249,7 @@ export {
     delUsersApi,
     updateMeApi,
     sendEmailApi,
-    updatePasswordApi
+    updatePasswordApi,
+    getFilterOrgApi,
+    getFilterEmailApi
 }

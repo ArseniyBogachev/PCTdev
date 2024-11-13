@@ -6,7 +6,7 @@ class Factory(models.Model):
     phone = models.CharField(max_length=100)
     email = models.EmailField()
     fio = models.CharField(max_length=100)
-    registration_number = models.CharField(max_length=100)
+    registration_number = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, null=True)
     phone_company = models.CharField(max_length=100, null=True)
     owner = models.ForeignKey('authentification.User', null=True, on_delete=models.CASCADE)
@@ -41,6 +41,8 @@ class Order(models.Model):
     creator_at = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
     company = models.CharField(max_length=100, null=True)
+    shipping_date_status = models.BooleanField(default=False)
+    accepted_factory_status = models.BooleanField(default=False)
 
 
 class QuantityProduct(models.Model):

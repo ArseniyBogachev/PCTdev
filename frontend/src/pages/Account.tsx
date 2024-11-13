@@ -24,7 +24,7 @@ const Account = () => {
                     <nav className={classes.navbar}>
                         <div className={classes.navbar__header}>
                             <div className={classes.navbar__header__wrapper}>
-                                <img src={logo} alt="..." />
+                                <img src={logo} alt="..." onClick={() => navigate('/order')}/>
                             </div>
                         </div>
                         <div className={classes.navbar__menu}>

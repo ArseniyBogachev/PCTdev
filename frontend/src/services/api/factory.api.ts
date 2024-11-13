@@ -89,8 +89,29 @@ async function delFactoryApi(
 };
 
 
+async function getFactoryFilterApi(
+    token: string
+) {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/v1/app/factory/filter/`, 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        )
+
+        return response
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     addFactoryApi,
     getFactoryApi,
-    delFactoryApi
+    delFactoryApi,
+    getFactoryFilterApi
 }

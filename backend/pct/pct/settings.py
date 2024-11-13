@@ -78,12 +78,11 @@ WSGI_APPLICATION = 'pct.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "PCT",
-        'USER': "postgres",
-        'PASSWORD': "Danny100",
-        'HOST': "postgres",
-        # 'HOST': "localhost",
-        'PORT': "5432"
+        'NAME': 'PCT',
+        'USER': 'postgres',
+        'PASSWORD': 'Danny100',
+        'HOST': 'postgres',
+        'PORT': DB_PORT
     }
 }
 
@@ -98,7 +97,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DJOSER = {
-    'DOMAIN': "localhost:8000",
+    'DOMAIN': DJ_DOMAIN,
     'SITE_NAME': 'PCT',
     'PASSWORD_RESET_CONFIRM_URL': "password/reset/confirm/{uid}/{token}",
     'USERNAME_RESET_CONFIRM_URL': "#/username/reset/confirm/{uid}/{token}",

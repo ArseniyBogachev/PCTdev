@@ -11,7 +11,7 @@ import { factorySlice } from "../../services/store/reducers/factory.dux";
 
 const FactodyMdl:React.FC<PropsFactoryMdl> = () => {
 
-    const { newFactory } = useAppSelector(state => state.factory);
+    const { newFactory, validateNewFactory } = useAppSelector(state => state.factory);
     const dispatch = useAppDispatch()
     const { setItemFactory } = factorySlice.actions
 
@@ -35,6 +35,8 @@ const FactodyMdl:React.FC<PropsFactoryMdl> = () => {
                                 area={item.type === 'area'}
                                 value={newFactory[item.name]}
                                 setValue={(value: string) => dispatch(setItemFactory({name: item.name, value: value}))}
+                                stateError={item.name !== 'registration_number' ? validateNewFactory[item.name] : false}
+                                textError={'Необходимо заполнить поле'}
                             />
                         </div>
                     </div>

@@ -26,14 +26,14 @@ const Pagination:React.FC<PropsPagination> = ({count, currentPage, api}) => {
             />
             {
                 range(currentGroup * 3 - 2, currentGroup * 3 + 1).map(item =>
-                    <Btn
+                    item <= count ? <Btn
                         text={item} 
                         mainStyle={{width: '4vh', height: '4vh', marginRight: '0.8vw'}} 
                         btnStyle={{borderRadius: '5px'}}
-                        btnCls={currentPage === item ? 'default' : item > count ? 'inactive' : 'gray'}
+                        btnCls={currentPage === item ? 'default' : 'gray'}
                         textStyle={{fontSize: '1.5vh'}}
                         action={() => {if (item <= count) {api(item)}}}
-                    />
+                    /> : <></>
                 )
             }       
             <Btn 

@@ -59,13 +59,13 @@ const OrderMdl:React.FC<PropsOrderMdl> = () => {
                                 state={newOrder.quantityProduct[item].product}
                                 setState={(value: number) => dispatch(setNewOrderProduct({index: item, product: value}))}
                                 
-                                label={'Выберите продукт 1'}
+                                label={`Выберите продукт ${item + 1}`}
                                 mainStyle={{height: '5vh'}}
                                 defaultOpt={{disabled: false, selected: false, value: -1, text: 'Ничего не выбрано'}}
                             />
                             <Inpt 
                                 type={'number'} 
-                                name={'Количесво продукции 1'}  
+                                name={`Количесво продукции ${item + 1}`}  
                                 mainStyle={{height: '5vh'}} 
                                 nameStyle={{color: '#696784'}}
                                 placeholder={'Введите число'}

@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -16,7 +16,8 @@ from .serializers import (
     ListOrderSerializerUser,
     CreateOrderSerializer,
     UpdateOrderSerializer,
-    QuantityProductSerializer
+    QuantityProductSerializer,
+    FactoryFilter
 )
 from .paginations import DefaultPagination
 from authentification.permissions import IsAdmin
@@ -91,15 +92,17 @@ class OrderApiCL(ListCreateAPIView):
             return ListOrderSerializerUser
         
     def create(self, request, *args, **kwargs):
-        srlz = CreateOrderSerializer(data={
-            'customer': request.user.id, 
-            'xml': request.data['xml'],
-            'factory': request.data['factory'],
-        })
-        srlz.is_valid(raise_exception=True)
-        srlz.save()
+        if not request.data['hasUndefinedFromQP']:
+            srlz = CreateOrderSerializer(data={
+                'customer': request.user.id, 
+                'xml': request.data['xml'],
+                'factory': request.data['factory'],
+            })
+            srlz.is_valid(raise_exception=True)
+            srlz.save()
 
-        return Response(srlz.data)
+            return Response(srlz.data)
+        return Response({'message': 'Обнаружены пустые поля'}, status=400)
 
 
 class OrderApiU(UpdateAPIView):
@@ -173,3 +176,13 @@ def all_product_and_factory(request):
         'product': product,
         'factory': factory
     })
+
+
+class FactoryFilterL(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = FactoryFilter
+
+    def get_queryset(self):
+        if self.request.user.is_superuser == True:
+            return Factory.objects.values('name').distinct()
+        return Factory.objects.filter(owner=self.request.user.id).values('name').distinct()

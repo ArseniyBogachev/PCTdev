@@ -11,6 +11,12 @@ const factoryState: FactoryState = {
         fio: '',
         registration_number: '',
     },
+    validateNewFactory: {
+        name: false,
+        phone: false,
+        email: false,
+        fio: false,
+    },
     listFactory: [],
     listChkBx: [],
     allChkBx: false,
@@ -32,6 +38,16 @@ export const factorySlice = createSlice({
         name: 'factory',
         initialState: factoryState,
         reducers: {
+            setValidateNewFactory (state: FactoryState, action: PayloadAction<undefined>) {
+                Object.keys(state.validateNewFactory).forEach((key, index) => {
+                    if (state.newFactory[key].length < 1) {
+                        state.validateNewFactory[key] = true;
+                    }
+                    else {
+                        state.validateNewFactory[key] = false;
+                    }
+                })
+            },
             setFactorySlct (state: FactoryState, action: PayloadAction<{list?: [] | undefined, current?: number | undefined}>) {
                 if (action.payload.list) {
                     state.factorySlct.list = action.payload.list;

@@ -76,19 +76,15 @@ class ListOrderSerializerAdmin(ModelSerializer):
 class ListOrderSerializerUser(ModelSerializer):
 
     status = SerializerMethodField()
-    customer = SerializerMethodField()
     factory = SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'factory', 'status', 'creator_at', 'last_update', 'company']
+        fields = ['id', 'factory', 'status', 'creator_at', 'last_update', 'shipping_date', 'accepted_factory', 'shipping_date_status', 'accepted_factory_status']
 
-    def get_status(self,obj):
+    def get_status(self, obj):
         return obj.get_status_display()
-    
-    def get_customer(self, instance):
-        return instance.customer.organization
-    
+        
     def get_factory(self, instance):
         return instance.factory.name
 
@@ -131,4 +127,11 @@ class QuantityProductSerializer(ModelSerializer):
 
     def create(self, validated_data):
         return QuantityProduct.objects.create(**validated_data)
+    
+
+class FactoryFilter(ModelSerializer):
+
+    class Meta:
+        model = Factory
+        fields = ['name']
     

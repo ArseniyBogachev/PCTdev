@@ -102,7 +102,7 @@ const Login = () => {
         if (response.status === 201) {
             dispatch(setCurrentNotification({
                 type: 'fixed',
-                mainText: 'Добавлена новая фабрика',
+                mainText: 'Аккаунт создан',
                 extraText: `На ${email} выслано письмо`,
                 totalStyle: 'access',
                 lvl: 'lvl1',

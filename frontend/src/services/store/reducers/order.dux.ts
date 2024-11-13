@@ -48,12 +48,17 @@ const orderState: OrderState = {
         list: [],
         current: null
     },
+    listShippingDate: [],
+    listAcceptedFactory: []
 }
 
 export const orderSlice = createSlice({
         name: 'factory',
         initialState: orderState,
         reducers: {
+            setListDate (state: OrderState, action: PayloadAction<{date: string, list: { id: number, text: string, cls: string }[]}>) {
+                state[action.payload.date] = action.payload.list;
+            },
             setSlct (state: OrderState, action: PayloadAction<{select: string, list?: { id: number, name: string, other_name?: any }[] | undefined, current?: number | undefined}>) {
                 if (action.payload.list) {
                     state[action.payload.select].list = action.payload.list;
@@ -69,6 +74,20 @@ export const orderSlice = createSlice({
                 else {
                     state.searchId.show = !state.searchId.show
                 }
+            },
+            cleanNewOrder (state: OrderState, action: PayloadAction<undefined>) {
+                state.newOrder = {
+                    xml: {
+                        file: undefined,
+                        name: undefined,
+                        size: undefined
+                    },
+                    factory: undefined,
+                    quantityProduct: [{
+                        product: undefined,
+                        quantity: undefined
+                    }]
+                };
             },
             cleanState (state: OrderState, action: PayloadAction<undefined>) {
                 state.newOrder = {

@@ -12,6 +12,15 @@ type Factory = {
     registration_number: string
 }
 
+type ValidateNewFactory = {
+    [k: string]: boolean
+
+    name: boolean,
+    phone: boolean,
+    email: boolean,
+    fio: boolean,
+}
+
 type ItemListFactory = Factory & {id: number}
 
 type ListFactory = ItemListFactory[] 
@@ -41,7 +50,7 @@ type FactorySlct = {
 }
 
 type FactoryState = {
-    [k: string]: Search | boolean | ChkBx[] | ListFactory | Factory | FactorySlct
+    [k: string]: Search | boolean | ChkBx[] | ListFactory | Factory | FactorySlct | ValidateNewFactory
 
     newFactory: Factory
     listFactory: ListFactory
@@ -50,6 +59,7 @@ type FactoryState = {
     searchId: Search
     searchPhone: Search
     factorySlct: FactorySlct
+    validateNewFactory: ValidateNewFactory
 }
 
 export {

@@ -80,6 +80,12 @@ type Slct = {
     current: number | null
 }
 
+type ListDate = {
+    id: number, 
+    text: string, 
+    cls: string
+}
+
 type OrderState = {
     [k: string]: any
 
@@ -98,6 +104,8 @@ type OrderState = {
     searchId: Search
     factorySlct: Slct
     statusSlct: Slct
+    listShippingDate: ListDate[]
+    listAcceptedFactory: ListDate[]
 }
 
 export {

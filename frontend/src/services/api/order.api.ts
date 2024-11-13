@@ -7,13 +7,15 @@ async function addOrderApi(
     data: {
         xml: string
         factory: number
+        hasUndefinedFromQP: boolean
     }
 ) {
     try {
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/order/`, 
             {
                 xml: data.xml, 
-                factory: data.factory, 
+                factory: data.factory,
+                hasUndefinedFromQP: data.hasUndefinedFromQP
             },
             {
                 headers: {

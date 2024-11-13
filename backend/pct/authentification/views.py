@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from django.http import HttpResponseRedirect
-from .serializers import AdminUserSerializer, AuthSerializer, AdminUserSerializer
+from .serializers import AdminUserSerializer, AdminUserSerializer, UserFilterOrgSerializer, UserFilterEmailSerializer
 from .models import User as UserModel
 from .permissions import IsAdmin
 from application.paginations import DefaultPagination
@@ -20,6 +20,18 @@ class ListUserAdmin(ListAPIView):
     pagination_class = DefaultPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['organization', 'email']
+
+
+class ListUserFilterOrg(ListAPIView):
+    queryset = UserModel.objects.filter(is_superuser=False).values('organization').distinct()
+    permission_classes = (IsAuthenticated, IsAdmin)
+    serializer_class = UserFilterOrgSerializer
+
+
+class ListUserFilterEmail(ListAPIView):
+    queryset = UserModel.objects.filter(is_superuser=False).values('email').distinct()
+    permission_classes = (IsAuthenticated, IsAdmin)
+    serializer_class = UserFilterEmailSerializer
 
 
 @api_view(["DELETE"])

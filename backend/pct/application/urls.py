@@ -8,7 +8,8 @@ from .views import (
     OrderApiU,
     order_api_del,
     all_product_and_factory,
-    QuantityProductApiC
+    QuantityProductApiC,
+    FactoryFilterL
 )
 
 
@@ -22,4 +23,5 @@ urlpatterns = [
     path('order/update/<int:pk>', OrderApiU.as_view(), name='orderU'),
     path('quantity_product/create/', QuantityProductApiC.as_view(), name='quantity-productC'),
     path('factory_product/list/', all_product_and_factory, name='factory-productL'),
+    path('factory/filter/', FactoryFilterL.as_view(), name='factory-filter'),
 ]

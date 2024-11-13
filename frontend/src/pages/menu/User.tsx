@@ -16,7 +16,7 @@ import { constructTbl } from "../../services/hooks/other";
 import { getUsersApi } from "../../services/api/auth.api";
 import { userSlice } from "../../services/store/reducers/user.dux";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
-import { delUsersApi } from "../../services/api/auth.api";
+import { delUsersApi, getFilterEmailApi, getFilterOrgApi } from "../../services/api/auth.api";
 import { getNestingFromObj } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 
@@ -51,8 +51,10 @@ const User = () => {
         filter: {organization?: string | null, email?: string | null, factory?: string | null} = {organization: null, email: null, factory: null},
     ) {
         const response = await getUsersApi(cookies.token, page, filter);
+        const responseFIlterOrg = await getFilterOrgApi(cookies.token);
+        const responseFIlterEmail = await getFilterEmailApi(cookies.token);
 
-        if (response.status === 200) {
+        if (response.status === 200 && responseFIlterOrg.status === 200 && responseFIlterEmail.status === 200) {
             dispatch(setListUser(response.data.results));
             dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
@@ -66,12 +68,12 @@ const User = () => {
                 state: false,
                 setState: () => dispatch(detailSetListFactory(item.id))
             }))));
-            dispatch(setOrgSlct({list: response.data.results.map((item: any) => ({
-                id: item.id,
+            dispatch(setOrgSlct({list: responseFIlterOrg.data.map((item: {organization: string}, index: number) => ({
+                id: index,
                 name: item.organization
             }))}));
-            dispatch(setEmailSlct({list: response.data.results.map((item: any) => ({
-                id: item.id,
+            dispatch(setEmailSlct({list: responseFIlterEmail.data.map((item: {email: string}, index: number) => ({
+                id: index,
                 name: item.email
             }))}));
             setPageCount(response.data.count_page);

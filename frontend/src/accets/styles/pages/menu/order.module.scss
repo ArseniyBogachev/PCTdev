@@ -22,6 +22,14 @@
         height: calc(100% - 20px - 6% - 11.2%);
         margin-top: 20px;
         padding: 0 1.5%;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 7px;
+            margin-left: 3px;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-left: 2px solid #9D9BB4;
+        }
     }
     &__footer {
         border-top: 1px solid #ebebf5;
