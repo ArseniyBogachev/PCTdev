@@ -25,6 +25,7 @@ const EditDataInpt:React.FC<PropsEditDataInpt> = ({
                     mainStyle={{position: 'absolute', top: '0', left: '0'}}
                     inptStyle={{borderRadius: '0'}}
                     setValue={(value: any) => setValue(value)}
+                    step={'1'}
                 /> : <></>
             }
         </div>

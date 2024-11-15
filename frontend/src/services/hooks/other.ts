@@ -4,10 +4,10 @@ export function reconstructDateTime (value: string, sep: string, schema: any[]):
     const arr = value.split(new RegExp(sep));        // /[. :]+/
     schema.forEach(elem => {
         if (typeof elem === 'string') {
-            result += elem;
+            result += elem ?? ' ';
         }
         else if (typeof elem === 'number') {
-            result += arr[elem];
+            result += arr[elem] ?? '00';
         };
     });
     return result;
@@ -79,20 +79,24 @@ export function createFileForDownload(data: any, name?: string, type?: string) {
 
 
 export function currentOrdering (list: {id: number, value: string, state: boolean}[], increase: number, decreasing: number) {
-    console.log('list', list)
-    if (list.find(item => item.id === decreasing && item.state) || 
-        (!list.find(item => item.id === decreasing).state && !list.find(item => item.id === increase).state)) {
-            console.log('1')
+    if (list.find(item => item.id === decreasing && item.state) || (!list.find(item => item.id === decreasing).state && !list.find(item => item.id === increase).state)) {
         return list.map(item => {
             item.id === increase ? item.state = true : item.state = false
             return item
         })
     }
     else {
-        console.log('2')
         return list.map(item => {
             item.id === decreasing ? item.state = true : item.state = false
-            return item
+            return item;
         })
     }
-}
+};
+
+
+export function dtActOrPrel (dt: string) {
+    const now = new Date(Date.now());
+    const current = new Date(dt);
+
+    return now.getDate() >= current.getDate() && now.getMonth() >= current.getMonth() && now.getFullYear() >= current.getFullYear();
+};

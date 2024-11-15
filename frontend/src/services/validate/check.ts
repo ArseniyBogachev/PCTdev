@@ -8,4 +8,4 @@ export function hasUndefinedFromQP (list: {product: number | undefined, quantity
     });
 
     return Boolean(result);
-}
+};

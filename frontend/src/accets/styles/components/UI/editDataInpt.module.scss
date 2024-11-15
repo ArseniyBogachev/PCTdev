@@ -2,9 +2,10 @@
     position: relative;
     &__text {
         cursor: pointer;
-        text-decoration: underline;
+        // text-decoration: underline;
         color: #698DF3;
         visibility: visible;
+        border-bottom: 1px solid #698DF3;
         &__inactive {
             visibility: hidden;
         }

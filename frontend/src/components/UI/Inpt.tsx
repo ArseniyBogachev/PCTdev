@@ -19,7 +19,8 @@ const Inpt = ({
     area,
     placeholder,
     disabled,
-    clickEnter
+    clickEnter,
+    step
 }: any) => {
 
     const handleKeyDown = (event: any) => {
@@ -45,6 +46,7 @@ const Inpt = ({
                         placeholder={placeholder}
                         disabled={disabled}
                         onKeyDown={clickEnter ? handleKeyDown : () => {}}
+                        step={step}
                     />
                 }
                 <div className={classes.main__wrapper__after}>{after}</div>

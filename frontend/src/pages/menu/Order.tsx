@@ -10,7 +10,6 @@ import Filter from "../../components/UI/Filter";
 import Search from "../../components/UI/Search";
 import Download from "../../components/UI/Download";
 import EditDataInpt from "../../components/UI/EditDateInpt";
-import { currentOrdering, reconstructDateTime } from "../../services/hooks/other";
 import Pagination from "../../components/Pagination";
 import { textAlign, sizeModal } from "../../services/typing/typeVar/styles";
 import HeaderBtn from "../../components/HeaderBtn";
@@ -21,9 +20,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getFactoryProductApi, addOrderApi, addQuantityProductApi, getOrderApi, delOrderApi, updateOrderApi } from "../../services/api/order.api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { orderSlice } from "../../services/store/reducers/order.dux";
-import { constructTbl } from "../../services/hooks/other";
 import DropdownList from "../../components/UI/DropdownList";
-import { getNestingFromObj } from "../../services/hooks/other";
+import { getNestingFromObj, dtActOrPrel, constructTbl, currentOrdering, reconstructDateTime } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { statusOrder } from "../../services/static_data/dataOrder";
 import TextStl from "../../components/UI/TextStl";
@@ -138,8 +136,8 @@ const Order = () => {
             dispatch(setListDateShipping(responseOrder.data.results.map((item: any) => ({
                 id: item.id,
                 type: 'datetime-local',
-                text: reconstructDateTime(item.shipping_date, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5]),
-                value: reconstructDateTime(item.shipping_date, '[.+]+', [0]),
+                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5]) : 'дд.мм.гггг чч.мм.сс',
+                value: item.shipping_date ? reconstructDateTime(item.shipping_date, '[.+]+', [0]) : '',
                 state: false,
                 setState: () => dispatch(detailSetListDateShipping({id: item.id})),
                 setValue: async (value: any) => {
@@ -154,8 +152,8 @@ const Order = () => {
             dispatch(setListDateFactory(responseOrder.data.results.map((item: any) => ({
                 id: item.id,
                 type: 'datetime-local',
-                text: reconstructDateTime(item.accepted_factory, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5]),
-                value: reconstructDateTime(item.accepted_factory, '[.+]+', [0]),
+                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5]) : 'дд.мм.гггг чч.мм.сс',
+                value: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[.+]+', [0]) : '',
                 state: false,
                 setState: () => dispatch(detailSetListDateFactory({id: item.id})),
                 setValue: async (value: any) => {
@@ -189,13 +187,13 @@ const Order = () => {
             })));
             dispatch(setListDate({date: 'listShippingDate', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: reconstructDateTime(item.shipping_date, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.shipping_date_status ? '(факт.)' : '(пред.)']),
-                cls: item.shipping_date_status ? 'actually' : 'preliminary'
+                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.shipping_date_status ? '(факт.)' : '(пред.)']) : '',
+                cls: dtActOrPrel(item.shipping_date) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListDate({date: 'listAcceptedFactory', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: reconstructDateTime(item.accepted_factory, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.accepted_factory_status ? '(факт.)' : '(пред.)']),
-                cls: item.accepted_factory_status ? 'actually' : 'preliminary'
+                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.accepted_factory_status ? '(факт.)' : '(пред.)']) : '',
+                cls: dtActOrPrel(item.accepted_factory) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListChkBx(responseOrder.data.results.map((item: any) => ({
                 id: item.id,
@@ -249,6 +247,7 @@ const Order = () => {
                 setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
             }
             else {
+                dispatch(cleanNewOrder());
                 dispatch(setCurrentNotification({
                     type: 'fixed',
                     mainText: 'Ошибка',
@@ -261,6 +260,7 @@ const Order = () => {
             }
         }
         else if (responseOrder.status === 400) {
+            dispatch(cleanNewOrder());
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка',
@@ -272,6 +272,7 @@ const Order = () => {
             setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
+            dispatch(cleanNewOrder());
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка',
