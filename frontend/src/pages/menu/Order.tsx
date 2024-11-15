@@ -539,7 +539,7 @@ const Order = () => {
                     <div className={classes.content__footer}>
                         <div className={classes.content__footer__wrapper}>
                             <div className={classes.content__footer__wrapper__number}>
-                                <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {listOrderAdmin.length}</span>
+                                <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {user.is_superuser ? listOrderAdmin.length : listOrderUser.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
                                 <Pagination 

@@ -1,8 +1,8 @@
 
-import { faBox } from "@fortawesome/free-solid-svg-icons";
-import { faIndustry } from "@fortawesome/free-solid-svg-icons";
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
-import { faFileLines } from "@fortawesome/free-solid-svg-icons";
+import product from "../../accets/images/productmenu.svg";
+import order from "../../accets/images/ordermenu.svg";
+import user from "../../accets/images/usermenu.svg";
+import factory from "../../accets/images/factorymenu.svg";
 
 
 export const dataAccount = (is_superuser: boolean) => {
@@ -10,28 +10,28 @@ export const dataAccount = (is_superuser: boolean) => {
         {
             id: 1,
             text: "Заказы",
-            icon: faFileLines,
+            icon: order,
             link: "/order",
             onlyAdmin: false
         },
         {
             id: 2,
             text: "Продукт",
-            icon: faBox,
+            icon: product,
             link: "/product",
             onlyAdmin: true
         },
         {
             id: 3,
             text: "Пользователи",
-            icon: faUsers,
+            icon: user,
             link: "/user",
             onlyAdmin: true
         },
         {
             id: 4,
             text: is_superuser ? "Фабрики" : "Аккаунты (фабрики)",
-            icon: faIndustry,
+            icon: factory,
             link: "/factory",
             onlyAdmin: false
         },

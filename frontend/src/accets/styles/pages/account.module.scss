@@ -52,7 +52,9 @@
                     background-color: #EFF5FF;
                 }
                 &__icon {
-                    color: #2D2A4B;
+                    filter: invert(15%) sepia(50%) saturate(597%) hue-rotate(206deg) brightness(90%) contrast(93%);
+                    width: 2.5vh;
+                    height: 2.5vh;
                 }
                 &__text {
                     font-family: "Montserrat", sans-serif;
@@ -111,6 +113,12 @@
 
 .activeItem {
     background-color: #EFF5FF;
+    span {
+        color: #3A69F1;
+    }
+    img {
+        filter: invert(65%) sepia(100%) saturate(6053%) hue-rotate(216deg) brightness(98%) contrast(93%);
+    }
 }
 .activeIcon {
     color: #3A69F1;

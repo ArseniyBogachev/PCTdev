@@ -308,7 +308,7 @@ const Factory = () => {
                     <div className={classes.content__footer}>
                         <div className={classes.content__footer__wrapper}>
                             <div className={classes.content__footer__wrapper__number}>
-                                <span className={classes.content__footer__wrapper__number__text}>Найдено заказов: {listFactory.length}</span>
+                                <span className={classes.content__footer__wrapper__number__text}>Найдено фабрик: {listFactory.length}</span>
                             </div>
                             <div className={classes.content__footer__wrapper__pagination}>
                                 <Pagination 

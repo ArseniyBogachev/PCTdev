@@ -15,7 +15,7 @@ const Loading:React.FC<PropsLoading> = ({state}) => {
                             <img src={loading} alt="..." />
                         </div>
                         <div className={classes.content__info}>
-                            <span className={classes.conetent__text}>Подождите, идет перезагрузка</span>
+                            <span className={classes.conetent__text}>Подождите, идет загрузка</span>
                         </div>
                     </div>
                 </div>

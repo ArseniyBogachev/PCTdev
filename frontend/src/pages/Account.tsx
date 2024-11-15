@@ -5,7 +5,6 @@ import classes from "../accets/styles/pages/account.module.scss"
 import classNames from 'classnames';
 import logo from "../accets/images/nl1.png";
 import profile from "../accets/images/profile.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dataAccount } from "../services/static_data/dataAccount";
 import { useAppSelector } from "../services/hooks/redux";
 
@@ -31,7 +30,7 @@ const Account = () => {
                             <div className={classes.navbar__menu__list}>
                                 {dataAccount(user.is_superuser).menu.map((item, i) => 
                                     user.is_superuser || !item.onlyAdmin ? <div className={classNames(classes.navbar__menu__list__item, location.pathname === item.link ? classes.activeItem : "")} onClick={() => {navigate(item.link)}} key={i}>
-                                        <FontAwesomeIcon icon={item.icon} className={classNames(classes.navbar__menu__list__item__icon, location.pathname === item.link ? classes.activeIcon : "")}/>
+                                        <img src={item.icon} alt="..."  className={classes.navbar__menu__list__item__icon}/>
                                         <span className={classes.navbar__menu__list__item__text}>{item.text}</span>
                                     </div> : <></>
                                 )}
