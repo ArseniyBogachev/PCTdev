@@ -19,6 +19,8 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { delUsersApi, getFilterEmailApi, getFilterOrgApi } from "../../services/api/auth.api";
 import { getNestingFromObj } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const User = () => {
@@ -133,14 +135,14 @@ const User = () => {
                     /> */}
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            one={{
-                                textOne: 'Добавить пользователя'
-                            }} 
-                            two={{
-                                textTwo: 'Удалить',
-                                actionTwo: () => listChkBx.some(item => item.state === true) ? delUsers() : {},
-                                clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
-                            }}
+                            data={[
+                                {
+                                    text: 'Удалить',
+                                    after: <FontAwesomeIcon icon={faTrashCan} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => listChkBx.some(item => item.state === true) ? delUsers() : {},
+                                    clsStyle: listChkBx.some(item => item.state === true) ? 'red' : 'inactive'
+                                }
+                            ]}
                         />
                     </div>
                     <div className={classes.content__body}>
@@ -199,7 +201,7 @@ const User = () => {
                             }}
                             headStyle={{}}
                             bodyStyle={{
-                                horizontallyAlign: textAlign.Start
+                                bodyHorizontallyAlign: textAlign.Start
                             }}
                         />
                     </div>

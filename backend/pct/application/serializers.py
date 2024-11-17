@@ -80,7 +80,7 @@ class ListOrderSerializerUser(ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'factory', 'status', 'creator_at', 'last_update', 'shipping_date', 'accepted_factory', 'shipping_date_status', 'accepted_factory_status']
+        fields = ['id', 'factory', 'status', 'creator_at', 'last_update', 'shipping_date', 'accepted_factory']
 
     def get_status(self, obj):
         return obj.get_status_display()

@@ -19,6 +19,7 @@ class Product(models.Model):
     article_number = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     size = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
 
 
 class Order(models.Model):
@@ -41,8 +42,6 @@ class Order(models.Model):
     creator_at = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
     company = models.CharField(max_length=100, null=True)
-    shipping_date_status = models.BooleanField(default=False)
-    accepted_factory_status = models.BooleanField(default=False)
 
 
 class QuantityProduct(models.Model):

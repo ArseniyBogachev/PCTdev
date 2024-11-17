@@ -30,7 +30,8 @@ const ProductMdl:React.FC<PropsProductMdl> = ({}) => {
                             <Inpt 
                                 type={item.ui.type} 
                                 name={item.ui.name} 
-                                nameCls={item.ui.nameStyle} 
+                                nameCls={item.ui.nameCls} 
+                                nameStyle={item.ui.nameStyle}
                                 mainStyle={item.ui.mainStyle} 
                                 area={item.type === 'area'}
                                 value={newProduct[item.name]}

@@ -20,6 +20,8 @@ import { factorySlice } from "../../services/store/reducers/factory.dux";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { constructTbl, getNestingFromObj } from "../../services/hooks/other";
 import { currentOrdering } from "../../services/hooks/other";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 
 const Factory = () => {
@@ -187,15 +189,19 @@ const Factory = () => {
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            one={{
-                                actionOne: () => setShow(true),
-                                textOne: 'Добавить фабрику'
-                            }}
-                            two={{
-                                textTwo: 'Удалить',
-                                actionTwo: () => listChkBx.some(item => item.state === true) ? delFactory() : {},
-                                clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
-                            }}
+                            data={[
+                                {
+                                    text: 'Добавить продукт',
+                                    after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => setShow(true),
+                                },
+                                {
+                                    text: 'Удалить',
+                                    after: <FontAwesomeIcon icon={faTrashCan} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => listChkBx.some(item => item.state === true) ? delFactory() : {},
+                                    clsStyle: listChkBx.some(item => item.state === true) ? 'red' : 'inactive'
+                                }
+                            ]}
                         />
                     </div>
                     <div className={classes.content__body}>
@@ -301,7 +307,7 @@ const Factory = () => {
                             }}
                             headStyle={{}}
                             bodyStyle={{
-                                horizontallyAlign: textAlign.Start
+                                bodyHorizontallyAlign: textAlign.Start
                             }}
                         />
                     </div>

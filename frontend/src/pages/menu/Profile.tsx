@@ -104,21 +104,26 @@ const Profile = () => {
                 <div className={classes.content}>
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            one={{
-                                actionOne: () => updateMe(),
-                                textOne: 'Сохранить',
-                                afterOne: <FontAwesomeIcon icon={faSave} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
-                                clsStyleOne: deepEqual(
-                                    {'phone': user.phone, 'fio': user.fio, 'organization': user.organization, 'inn': user.inn}, 
-                                    {'phone': phone, 'fio': fio, 'organization': organization, 'inn': inn,}
-                                ) ? 'inactive' : undefined
-                            }}
-                            two={{
-                                textTwo: 'Выйти',
-                                actionTwo: () => logout(),
-                                afterTwo: <FontAwesomeIcon icon={faArrowRightFromBracket} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
-                                clsStyleTwo: "red"
-                            }}
+                            data={[
+                                {
+                                    text: 'Сохранить',
+                                    after: <FontAwesomeIcon icon={faSave} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => deepEqual(
+                                        {'phone': user.phone, 'fio': user.fio, 'organization': user.organization, 'inn': user.inn}, 
+                                        {'phone': phone, 'fio': fio, 'organization': organization, 'inn': inn,}
+                                    ) ? {} : updateMe(),
+                                    clsStyle: deepEqual(
+                                        {'phone': user.phone, 'fio': user.fio, 'organization': user.organization, 'inn': user.inn}, 
+                                        {'phone': phone, 'fio': fio, 'organization': organization, 'inn': inn,}
+                                    ) ? 'inactive' : undefined
+                                },
+                                {
+                                    text: 'Выйти',
+                                    after: <FontAwesomeIcon icon={faArrowRightFromBracket} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => logout(),
+                                    clsStyle: "red"
+                                }
+                            ]}
                         />
                     </div>
                     <div className={classes.content__body}>

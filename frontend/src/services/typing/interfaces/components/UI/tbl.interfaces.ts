@@ -34,10 +34,11 @@ type TotalStyle = {
 type HeadStyle = {
     headBColor?: string
     headColor?: string
+    headHorizontallyAlign?: textAlign
 }
 
 type BodyStyle = {
-    horizontallyAlign: textAlign
+    bodyHorizontallyAlign: textAlign
 }
 
 type PropsTable = {

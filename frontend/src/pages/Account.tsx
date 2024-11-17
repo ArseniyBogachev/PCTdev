@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import classes from "../accets/styles/pages/account.module.scss"
 import classNames from 'classnames';
-import logo from "../accets/images/nl1.png";
+// import logo from "../accets/images/nl1.png";
+import logo from "../accets/images/logo.svg";
 import profile from "../accets/images/profile.png";
 import { dataAccount } from "../services/static_data/dataAccount";
 import { useAppSelector } from "../services/hooks/redux";

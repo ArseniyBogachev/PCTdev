@@ -19,11 +19,12 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
 
     const {
         headBColor,
-        headColor
+        headColor,
+        headHorizontallyAlign
     } = headStyle
 
     const {
-        horizontallyAlign
+        bodyHorizontallyAlign
     } = bodyStyle
 
     return (
@@ -47,6 +48,7 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                                 style={{
                                     backgroundColor: headBColor ?? "#EFF5FF",
                                     color: headColor ?? "#696784",
+                                    textAlign: headHorizontallyAlign ?? 'start'
                                 }}
                             >{text}</th>
                         )}
@@ -59,7 +61,7 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                         {data.filter.list.map((text: any, i) => <td 
                             className={classes.main__body__tr__td}
                             style={{
-                                textAlign: horizontallyAlign,
+                                textAlign: bodyHorizontallyAlign ?? 'center',
                             }}
                             key={i}
                         >{text}</td>)}
@@ -71,7 +73,7 @@ const Tbl:React.FC<PropsTable> = ({data, totalStyle, headStyle, bodyStyle}): any
                             <td 
                                 className={classes.main__body__tr__td}
                                 style={{
-                                    textAlign: horizontallyAlign,
+                                    textAlign: bodyHorizontallyAlign ?? 'start',
                                 }}
                                 key={i}
                             >{text}</td>

@@ -16,7 +16,7 @@ import HeaderBtn from "../../components/HeaderBtn";
 import Mdl from "../../components/UI/Mdl";
 import OrderMdl from "../../components/BodyMdl/OrderMdl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getFactoryProductApi, addOrderApi, addQuantityProductApi, getOrderApi, delOrderApi, updateOrderApi } from "../../services/api/order.api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { orderSlice } from "../../services/store/reducers/order.dux";
@@ -380,15 +380,19 @@ const Order = () => {
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn
-                            one={{
-                                actionOne: () => setShow(true),
-                                textOne: 'Добавить заказ'
-                            }}
-                            two={{
-                                textTwo: 'Удалить',
-                                actionTwo: () => listChkBx.some(item => item.state === true) ? delOrder() : {},
-                                clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
-                            }}
+                            data={[
+                                {
+                                    text: 'Добавить продукт',
+                                    after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => setShow(true),
+                                },
+                                {
+                                    text: 'Удалить',
+                                    after: <FontAwesomeIcon icon={faTrashCan} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => listChkBx.some(item => item.state === true) ? delOrder() : {},
+                                    clsStyle: listChkBx.some(item => item.state === true) ? 'red' : 'inactive'
+                                }
+                            ]}
                         />
                     </div>
                     <div className={classes.content__body}>
@@ -524,7 +528,7 @@ const Order = () => {
                                     {index: 0, step: 0, elem: ChckBx, props: listChkBx},
                                     {index: 6, step: 0, elem: TextStl, props: listShippingDate},
                                     {index: 7, step: 0, elem: TextStl, props: listAcceptedFactory},
-                                    {index: 8, step: 4}
+                                    {index: 8, step: 2}
                                 ])
                             }}
                             totalStyle={{
@@ -533,7 +537,7 @@ const Order = () => {
                             }}
                             headStyle={{}}
                             bodyStyle={{
-                                horizontallyAlign: textAlign.Center
+                                bodyHorizontallyAlign: textAlign.Center
                             }}
                         />
                     </div>

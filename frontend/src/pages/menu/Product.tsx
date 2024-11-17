@@ -17,6 +17,10 @@ import { getNestingFromObj } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import ProductMdl from "../../components/BodyMdl/ProductMdl";
 import { addProductApi } from "../../services/api/product.api";
+import { faTrashCan, faPlus, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TextStl from "../../components/UI/TextStl";
 
 
 const Product = () => {
@@ -46,7 +50,12 @@ const Product = () => {
         const response = await getProductApi(cookies.token, page);
 
         if (response.status === 200) {
-            dispatch(setListProduct(response.data.results));
+            dispatch(setListProduct(response.data.results.map((item: any) => {
+                item.status = item.status ? 
+                    <FontAwesomeIcon icon={faCircleCheck} style={{color: '#52CB99'}}/> : 
+                    <FontAwesomeIcon icon={faCircleXmark} style={{color: '#FF4B18'}}/>
+                return item
+            })));
             dispatch(setListChkBx(response.data.results.map((item: any) => ({
                 id: item.id,
                 state: false,
@@ -78,6 +87,7 @@ const Product = () => {
             setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
+            dispatch(cleanNewProduct());
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Ошибка',
@@ -133,7 +143,10 @@ const Product = () => {
                         title={'Новый продукт'}
                         Body={ProductMdl}
                         btnLeft={{
-                            action: () => setShow(false),
+                            action: () => {
+                                setShow(false);
+                                dispatch(cleanNewProduct());
+                            },
                             text: 'Отмена'
                         }}
                         btnRight={{
@@ -149,15 +162,25 @@ const Product = () => {
                     />
                     <div className={classes.content__header}>
                         <HeaderBtn 
-                            one={{
-                                actionOne: () => setShow(true),
-                                textOne: 'Добавить продукт'
-                            }}
-                            two={{
-                                textTwo: 'Удалить',
-                                actionTwo: () => listChkBx.some(item => item.state === true) ? delProduct() : {},
-                                clsStyleTwo: listChkBx.some(item => item.state === true) ? 'red' : undefined
-                            }}
+                            data={[
+                                {
+                                    text: 'Добавить продукт',
+                                    after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => setShow(true),
+                                },
+                                {
+                                    text: 'Изменить наличие',
+                                    after: <FontAwesomeIcon icon={faPenToSquare} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => {},
+                                    clsStyle: listChkBx.some(item => item.state === true) ? 'default' : 'inactive'
+                                },
+                                {
+                                    text: 'Удалить',
+                                    after: <FontAwesomeIcon icon={faTrashCan} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
+                                    action: () => listChkBx.some(item => item.state === true) ? delProduct() : {},
+                                    clsStyle: listChkBx.some(item => item.state === true) ? 'red' : 'inactive'
+                                }
+                            ]}
                         />
                     </div>
                     <div className={classes.content__body}>
@@ -170,6 +193,7 @@ const Product = () => {
                                             'Артикул',
                                             'Название продукта', 
                                             'Размер (мм)',
+                                            'Наличие продукта'
                                         ]
                                     },
                                 ],
@@ -182,9 +206,11 @@ const Product = () => {
                                 striped: false,
                                 bordered: false,
                             }}
-                            headStyle={{}}
+                            headStyle={{
+                                headHorizontallyAlign: textAlign.Center
+                            }}
                             bodyStyle={{
-                                horizontallyAlign: textAlign.Start
+                                bodyHorizontallyAlign: textAlign.Center
                             }}
                         />
                     </div>
