@@ -11,7 +11,8 @@ from .serializers import (
     CreateFactorySerializerAdmin,  
     ListFactorySerializerUser, 
     ListFactorySerializerAdmin, 
-    ProductSerializer,
+    ListProductSerializer,
+    UpdateProductSerializer,
     ListOrderSerializerAdmin,
     ListOrderSerializerUser,
     CreateOrderSerializer,
@@ -56,10 +57,32 @@ def factory_api_del(request):
 
 
 class ProductApiCL(ListCreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('-id')
     permission_classes = (IsAuthenticated, IsAdmin)
     pagination_class = DefaultPagination
-    serializer_class = ProductSerializer
+    serializer_class = ListProductSerializer
+
+
+class ProductApiU(UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = UpdateProductSerializer
+    permission_classes = (IsAuthenticated, IsAdmin)
+    
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        
+        if not pk:
+            return Response({'message': 'ID not listed in URL'}, status=404)
+        
+        try:
+            instance = Product.objects.get(pk=pk)
+        except:
+            return Response({'message': 'ID not found'}, status=404)
+        
+        srlz = UpdateProductSerializer(data=request.data, instance=instance)
+        srlz.is_valid(raise_exception=True)
+        srlz.save()
+        return Response({'message': 'OK'})
 
 
 @api_view(["DELETE"])
@@ -110,7 +133,6 @@ class OrderApiU(UpdateAPIView):
     
     def put(self, request, *args, **kwargs):
         pk = kwargs.get('pk', None)
-        print(request.data)
 
         if not pk:
             return Response({'message': 'ID not listed in URL'}, status=404)
@@ -165,7 +187,7 @@ class QuantityProductApiC(CreateAPIView):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def all_product_and_factory(request):
-    product = Product.objects.all().values('id', 'name')
+    product = Product.objects.filter(status=True).values('id', 'name')
 
     if request.user.is_superuser == True:
         factory = Factory.objects.all().values('id', 'name')

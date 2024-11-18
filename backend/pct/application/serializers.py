@@ -33,11 +33,24 @@ class ListFactorySerializerUser(ModelSerializer):
         fields = ['id', 'name', 'phone', 'email', 'fio', 'registration_number']
 
 
-class ProductSerializer(ModelSerializer):
+class ListProductSerializer(ModelSerializer):
 
     class Meta:
         model = Product
         fields = '__all__'
+    
+
+class UpdateProductSerializer(ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = ['status']
+
+    def update(self, instance, validated_data):
+        print(validated_data)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
 
 
 class ListOrderSerializerAdmin(ModelSerializer):
@@ -111,7 +124,6 @@ class UpdateOrderSerializer(ModelSerializer):
         fields = ['status', 'shipping_date', 'accepted_factory']
 
     def update(self, instance, validated_data):
-        print('validated_data', validated_data)
         instance.status = validated_data.get('status', instance.status)
         instance.shipping_date = validated_data.get('shipping_date', instance.shipping_date)
         instance.accepted_factory = validated_data.get('accepted_factory', instance.accepted_factory)

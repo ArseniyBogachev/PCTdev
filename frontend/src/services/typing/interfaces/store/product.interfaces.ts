@@ -19,15 +19,25 @@ type ChkBx = {
     setState: Function
 }
 
+type Slct = {
+    id: number,
+    data: {id: number, name: string, other: boolean}[],
+    state: number,
+    setState: Function
+}
+
 type ProductState = {
     newProduct: Product
     listProduct: Product[]
     listChkBx: ChkBx[]
-    allChkBx: boolean
+    allChkBx: boolean,
+    listStatusSlct: Slct[]
 }
+
 export {
     SetNewProduct,
     ChkBx,
     Product,
     ProductState,
+    Slct
 }

@@ -187,12 +187,12 @@ const Order = () => {
             })));
             dispatch(setListDate({date: 'listShippingDate', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.shipping_date_status ? '(факт.)' : '(пред.)']) : '',
+                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.shipping_date_status ? '(факт.)' : '(пред.)']) : '',
                 cls: dtActOrPrel(item.shipping_date) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListDate({date: 'listAcceptedFactory', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.accepted_factory_status ? '(факт.)' : '(пред.)']) : '',
+                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.accepted_factory_status ? '(факт.)' : '(пред.)']) : '',
                 cls: dtActOrPrel(item.accepted_factory) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListChkBx(responseOrder.data.results.map((item: any) => ({

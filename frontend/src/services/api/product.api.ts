@@ -46,6 +46,33 @@ async function addProductApi(
 };
 
 
+async function updateProductApi(
+    token: string,
+    id: number,
+    data: {
+        status: boolean
+    }
+) {
+    try {
+        const response = await axios.patch(`${process.env.REACT_APP_SERVER}/api/v1/app/product/update/${id}`,
+            {
+                status: data.status
+            }, 
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        )
+
+        return response
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 async function delProductApi(
     token: string,
     data: number[]
@@ -71,5 +98,6 @@ async function delProductApi(
 export {
     getProductApi,
     delProductApi,
-    addProductApi
+    addProductApi,
+    updateProductApi
 }
