@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from django.core.mail import send_mail
 from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
@@ -22,6 +23,7 @@ from .serializers import (
 )
 from .paginations import DefaultPagination
 from authentification.permissions import IsAdmin
+from authentification.models import User
 
 
 class FactoryApiCL(ListCreateAPIView):
@@ -148,10 +150,35 @@ class OrderApiU(UpdateAPIView):
         except:
             return Response({'message': 'ID not found'}, status=404)
         
-        srlz = UpdateOrderSerializer(data=request.data, instance=instance)
-        srlz.is_valid(raise_exception=True)
-        srlz.save()
-        return Response({'message': 'OK'})
+        try:
+            srlz = UpdateOrderSerializer(data=request.data, instance=instance)
+            srlz.is_valid(raise_exception=True)
+            srlz.save()
+            return Response({'message': 'OK'})
+        except:
+            return Response({'message': 'General error'})
+        
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def order_send_email_api(request):
+    try:
+        if request.data['email']:
+            send_mail(
+                subject="Выполнено изменение данных заказа.",
+                message=request.data['message'],
+                from_email=None,
+                recipient_list=[request.data['email']],
+                fail_silently=False,
+            )
+        else:
+            raise ValueError
+        
+        return Response({'message': 'Send message OK'}, status=200)
+    except ValueError:
+        return Response({'message': 'Not fount email customer'}, status=403)
+    except:
+        return Response({'message': 'General error'}, status=500)
 
 
 @api_view(["DELETE"])

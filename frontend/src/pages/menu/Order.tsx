@@ -17,11 +17,19 @@ import Mdl from "../../components/UI/Mdl";
 import OrderMdl from "../../components/BodyMdl/OrderMdl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { getFactoryProductApi, addOrderApi, addQuantityProductApi, getOrderApi, delOrderApi, updateOrderApi } from "../../services/api/order.api";
+import { 
+    getFactoryProductApi, 
+    addOrderApi, 
+    addQuantityProductApi, 
+    getOrderApi, 
+    delOrderApi, 
+    updateOrderApi,
+    sendMessageUpdateOrderApi
+} from "../../services/api/order.api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/redux";
 import { orderSlice } from "../../services/store/reducers/order.dux";
 import DropdownList from "../../components/UI/DropdownList";
-import { getNestingFromObj, dtActOrPrel, constructTbl, currentOrdering, reconstructDateTime } from "../../services/hooks/other";
+import { getNestingFromObj, dtActOrPrel, constructTbl, currentOrdering, reconstructDateTime, constructMessage } from "../../services/hooks/other";
 import { generalSlice } from "../../services/store/reducers/general.dux";
 import { statusOrder } from "../../services/static_data/dataOrder";
 import TextStl from "../../components/UI/TextStl";
@@ -104,6 +112,7 @@ const Order = () => {
 
             dispatch(setListProductFactory(responsePF.data));
             dispatch(setListOrderAdmin(responseOrder.data.results.map((item: any) => {
+                console.log(item.email_customer)
                 item.receiving_order = reconstructDateTime(item.receiving_order, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5]);
                 return item
             })));
@@ -125,7 +134,7 @@ const Order = () => {
                 state: item.status.current,
                 setState: async (value: any) => {
                     dispatch(detailSetListSlct({id: item.id, value: value}));
-                    await updateOrder({status: value}, item.id);
+                    await updateOrder({status: value}, item.email_customer, item.id, {choice: item.status.choice});
                 }
             }))));
             dispatch(setListFile(responseOrder.data.results.map((item: any) => ({
@@ -146,7 +155,7 @@ const Order = () => {
                         value: value, 
                         text: reconstructDateTime(value, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5])
                     }));
-                    await updateOrder({'shipping_date': value}, item.id);
+                    await updateOrder({'shipping_date': value}, item.email_customer, item.id);
                 }
             }))));
             dispatch(setListDateFactory(responseOrder.data.results.map((item: any) => ({
@@ -162,7 +171,7 @@ const Order = () => {
                         value: value, 
                         text: reconstructDateTime(value, '[-T:.]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5])
                     }));
-                    await updateOrder({'accepted_factory': value}, item.id);
+                    await updateOrder({'accepted_factory': value}, item.email_customer, item.id);
                 }
             }))));
             dispatch(setSlct({select: 'factorySlct', list: responseFactoryName.data.map((item: {name: string}, index: number) => ({
@@ -187,12 +196,12 @@ const Order = () => {
             })));
             dispatch(setListDate({date: 'listShippingDate', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.shipping_date_status ? '(факт.)' : '(пред.)']) : '',
+                text: item.shipping_date ? reconstructDateTime(item.shipping_date, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', dtActOrPrel(item.shipping_date) ? '(факт.)' : '(пред.)']) : '',
                 cls: dtActOrPrel(item.shipping_date) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListDate({date: 'listAcceptedFactory', list: responseOrder.data.results.map((item: any) => ({
                 id: item.id,
-                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', item.accepted_factory_status ? '(факт.)' : '(пред.)']) : '',
+                text: item.accepted_factory ? reconstructDateTime(item.accepted_factory, '[-T:.+]+', [2, '.', 1, '.', 0, ' ', 3, ':', 4, ':', 5, ' ', dtActOrPrel(item.accepted_factory) ? '(факт.)' : '(пред.)']) : '',
                 cls: dtActOrPrel(item.accepted_factory) ? 'actually' : 'preliminary'
             }))}));
             dispatch(setListChkBx(responseOrder.data.results.map((item: any) => ({
@@ -285,11 +294,20 @@ const Order = () => {
         }
     };
 
-    async function updateOrder (data: {status?: number | undefined, shipping_date?: Date | undefined, accepted_factory?: Date | undefined}, id: number) {
+    async function updateOrder (data: {status?: number | undefined, shipping_date?: string | undefined, accepted_factory?: string | undefined}, email_customer: string, id: number, extra?: any) {
         const response = await updateOrderApi(cookies.token, data, id);
+        console.log(extra.choice)
 
         if (response.status === 200) {
             await getOrder();
+            await sendMessageUpdateOrderApi(cookies.token, {
+                email: email_customer, 
+                message: constructMessage([
+                    {check: data.status, message: `Статус заказа с идентификатором ${id} изменен на "${extra.choice.find((item: {id: number, name: string}) => item.id === data.status).name}"`},
+                    {check: data.shipping_date, message: `Дата доставки заказа с идентификатором ${id} изменена на ${reconstructDateTime(data.shipping_date ?? '', '[T]+', [0])}`},
+                    {check: data.accepted_factory, message: `Дата принятия фабрикой заказа с идентификатором ${id} изменена на ${reconstructDateTime(data.accepted_factory ?? '', '[T]+', [0])}`}
+                ]).message
+            })
             dispatch(setCurrentNotification({
                 type: 'fixed',
                 mainText: 'Изменено',
@@ -382,7 +400,7 @@ const Order = () => {
                         <HeaderBtn
                             data={[
                                 {
-                                    text: 'Добавить продукт',
+                                    text: 'Добавить заказ',
                                     after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
                                     action: () => setShow(true),
                                 },
@@ -513,6 +531,7 @@ const Order = () => {
                                     ]
                                 },
                                 body: user.is_superuser ? constructTbl(listOrderAdmin, [
+                                    {index: 2, step: 1},
                                     {index: 0, step: 0, elem: ChckBx, props: listChkBx},
                                     {index: 9, step: 0, elem: DropdownList, props: listDropdown},
                                     {index: 10, step: 1},

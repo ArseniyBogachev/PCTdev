@@ -60,10 +60,11 @@ class ListOrderSerializerAdmin(ModelSerializer):
     quantity_product = SerializerMethodField()
     customer = SerializerMethodField()
     factory = SerializerMethodField()
+    email_customer = SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'factory', 'status', 'receiving_order', 'shipping_date', 'accepted_factory', 'xml', 'quantity_product']
+        fields = ['id', 'customer', 'email_customer', 'factory', 'status', 'receiving_order', 'shipping_date', 'accepted_factory', 'xml', 'quantity_product']
 
     def get_status(self, instance):
         stts_values = list(instance.STATUS_ORDER.values())
@@ -77,6 +78,9 @@ class ListOrderSerializerAdmin(ModelSerializer):
     
     def get_customer(self, instance):
         return instance.customer.organization
+    
+    def get_email_customer(self, instance):
+        return instance.customer.email
     
     def get_quantity_product(self, instance):
         query = QuantityProduct.objects.filter(product__in=instance.quantity_product.all(), order=instance.id)
@@ -121,7 +125,7 @@ class UpdateOrderSerializer(ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['status', 'shipping_date', 'accepted_factory']
+        fields = ['status', 'shipping_date', 'accepted_factory', 'customer']
 
     def update(self, instance, validated_data):
         instance.status = validated_data.get('status', instance.status)

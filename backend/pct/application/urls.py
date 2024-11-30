@@ -10,7 +10,8 @@ from .views import (
     all_product_and_factory,
     QuantityProductApiC,
     FactoryFilterL,
-    ProductApiU
+    ProductApiU,
+    order_send_email_api
 )
 
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path('order/', OrderApiCL.as_view(), name='orderCD'),
     path('order/del/', order_api_del, name='orderD'),
     path('order/update/<int:pk>', OrderApiU.as_view(), name='orderU'),
+    path('order/update/send/', order_send_email_api, name='orderSend'),
     path('quantity_product/create/', QuantityProductApiC.as_view(), name='quantity-productC'),
     path('factory_product/list/', all_product_and_factory, name='factory-productL'),
     path('factory/filter/', FactoryFilterL.as_view(), name='factory-filter'),

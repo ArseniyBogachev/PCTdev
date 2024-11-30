@@ -191,7 +191,7 @@ const Factory = () => {
                         <HeaderBtn 
                             data={[
                                 {
-                                    text: 'Добавить продукт',
+                                    text: 'Добавить фабрику',
                                     after: <FontAwesomeIcon icon={faPlus} style={{marginLeft: "10px", fontSize: '1.7vh'}}/>,
                                     action: () => setShow(true),
                                 },

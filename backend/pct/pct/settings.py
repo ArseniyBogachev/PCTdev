@@ -90,6 +90,7 @@ AUTH_USER_MODEL = "authentification.User"
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = SMTP_EMAIL_HOST_USER
 EMAIL_HOST_USER = SMTP_EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = SMTP_EMAIL_HOST_PASSWORD
 EMAIL_HOST = "smtp.gmail.com"

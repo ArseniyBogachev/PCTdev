@@ -136,7 +136,7 @@ async function delOrderApi(
 
 async function updateOrderApi(
     token: string,
-    data: {status?: number | undefined, shipping_date?: Date | undefined, accepted_factory?: Date | undefined},
+    data: {status?: number | undefined, shipping_date?: string | undefined, accepted_factory?: string | undefined},
     id: number
 ) {
     try {
@@ -157,11 +157,40 @@ async function updateOrderApi(
 };
 
 
+async function sendMessageUpdateOrderApi(
+    token: string,
+    data: {
+        email: string,
+        message: string
+    }
+) {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/v1/app/order/update/send/`, 
+            {
+                email: data.email,
+                message: data.message
+            },
+            {
+                headers: {
+                    "Authorization": `Token ${token}`
+                }
+            }
+        )
+
+        return response
+    }
+    catch (e) {
+        return e
+    }
+};
+
+
 export {
     getFactoryProductApi,
     addQuantityProductApi,
     addOrderApi,
     getOrderApi,
     delOrderApi,
-    updateOrderApi
+    updateOrderApi,
+    sendMessageUpdateOrderApi
 }

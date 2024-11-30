@@ -97,6 +97,10 @@ export function currentOrdering (list: {id: number, value: string, state: boolea
 export function dtActOrPrel (dt: string) {
     const now = new Date(Date.now());
     const current = new Date(dt);
-
-    return now.getDate() >= current.getDate() && now.getMonth() >= current.getMonth() && now.getFullYear() >= current.getFullYear();
+    return now.valueOf() >= current.valueOf();
 };
+
+
+export function constructMessage(data: {check?: any, message: string}[]) {
+    return data.find(item => item.check)
+}
