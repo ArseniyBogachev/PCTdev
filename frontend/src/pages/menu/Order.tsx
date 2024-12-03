@@ -134,7 +134,7 @@ const Order = () => {
                 state: item.status.current,
                 setState: async (value: any) => {
                     dispatch(detailSetListSlct({id: item.id, value: value}));
-                    await updateOrder({status: value}, item.email_customer, item.id, {choice: item.status.choice});
+                    await updateOrder({status: value}, item.email_customer, item.id);
                 }
             }))));
             dispatch(setListFile(responseOrder.data.results.map((item: any) => ({
@@ -294,9 +294,8 @@ const Order = () => {
         }
     };
 
-    async function updateOrder (data: {status?: number | undefined, shipping_date?: string | undefined, accepted_factory?: string | undefined}, email_customer: string, id: number, extra?: any) {
+    async function updateOrder (data: {status?: number | undefined, shipping_date?: string | undefined, accepted_factory?: string | undefined}, email_customer: string, id: number) {
         const response = await updateOrderApi(cookies.token, data, id);
-        console.log(extra.choice)
 
         if (response.status === 200) {
             await getOrder();
@@ -312,7 +311,7 @@ const Order = () => {
             await sendMessageUpdateOrderApi(cookies.token, {
                 email: email_customer, 
                 message: constructMessage([
-                    {check: data.status, message: `Статус заказа с идентификатором ${id} изменен на "${extra.choice.find((item: {id: number, name: string}) => item.id === data.status).name}"`},
+                    {check: data.status, message: `Статус заказа с идентификатором ${id} изменен на "${statusOrder.find((item: {id: number, name: string}) => item.id === data.status)?.name}"`},
                     {check: data.shipping_date, message: `Дата доставки заказа с идентификатором ${id} изменена на ${reconstructDateTime(data.shipping_date ?? '', '[T]+', [0])}`},
                     {check: data.accepted_factory, message: `Дата принятия фабрикой заказа с идентификатором ${id} изменена на ${reconstructDateTime(data.accepted_factory ?? '', '[T]+', [0])}`}
                 ]).message
