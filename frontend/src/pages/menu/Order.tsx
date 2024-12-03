@@ -300,6 +300,15 @@ const Order = () => {
 
         if (response.status === 200) {
             await getOrder();
+            dispatch(setCurrentNotification({
+                type: 'fixed',
+                mainText: 'Изменено',
+                extraText: `Информация будет отправлена на почту ${email_customer}`,
+                totalStyle: 'access',
+                lvl: 'lvl1',
+                close: true
+            }));
+            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
             await sendMessageUpdateOrderApi(cookies.token, {
                 email: email_customer, 
                 message: constructMessage([
@@ -308,15 +317,6 @@ const Order = () => {
                     {check: data.accepted_factory, message: `Дата принятия фабрикой заказа с идентификатором ${id} изменена на ${reconstructDateTime(data.accepted_factory ?? '', '[T]+', [0])}`}
                 ]).message
             })
-            dispatch(setCurrentNotification({
-                type: 'fixed',
-                mainText: 'Изменено',
-                extraText: `Данные заказа изменены`,
-                totalStyle: 'access',
-                lvl: 'lvl1',
-                close: true
-            }));
-            setTimeout(() => dispatch(setCurrentNotification(false)), 5100);
         }
         else {
             dispatch(setCurrentNotification({
