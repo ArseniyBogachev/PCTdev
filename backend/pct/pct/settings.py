@@ -8,7 +8,11 @@ SECRET_KEY = SRV_SECRET_KEY
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    BACKEND_IP_PORT
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,17 +33,16 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL=True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+# CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -78,13 +81,24 @@ WSGI_APPLICATION = 'pct.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PCT',
-        'USER': 'postgres',
-        'PASSWORD': 'Danny100',
-        'HOST': 'postgres',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
         'PORT': DB_PORT
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Danny100',
+#         'HOST': DB_HOST,
+#         'PORT': DB_PORT
+#     }
+# }
 
 AUTH_USER_MODEL = "authentification.User"
 

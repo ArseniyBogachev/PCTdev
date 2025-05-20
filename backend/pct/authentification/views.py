@@ -11,6 +11,7 @@ from .serializers import AdminUserSerializer, AdminUserSerializer, UserFilterOrg
 from .models import User as UserModel
 from .permissions import IsAdmin
 from application.paginations import DefaultPagination
+from pct.env import FRONTEND_IP_PORT, BACKEND_IP_PORT
 
 
 class ListUserAdmin(ListAPIView):
@@ -49,7 +50,7 @@ def user_api_del(request):
 def activate(request, uid, token, format=None):
     payload = {'uid': uid, 'token': token}
 
-    url = "http://127.0.0.1:8000/api/v1/auth/users/activation/"
+    url = f"http://{BACKEND_IP_PORT}/api/v1/auth/users/activation/"
     response = requests.post(url, data=payload)
 
     if response.status_code == 204:
@@ -60,7 +61,7 @@ def activate(request, uid, token, format=None):
 
 @api_view(['GET'])
 def reset_password(request, uid, token, format=None):
-    return HttpResponseRedirect(f'http://localhost:3000/new/password/{uid}/{token}/')
+    return HttpResponseRedirect(f'http://{FRONTEND_IP_PORT}/new/password/{uid}/{token}/')
 
 
 
